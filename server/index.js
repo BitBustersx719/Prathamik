@@ -1,8 +1,18 @@
 import { config } from 'dotenv';
 config();
 
+import cors from 'cors';
+
+import express from 'express';
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:3001'
+}));
+
 import { Configuration, OpenAIApi } from 'openai';
-import readline from 'readline';
 
 const configuration = new Configuration({
   apiKey: process.env.CHATGPT_API_KEY,
@@ -11,17 +21,19 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const userInterface = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+app.post('/input', async (req, res) => {
+  const input = req.body.input;
 
-userInterface.prompt();
-userInterface.on('line', async input => {
-  const res = await openai.createChatCompletion({
+  const response = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [{ role: 'user', content: input }],
   });
-  console.log(res.data.choices[0].message.content);
-  userInterface.prompt();
+
+  const output = response.data.choices[0].message.content;
+
+  res.json({ output });
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
