@@ -1,10 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-const Whiteboard = () => {
-  const canvasRef = useRef(null);
+const Whiteboard = (props) => {
 
   useEffect(() => {
-    const canvas = canvasRef.current;
+    const canvas = props.canvasRef.current;
     const context = canvas.getContext('2d');
 
     let isDrawing = false;
@@ -43,32 +42,12 @@ const Whiteboard = () => {
       canvas.removeEventListener('mousemove', draw);
       canvas.removeEventListener('mouseup', stopDrawing);
     };
-  }, []);
-
-  const saveWhiteboard = () => {
-    const canvas = canvasRef.current;
-    const imageData = canvas.toDataURL();
-
-    fetch('/api/whiteboard', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ imageData }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Image sent successfully!', data);
-      })
-      .catch((error) => {
-        console.error('Error sending image:', error);
-      });
-  };
+  }, [props.canvasRef]);
 
   return (
     <div>
-      <canvas ref={canvasRef} width={800} height={600} />
-      <button onClick={saveWhiteboard}>Save Whiteboard</button>
+      <canvas ref={props.canvasRef} width={800} height={600} />
+      <button onClick={props.handleImageInput}>Save Whiteboard</button>
     </div>
   );
 };
