@@ -30,7 +30,7 @@ def test():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    url = "http://127.0.0.1:5000/test"  # Replace with your API endpoint URL
+    url = "http://127.0.0.1:5000/test"
 
     payload = {
         "file": request.files['image']

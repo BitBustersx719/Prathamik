@@ -40,14 +40,14 @@ function App() {
 
   const handleImageInput = () => {
     const canvas = canvasRef.current;
-    const imageData = canvas.toDataURL();
+    const image = canvas.toDataURL();
 
-    fetch('http://localhost:3000/image/input', {
+    fetch('http://localhost:3000/ocr', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ imageData , userInput }),
+      body: JSON.stringify({ image , userInput }),
     })
       .then((response) => response.json())
       .then((data) => {
