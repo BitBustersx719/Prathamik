@@ -36,6 +36,7 @@ function IDE(props) {
       <button onClick={() => setFilename("index.html")}>Switch to index.html</button>
       <button onClick={() => setFilename("script.js")}>Switch to script.js</button>
       <button onClick={getEditorValue}>Get Editor Value</button>
+      <button onClick={() => props.setShow('board')}>Switch to Board</button>
       <Editor
         height="500px"
         width="900px"

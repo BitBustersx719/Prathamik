@@ -4,11 +4,13 @@ import Navbar from './Navbar';
 import ChatBox from './ChatBox';
 import IDE from './IDE';
 import { useState } from 'react';
+import Board from './Board';
 
 function App() {
   const [code, setCode] = useState('');
   const [userInput, setUserInput] = useState('');
   const [message, setMessage] = useState('');
+  const [show, setShow] = useState('editor');
 
   const handleInput = async (e) => {
     e.preventDefault();
@@ -38,7 +40,8 @@ function App() {
     <div className="App">
       <Navbar />
       <div className='body'>
-        <IDE setCode={setCode} />
+        {show === 'editor' && <IDE setCode={setCode} setShow={setShow} />}
+        {show === 'board' && <Board />}
         <ChatBox
           message={message}
           setCode={setMessage}
