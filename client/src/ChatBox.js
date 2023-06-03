@@ -1,5 +1,4 @@
 import './ChatBox.css';
-import { useState } from 'react';
 function ChatBox(props) {
 
   return (
