@@ -12,7 +12,7 @@ function App() {
 
   const handleInput = async (e) => {
     e.preventDefault();
-   const input = `${code}\n${userInput}\nTell me in less than 50 words.`;
+   const input = `${code}\n${userInput}`;
 
     try {
       const response = await fetch('http://localhost:3000/input', {
