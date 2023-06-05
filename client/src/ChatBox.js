@@ -1,16 +1,13 @@
 import './ChatBox.css';
 import './index.css';
-import { useState } from 'react';
 import Send from './images/send.png';
 import Bot from './images/bot.jpeg';
 
-
 function ChatBox(props) {
-
   return (
     <div className='header_parent'>
       <div className='chatbox_header'>
-          <img src={Bot}></img>
+          <img src={Bot} alt='bot'></img>
           <div className='bot_details'>
             <h3>Cupkaks</h3>
             <p>AI bot</p>

@@ -8,11 +8,6 @@
     gap: 5px;
 }
 
-.editor_conatiner
-{
-    /* margin-left: 10px; */
-}
-
 .language_list
 {
     display: flex;
@@ -35,6 +30,7 @@
     width: 100%;
     border-bottom: 1px solid #CCCCCC;
 }
+
 .ide_parent button
 {
     display: flex;
@@ -49,7 +45,7 @@
     border: 0;
     cursor: pointer;
     color: var(--primary-color2);
-    padding: 4px 10px;
+    padding: 8px 10px;
     transition: 0.1s ease-in-out;
 
 }
