@@ -62,8 +62,8 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <div className='body'>
+      <Navbar/>
+      <div className='app_body'>
         {show === 'editor' && <IDE setCode={setCode} setShow={setShow} />}
         {show === 'board' && <Board handleImageInput={handleImageInput} canvasRef={canvasRef} />}
         <ChatBox
