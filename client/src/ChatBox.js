@@ -14,7 +14,6 @@ function ChatBox(props) {
           </div>
       </div>
       <div className='chat_container'>
-        
         <div className='chatbox'>
           {props.message && <div className='chat'>
             <p>{props.message}</p>

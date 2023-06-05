@@ -1,7 +1,8 @@
 :root
 {
   --primary-color1: #79CDFB;
-  --primary-color2: #C77385;
+  --primary-color2: #e34668;
+  --primary-gradient: linear-gradient(315deg, var(--primary-color1) 80%, var(--primary-color2) 0%);
 }
 body {
   margin: 0;

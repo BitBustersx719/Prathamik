@@ -69,7 +69,7 @@ function IDE(props) {
           <button onClick={() => setShowAddBox(true)}>Add File</button>
           {showAddBox && <div className='addFilePanel' style={{ display: 'inline' }}>
             <input type='text' placeholder='Enter file name' onChange={(e) => setNewFileName(e.target.value)} />
-            <select onChange={(e) => setNewFileLanguage(e.target.value)}>
+            <select onChange={(e) => setNewFileLanguage(e.target.value)} value={newFileLanguage}>
               <option value='html'>HTML</option>
               <option value='css'>CSS</option>
               <option value='javascript'>Javascript</option>
