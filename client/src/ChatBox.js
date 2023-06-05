@@ -23,6 +23,7 @@ function ChatBox(props) {
         <form autoComplete="off">
           <input type='text' name='chat' placeholder='Ask something...'
             onChange={(event) => props.setUserInput(event.target.value)}
+            ref={props.inputRef}
           />
           <button onClick={props.handleInput}> 
             <img src={Send} alt="send"/>
