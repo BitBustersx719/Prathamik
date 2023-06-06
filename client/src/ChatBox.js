@@ -5,7 +5,7 @@ import Bot from './images/bot.jpeg';
 
 function ChatBox(props) {
   return (
-    <div className='header_parent'>
+    <div className='chatbox_parent'>
       <div className='chatbox_header'>
           <img src={Bot} alt='bot'></img>
           <div className='bot_details'>

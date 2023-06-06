@@ -3,13 +3,13 @@ import './Navbar.css';
 import './index.css';
 
 function Navbar() {
-  const [navbar, setNavbar] = useState(false);
+  const [navbarShadow, setNavbarShadow] = useState(false);
   const showShadow = () => {
     if (window.scrollY > 50) {
-      setNavbar(true);
+      setNavbarShadow(true);
     }
     else {
-      setNavbar(false);
+      setNavbarShadow(false);
     }
 
   }
@@ -17,26 +17,27 @@ function Navbar() {
 
 
   return (
-    <nav className={navbar ? 'navbar' : 'navbar'}>
-      <div className='logo-container'>
-        <h3><a href="/"><span className='logo-left'>Prathamik</span>
-          <span className='logo-right'></span>
-        </a></h3>
-      </div>
+    <nav className={navbarShadow ? 'transparency' : 'navbar'}>
+      <a href='http://localhost:3000/' className='logo-container'>
+          <div className='logo'>  </div>
+          <h1>Prathamik</h1>
+      </a>
 
-      {/* <ul className='navigations-tabs'>
-        <li><a href="/">Home</a></li>
-        <li><a href="/">Booking Form</a></li>
-        <li><a href="/">Category</a></li>
-        <li><a href="/">About Us</a></li>
-      </ul> */}
-
-      <div className='login-signup-container'>
-        <button type="button" className='login'>Log in</button>
-        <button type="button" className='signup'>Sign up</button>
-      </div>
+      <ul className='navigations-tabs'>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/">ABOUT US</a></li>
+        <li><a href="/">SERVICE</a></li>
+        <li><a href="/">BLOG</a></li>
+        <li>
+          <div className='login-signup-container'>
+            <button type="button" className='login'>LOG IN</button>
+            <button type="button" className='signup'>SIGN UP</button>
+          </div>
+        </li>
+      </ul>
     </nav>
   );
 }
 
 export default Navbar;
+
