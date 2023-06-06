@@ -13,10 +13,12 @@ function App() {
   const [message, setMessage] = useState('');
   const [show, setShow] = useState('editor');
   const canvasRef = useRef(null);
+  const inputRef = useRef(null);
 
   const handleInput = async (e) => {
     e.preventDefault();
-   const input = `${code}\n${userInput}`;
+    inputRef.current.value = '';
+    const input = `${code}\n${userInput}`;
 
     try {
       const response = await fetch('http://localhost:3000/input', {
@@ -60,8 +62,8 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <div className='body'>
+      <Navbar/>
+      <div className='app_body'>
         {show === 'editor' && <IDE setCode={setCode} setShow={setShow} />}
         {show === 'board' && <Board handleImageInput={handleImageInput} canvasRef={canvasRef} />}
         <ChatBox
@@ -69,6 +71,7 @@ function App() {
           setCode={setMessage}
           handleInput={handleInput}
           setUserInput={setUserInput}
+          inputRef={inputRef}
         />
       </div>
     </div>

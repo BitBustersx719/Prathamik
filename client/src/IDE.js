@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const initialFiles = [
   {
     name: "",
     language: "text",
-    value: ""
+    value: "",
+    icon: "fas fa-file-alt"
   }
 ]
 
@@ -16,7 +18,7 @@ function IDE(props) {
   const editorRef = useRef(null);
   const [showAddBox, setShowAddBox] = useState(false);
   const [newFileName, setNewFileName] = useState('');
-  const [newFileLanguage, setNewFileLanguage] = useState('');
+  const [newFileLanguage, setNewFileLanguage] = useState('html');
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -31,21 +33,27 @@ function IDE(props) {
       name: newFileName,
       language: newFileLanguage,
     }
-    if(newFileLanguage === 'javascript') {
+    if (newFileLanguage === 'javascript') {
       newFile.value = '// Enter your code here';
-    } else if(newFileLanguage === 'python') {
+      newFile.icon = 'fab fa-js-square';
+    } else if (newFileLanguage === 'python') {
       newFile.value = '# Enter your code here';
-    } else if(newFileLanguage === 'java') {
+      newFile.icon = 'fab fa-python';
+    } else if (newFileLanguage === 'java') {
       newFile.value = '// Enter your code here';
-    } else if(newFileLanguage === 'c') {
+      newFile.icon = 'fab fa-java';
+    } else if (newFileLanguage === 'c') {
       newFile.value = '// Enter your code here';
     } else if(newFileLanguage === 'cpp') {
       newFile.value = '// Enter your code here';
-    } else if(newFileLanguage === 'html') {
+      newFile.icon = 'fab fa-cuttlefish';
+    } else if (newFileLanguage === 'html') {
       newFile.value = '<!-- Enter your code here -->';
-    } else if(newFileLanguage === 'css') {
+      newFile.icon = 'fab fa-html5';
+    } else if (newFileLanguage === 'css') {
       newFile.value = '/* Enter your code here */';
-    } else if(newFileLanguage === 'text') {
+      newFile.icon = 'fab fa-css3-alt';
+    } else if (newFileLanguage === 'text') {
       newFile.value = '';
     }else {
       newFile.value = '';
