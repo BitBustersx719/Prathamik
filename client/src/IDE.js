@@ -4,7 +4,7 @@ import './IDE.css';
 
 const initialFiles = [
   {
-    name: "text.txt",
+    name: "",
     language: "text",
     value: ""
   }
@@ -39,13 +39,15 @@ function IDE(props) {
       newFile.value = '// Enter your code here';
     } else if(newFileLanguage === 'c') {
       newFile.value = '// Enter your code here';
-    } else if(newFileLanguage === 'c++') {
+    } else if(newFileLanguage === 'cpp') {
       newFile.value = '// Enter your code here';
     } else if(newFileLanguage === 'html') {
       newFile.value = '<!-- Enter your code here -->';
     } else if(newFileLanguage === 'css') {
       newFile.value = '/* Enter your code here */';
     } else if(newFileLanguage === 'text') {
+      newFile.value = '';
+    }else {
       newFile.value = '';
     }
     setFiles([...files, newFile]);
@@ -62,7 +64,7 @@ function IDE(props) {
           <option value='python'>Python</option>
           <option value='java'>Java</option>
           <option value='c'>C</option>
-          <option value='c++'>C++</option>
+          <option value='cpp'>C++</option>
           <option value='html'>HTML</option>
           <option value='css'>CSS</option>
           <option value='text'>Text</option>

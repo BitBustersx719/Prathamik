@@ -42,7 +42,7 @@ function App() {
     const canvas = canvasRef.current;
     const image = canvas.toDataURL();
 
-    fetch('http://localhost:3000/ocr', {
+    fetch('http://localhost:5000/ocr', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
