@@ -4,8 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-/myenv/Lib/site-packages
-
+/myenv
 # testing
 /coverage
 
