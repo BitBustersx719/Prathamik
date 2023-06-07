@@ -10,7 +10,7 @@ CORS(app)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
 # Set the environment variable for the service account key file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision-388911-0dcf28a813d9 (1).json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision.json"
 @app.route('/ocr', methods=['POST'])
 def ocr():
     if 'image' not in request.files:
