@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify, send_file
+from flask_cors import CORS
 from google.cloud import vision_v1
 from PIL import Image
 import requests
 import os
 import io
 app = Flask(__name__)
-
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
 # Set the environment variable for the service account key file
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision-388911-0dcf28a813d9 (1).json"
 @app.route('/ocr', methods=['POST'])
@@ -33,7 +36,9 @@ def ocr():
         extracted_text = ""
 
     return jsonify({'text': extracted_text})
-
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3001')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 @app.route('/test', methods=['POST'])
 def test():
     image_data = request.files['image']
