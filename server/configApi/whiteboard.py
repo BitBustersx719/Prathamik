@@ -7,7 +7,7 @@ import io
 app = Flask(__name__)
 
 # Set the environment variable for the service account key file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:\\Users\\HP\\Desktop\\Projects\\Prathamik\\myenv\\ocr-vision-388911-0dcf28a813d9 (1).json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision-388911-0dcf28a813d9 (1).json"
 @app.route('/ocr', methods=['POST'])
 def ocr():
     if 'image' not in request.files:
