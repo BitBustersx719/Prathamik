@@ -1,0 +1,42 @@
+.stream_parent
+{
+    width: 100%;
+    height: 100vh;
+}
+
+.stream_parent form h2
+{
+    margin-top: 0;
+}
+
+.stream_parent form
+{
+    position: relative;
+    top: 200px;
+    margin: auto;
+    border: 1px solid black;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    width: 350px;
+    text-align: center;
+}
+
+.stream_parent form label
+{
+}
+
+.stream_parent form input
+{
+    width: 97%;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.stream_parent form button
+{
+    width: 30%;
+    height: 30px;
+    cursor: pointer;
+    text-align: center;
+}
