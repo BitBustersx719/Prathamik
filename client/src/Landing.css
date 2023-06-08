@@ -20,9 +20,7 @@
     animation-duration: 1s;
     animation-fill-mode: both;
     animation-delay: 900ms;
-    letter-spacing: 1px;
-    word-spacing: 1px;
-    line-height: 1.5;
+    
 }
 
 .details h1
@@ -36,6 +34,9 @@
 
 .details p
 {
+    letter-spacing: 1px;
+    word-spacing: 1px;
+    line-height: 1.3;
     /* width: 75%; */
     font-family: 'Roboto', sans-serif;
     color: #183F59;

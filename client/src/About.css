@@ -2,17 +2,25 @@
 
 .about_container
 {
-    margin-top: 50px;
-    height: auto;
-    width: 100%;
-    /* background-image: url('./images/bg3.png'); */
-    /* background-size: cover; */
-    /* background-color: #d0eff6; */
+    /* margin-top: 50px; */
     padding: 0px 150px 0px 150px;
+    
+    width: 100%;
+    height: 100vh;
+    /* position: absolute; */
+    background-image: url('./images/aboutbg.png');
+    background-size: cover;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    /* gap: 40px; */
+}
+
+.about_bg
+{
+    padding: 100px;
+    
+
 }
 
 .about_heading
@@ -49,7 +57,7 @@
 
 .about_blocks img
 {
-    width: 47.2%;
+    width: 50%;
     height: 350px;
 }
 
@@ -78,7 +86,6 @@
     gap: 20px;
     text-align: right;
     letter-spacing: 1px;
-    line-height: 1.5;
 }
 
 .description:nth-child(2n+1)
@@ -88,7 +95,6 @@
     gap: 20px;
     text-align: left;
     letter-spacing: 1px;
-    line-height: 1.5;
 }
 
 .description h2, .description p
@@ -105,6 +111,8 @@
 {
     color: #183F59;
     width: 90%;
+    line-height: 1.3;
+
 }
 
 .description:nth-child(2n) p
