@@ -16,17 +16,23 @@ function About()
 
     useEffect(() => 
     {
+        const options={
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.7
+        };
         const observer = new IntersectionObserver((entries, observer) => 
         {
-            console.log("intersection done",entries);
             entries.forEach(entry => 
                 {
-                    if (entry.isIntersecting) 
+                  
+                  if (entry.isIntersecting) 
                     {
+                      console.log("intersection done",entries);
                       entry.target.classList.add('showAbout');
                     }
                 });
-        }, {threshold: 0.5});
+        }, options);
 
         if (headingRef.current) observer.observe(headingRef.current);
         if (communityRef.current) observer.observe(communityRef.current);
@@ -47,13 +53,13 @@ function About()
   return (
     <div>
       <div className='about_container'>
-        <div className='about_heading' ref={headingRef}>
+        <div ref={headingRef} className='about_heading'>
             <h1>About Us</h1>
             <div className='about_line'></div>
         </div>
         
         <div className='about_blocks'>
-            <div className='community' ref={communityRef}>
+            <div ref={communityRef} className='community'>
                 <img src={Community} />
                 <div className='description'>
                     <h2>Who We Serve</h2>
@@ -61,20 +67,15 @@ function About()
                 </div>
             </div>
 
-            <div className='technology' ref={technologyRef}>
+            <div ref={technologyRef} className='technology'>
                 <div className='description'>
                     <h2>Cutting-Edge Technology</h2>
                     <p>At the heart of our e-learning platform lies cutting-edge technology that drives an innovative and immersive learning experience. We leverage the latest advancements in educational technology to deliver dynamic and interactive course content. From virtual simulations and augmented reality to adaptive learning algorithms, we harness.</p>
                 </div>
                 <img src={Technology} />
             </div>
-        </div>
-      </div>
 
-
-      <div className='about_container'>
-        <div className='about_blocks'>
-            <div className='expert' ref={expertRef}>
+            <div ref={expertRef} className='expert'>
                 <img src={Expert} />
                 <div className='description'>
                     <h2>Our Team of Experts</h2>
@@ -82,7 +83,7 @@ function About()
                 </div>
             </div>
 
-            <div className='experience' ref={experienceRef}>
+            <div ref={experienceRef} className='experience'>
                 <div className='description'>
                     <h2>Seamless User Experience</h2>
                     <p>At Prathamik, we are committed to providing a seamless learning experience from start to finish. Our user-friendly platform is designed with intuitive navigation and clear instructions, making it easy for you to navigate through courses, access resources, and track your progress. We understand that your time is valuable, so we strive to.</p>
@@ -90,6 +91,7 @@ function About()
                 <img src={Experience} />
             </div>
         </div>
+
       </div>
 
     </div>

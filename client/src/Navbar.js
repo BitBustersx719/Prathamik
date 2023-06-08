@@ -15,20 +15,9 @@ function Navbar()
   }
   window.addEventListener('scroll', showShadow);
 
-  const [shouldRender,setShouldRender]=useState(false);
-  useEffect(()=>
-  {
-    const timer=setTimeout(()=>
-      {
-        setShouldRender(true);
-      }, 100);
-      return () => clearTimeout(timer);
-  },[]);
-
-
   return (
     <div>
-      {shouldRender && <nav className={navbarShadow ? 'transparency' : 'navbar'}>
+      <nav className={navbarShadow ? 'transparency' : 'navbar'}>
         <a href='http://localhost:3000/' className='logo-container'>
             <div className='logo'>  </div>
             <h1>Prathamik</h1>
@@ -46,7 +35,7 @@ function Navbar()
             </div>
           </li>
         </ul>
-      </nav>}
+      </nav>
     </div>
   );
 }

@@ -3,13 +3,14 @@
 .about_container
 {
     /* margin-top: 50px; */
-    padding: 0px 150px 0px 150px;
+    padding: 100px 150px 0px 150px;
     
     width: 100%;
+    /* background-color: #d0eff6; */
     height: auto;
     /* position: absolute; */
-    background-image: url('./images/aboutbg.png');
-    background-size: cover;
+    /* background-image: url('./images/aboutbg.png'); */
+    /* background-size: cover; */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
