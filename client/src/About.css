@@ -28,6 +28,7 @@
     color: var(--primary-color1);
     font-size: 35px;
     margin: 0;
+    letter-spacing: 4px;
 }
 
 .about_line
@@ -76,6 +77,8 @@
     flex-direction: column;
     gap: 20px;
     text-align: right;
+    letter-spacing: 1px;
+    line-height: 1.5;
 }
 
 .description:nth-child(2n+1)
@@ -84,6 +87,8 @@
     flex-direction: column;
     gap: 20px;
     text-align: left;
+    letter-spacing: 1px;
+    line-height: 1.5;
 }
 
 .description h2, .description p

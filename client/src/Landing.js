@@ -19,7 +19,7 @@ function Landing()
                 <div className='details'>
                     <h1>Learn. Anywhere. Anytime.</h1>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetuer from the adipiscing elit,diam nonummy nibh euismod fromm tincidunt ut laoreet dolore magna aliquam erat the volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.
+                    Prathamik is an online learning platform designed to empower teachers and provide a seamless experience for students. With the assistance of an AI bot, teachers can efficiently solve students' doubts and enhance the learning process.
                     </p>
                     <button>Read More</button>
                     <div className='circles'>
