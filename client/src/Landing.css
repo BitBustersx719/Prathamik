@@ -24,7 +24,7 @@
 
 .details h1
 {
-    color: #2F6EB3;
+    color: var(--primary-color1);
     font-family: 'Roboto', sans-serif;
     font-weight: 900;
     font-size: 60px;
@@ -41,8 +41,8 @@
 
 .details button
 {
+    background-color: var(--primary-color1);
     width: 160px;
-    background-color: #2F6EB3;
     border: 0;
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
@@ -56,7 +56,7 @@
 
 .details button:hover
 {
-    background-color: #479EB5;
+    background-color: #255486;
 }
 
 .circles
@@ -95,6 +95,8 @@
     height: 100%;
     background-image: url('./images/landing-bg.svg');
     background-size: cover;
+    background-color: #d0eff6;
+    /* background-attachment: fixed; */
     animation-name: bgFadeIn;
     animation-duration: 1s;
     animation-fill-mode: both;
