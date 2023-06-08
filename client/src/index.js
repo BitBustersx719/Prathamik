@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Landing from './Landing';
 import Navbar from './Navbar';
+import Landing from './Landing';
+import About from './About';
 import 'font-awesome/css/font-awesome.min.css';
 
 
@@ -13,5 +14,6 @@ root.render(
     {/* <App/> */}
     <Navbar/>
     <Landing/>
+    <About/>
   </React.StrictMode>
 );
