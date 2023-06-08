@@ -15,7 +15,7 @@ root.render(
     {/* <App/> */}
     {/* <Navbar/> */}
     {/* <Landing/> */}
-    {/* <About/> */}
-    <StreamJoin/>
+    <About/>
+    {/* <StreamJoin/> */}
   </React.StrictMode>
 );
