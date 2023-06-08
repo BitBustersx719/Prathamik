@@ -14,10 +14,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     {/* <App/> */}
-    {/* <Navbar/> */}
-    {/* <Landing/> */}
-    {/* <About/> */}
+    <Navbar/>
+    <Landing/>
+    <About/>
     {/* <StreamJoin/> */}
-    <Stream/>
+    {/* <Stream/> */}
   </React.StrictMode>
 );
