@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './Landing.css';
+import './index.css';
+
 
 function Landing()
 {
@@ -15,7 +17,7 @@ function Landing()
 
     return(
         <div>
-            {shouldRender && <div className='parent'>
+            <div className='landing_parent'>
                 <div className='details'>
                     <h1>Learn. Anywhere. Anytime.</h1>
                     <p>
@@ -28,8 +30,7 @@ function Landing()
                         <span style={{backgroundColor: '#B6C5CE'}}></span>
                     </div>
                 </div>
-                <div className='background_image'></div>
-            </div>}
+            </div>
         </div>
     );
 }
