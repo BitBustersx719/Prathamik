@@ -1,7 +1,6 @@
 import React from 'react';
 import './index.css';
 import './Footer.css';
-import Logo from './images/logo.png';
 
 
 function Footer()
@@ -16,15 +15,18 @@ function Footer()
                     <a href=''>Sapmle</a>
                     <a href=''>Something</a>
                     <a href=''>Example</a>
+                    <a href=''>Example</a>
                 </div>
                 <div className='block_3'>
                     <h4>Support</h4>
                     <a href=''>Contact Us</a>
                     <a href=''>Sample</a>
                     <a href=''>FAQs</a>
+                    <a href=''>Example</a>
                 </div>
                 <div className='block_4'>
                     <h4>Company</h4>
+                    <a href=''>Example</a>
                     <a href=''>Sapmle</a>
                     <a href=''>Example</a>
                     <a href=''>About Us</a>
@@ -34,6 +36,7 @@ function Footer()
                     <a href=''>Contact Us</a>
                     <a href=''>Sample</a>
                     <a href=''>FAQs</a>
+                    <a href=''>Example</a>
                 </div>
                 <div className='block_1'>
                     <a className='footer_logo_container' href=''>

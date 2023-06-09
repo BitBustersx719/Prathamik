@@ -43,7 +43,6 @@
     }
     to
     {
-        color: red;
         opacity: 1;
         transform: translateY(0px);
     }
@@ -52,7 +51,7 @@
 .about_heading h1
 {
     font-family: 'Roboto', sans-serif;
-    color: var(--primary-color1);
+    color: var(--deep-blue);
     font-size: 35px;
     margin: 0;
     letter-spacing: 4px;
@@ -62,7 +61,7 @@
 {
     width: 300px;
     height: 2px;
-    background-color: var(--primary-color1);
+    background-color: var(--deep-blue);
 }
 
 .about_blocks
@@ -213,7 +212,7 @@
 .community_description h2, .expert_description h2,
 .technology_description h2, .experience_description h2
 {
-    color: var(--primary-color1);
+    color: var(--deep-blue);
 }
 
 .community_description p, .expert_description p,

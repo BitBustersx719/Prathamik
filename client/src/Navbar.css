@@ -71,7 +71,7 @@ body {
 .logo-container h1
 {
   font-family: 'Roboto', sans-serif;
-  color: var(--primary-color1);
+  color: var(--deep-blue);
   margin: 0;
   font-size: 43px;
   letter-spacing: 1px;
