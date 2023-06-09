@@ -34,7 +34,6 @@ def ocr():
         extracted_text = texts[0].description
     else:
         extracted_text = ""
-
     return jsonify({'text': extracted_text})
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3001')

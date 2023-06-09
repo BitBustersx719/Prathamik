@@ -14,13 +14,16 @@ import 'font-awesome/css/font-awesome.min.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <App/> */}
+    <App/>
     {/* <StreamJoin/> */}
     {/* <Stream/> */}
     <Navbar/>
     <Landing/>
     <About/>
     <Footer/>
+    {/* <Navbar/> */}
+    {/* <Landing/> */}
+    {/* <About/> */}
     
   </React.StrictMode>
 );
