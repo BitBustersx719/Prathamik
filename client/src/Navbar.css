@@ -29,7 +29,7 @@ body {
   animation-name: navSlideIn;
   animation-duration: 1s;
   animation-fill-mode: both;
-  animation-delay: 300ms;
+  animation-delay: 600ms;
 }
 
 .transparency 
@@ -73,7 +73,8 @@ body {
   font-family: 'Roboto', sans-serif;
   color: var(--primary-color1);
   margin: 0;
-  font-size: 33px;
+  font-size: 43px;
+  letter-spacing: 1px;
 }
 
 .navigations-tabs 
