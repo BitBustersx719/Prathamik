@@ -11,7 +11,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    background-color: #56BCD8;
+    background-color: var(--light-blue);
 }
 
 .block_1
@@ -29,7 +29,7 @@
     justify-content: center;
     align-items: flex-start;
     gap: 10px;
-    color: var(--primary-color1);
+    color: var(--deep-blue);
     text-decoration: none;
     align-items: center;
 }
@@ -57,7 +57,7 @@
 
 .social_icons a i
 {
-    color: #2f6eb3;
+    color: var(--deep-blue);
     padding: 6px;
     font-size: 30px;
 
@@ -68,7 +68,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     text-align: left;
 } 
 

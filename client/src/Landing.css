@@ -32,7 +32,7 @@
 
 .details h1
 {
-    color: var(--primary-color1);
+    color: var(--deep-blue);
     font-family: 'Roboto', sans-serif;
     font-weight: 900;
     font-size: 55px;
@@ -53,7 +53,7 @@
 
 .details button
 {
-    background-color: var(--primary-color1);
+    background-color: var(--deep-blue);
     width: 160px;
     border: 0;
     font-family: 'Roboto', sans-serif;
