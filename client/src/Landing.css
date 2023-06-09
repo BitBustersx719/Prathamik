@@ -35,8 +35,9 @@
     color: var(--primary-color1);
     font-family: 'Roboto', sans-serif;
     font-weight: 900;
-    font-size: 60px;
+    font-size: 55px;
     margin: 0;
+    letter-spacing: 1px;
 }
 
 .details p

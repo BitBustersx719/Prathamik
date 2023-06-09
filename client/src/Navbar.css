@@ -73,7 +73,8 @@ body {
   font-family: 'Roboto', sans-serif;
   color: var(--primary-color1);
   margin: 0;
-  font-size: 33px;
+  font-size: 43px;
+  letter-spacing: 1px;
 }
 
 .navigations-tabs 
