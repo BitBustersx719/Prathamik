@@ -23,7 +23,7 @@ function Landing()
                     <p>
                     Prathamik is an online learning platform designed to empower teachers and provide a seamless experience for students. With the assistance of an AI bot, teachers can efficiently solve students' doubts and enhance the learning process.
                     </p>
-                    <button>Read More</button>
+                    <button>Get Started</button>
                     <div className='circles'>
                         <span style={{backgroundColor: '#18405A'}}></span>
                         <span style={{backgroundColor: '#355F75'}}></span>
