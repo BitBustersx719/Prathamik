@@ -5,6 +5,7 @@ import App from './App';
 import Navbar from './Navbar';
 import Landing from './Landing';
 import About from './About';
+import Footer from './Footer';
 import StreamJoin from './StreamJoin';
 import Stream from './Stream';
 import 'font-awesome/css/font-awesome.min.css';
@@ -19,7 +20,7 @@ root.render(
     <Navbar/>
     <Landing/>
     <About/>
-    
+    <Footer/>
     
   </React.StrictMode>
 );
