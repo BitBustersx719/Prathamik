@@ -1,6 +1,10 @@
+import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import './Navbar.css';
 import './index.css';
+import StreamJoin from './StreamJoin';
+import Stream from './Stream';
+import Platform from './Platform';
 
 function Navbar() 
 {
@@ -22,6 +26,16 @@ function Navbar()
             <div className='logo'>  </div>
             <h1>Prathamik</h1>
         </a>
+
+        <ul className='tempo'>
+            <li>
+              <Link to="/platform">Platform.js</Link>
+            </li><li>
+              <Link to="/stream">Stream.js</Link>
+            </li><li>
+              <Link to="/streamjoin">StreamJoin.js</Link>
+            </li>
+        </ul>
 
         <ul className='navigations-tabs'>
           <li><a href="/">HOME</a></li>
