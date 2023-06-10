@@ -78,7 +78,7 @@
     width: 100%;
     height: 100%;
     border-radius: 20px;
-    background-color: #d0eff6;
+    background-color: var(--light-blue);
 }
 
 .ideImageAnimate
@@ -161,7 +161,7 @@
     }
     to
     {
-        transform: translate(84%, -195px);
+        transform: translate(81%, -220px);
         text-align: right;
     }
 
@@ -180,7 +180,7 @@
     from
     {
         text-align: right;
-        transform: translate(84%, -195px);
+        transform: translate(81%, -220px);
     }
     to
     {
@@ -202,6 +202,32 @@
     left: 50%;
 }
 
+.ide_description p
+{
+    color: #183F59;
+}
+
+.ide_description form button
+{
+    margin-top: 13px;
+    background-color: var(--deep-blue);
+    width: 160px;
+    border: 0;
+    font-weight: 500;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 22px;
+    font-size: 19px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.ide_description form button:hover
+{
+    background-color: #255486;
+}
+
+
 .ideDescriptionAnimate
 {
     animation-name: ideDescriptionAnimation;
@@ -217,7 +243,7 @@
     }
     to
     {
-        transform: translate(27%, -60px);
+        transform: translate(25%, -95px);
     }
 
 }
@@ -233,7 +259,7 @@
 {
     from
     {
-        transform: translate(27%, -60px);
+        transform: translate(25%, -95px);
     }
     to
     {
