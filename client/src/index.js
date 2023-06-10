@@ -5,6 +5,7 @@ import App from './App';
 import Navbar from './Navbar';
 import Landing from './Landing';
 import About from './About';
+import Service from './Service';
 import Footer from './Footer';
 import StreamJoin from './StreamJoin';
 import Stream from './Stream';
@@ -20,10 +21,8 @@ root.render(
     <Navbar/>
     <Landing/>
     <About/>
+    <Service/>
     <Footer/>
-    {/* <Navbar/> */}
-    {/* <Landing/> */}
-    {/* <About/> */}
     
   </React.StrictMode>
 );
