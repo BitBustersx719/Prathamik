@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect} from 'react';
 import './index.css';
 import './Service.css';
-import Ide from './images/ide.png';
+import Ide from './images/ideX.png';
 
 function Service()
 {
