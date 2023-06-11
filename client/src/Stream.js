@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 
-const agoraAppId = "#########"// Replace with your Agora App ID
+const agoraAppId = "29447eacf962489299f833c012f37e15"// Replace with your Agora App ID
 
 const Stream = () => {
   const remoteVideoRef = useRef(null);
@@ -21,9 +21,11 @@ const Stream = () => {
 
     const microphoneTrack = await AgoraRTC.createMicrophoneAudioTrack();
     const cameraTrack = await AgoraRTC.createCameraVideoTrack();
+    const ShareScreen= await AgoraRTC.createScreenVideoTrack()
     await client.publish(microphoneTrack, cameraTrack);
-
+    await client.publish(ShareScreen)
     cameraTrack.play('local-video');
+    ShareScreen.play('share_screen')
     localStream.current = cameraTrack;
 
     client.on('user-published', async (user, mediaType) => {
@@ -43,7 +45,9 @@ const Stream = () => {
 
   return (
     <div>
-      <div className="local-video"></div>
+      <div id="local-video" style={{ width: '320px', height: '240px', border: '1px solid #ccc', marginBottom: '10px' }}></div>
+      <div ref={remoteVideoRef}></div>
+      <div id="share_screen" style={{ width: '320px', height: '240px', border: '1px solid #ccc', marginBottom: '10px' }}></div>
       <div ref={remoteVideoRef}></div>
     </div>
   );

@@ -1,50 +1,36 @@
-const express = require('express');
-const router = express.Router();
+// room_rtc.js
 const AgoraRTC = require('agora-rtc-sdk-ng');
+const asyncHandler = require('express-async-handler');
 
-const agoraAppId = 'YOUR_AGORA_APP_ID'; // Replace with your Agora App ID
+const agoraAppId = process.env.APP_ID; // Replace with your Agora App ID
 
-let streamCode = '';
-let agoraClient;
+function generateCode(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
-router.post('/start', (req, res) => {
-  streamCode = generateStreamCode();
-  res.json({ streamCode });
+const joinStream = asyncHandler(async (req, res) => {
+  const streamCode = req.body.streamCode;
+  const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+
+  await client.join(agoraAppId, streamCode, null);
+
+  const uid = generateCode(6); // Generate a random 6-character UID with alphabets
+  res.json({ uid }); // Return the generated UID as JSON
 });
 
-router.post('/join', (req, res) => {
-  const { joinCode } = req.body;
-  if (joinCode === streamCode) {
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(403);
-  }
+const startStream = asyncHandler(async (req, res) => {
+  const uid = generateCode(6); // Generate a random 6-character UID with alphabets
+  const message = `Stream started with participant: ${uid}`;
+  res.json({ message });
 });
 
-const generateStreamCode = () => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code = '';
-  for (let i = 0; i < 6; i++) {
-    code += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return code;
+module.exports = {
+  joinStream,
+  startStream,
 };
-
-const startAgoraStream = () => {
-  agoraClient = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
-  agoraClient.init(agoraAppId);
-
-  agoraClient.on('user-published', async (user, mediaType) => {
-    await agoraClient.subscribe(user, mediaType);
-  });
-
-  agoraClient.on('user-unpublished', user => {
-    if (user.uid === 1) {
-      agoraClient.remoteStreams.forEach(remoteStream => {
-        remoteStream.stop();
-      });
-    }
-  });
-};
-
-module.exports = { router, startAgoraStream };

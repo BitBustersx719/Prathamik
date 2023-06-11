@@ -1,3 +1,5 @@
 const express= require('express')
 const router= express.Router()
-router.post('/participant/credentials',)
+const {joinStream,startStream}= require('../stream/room_rtc')
+router.post('/start',startStream)
+router.post('/join',joinStream)
