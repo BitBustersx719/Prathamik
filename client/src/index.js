@@ -1,16 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
+
 import './index.css';
 import App from './App';
-import Navbar from './Navbar';
-import Landing from './Landing';
-import About from './About';
-import Service from './Service';
-import Footer from './Footer';
-import StreamJoin from './StreamJoin';
-import Stream from './Stream';
+import Platform from './Platform';
 import 'font-awesome/css/font-awesome.min.css';
-
+import Stream from './Stream';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

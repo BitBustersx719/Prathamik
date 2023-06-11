@@ -12,6 +12,7 @@ const Stream = () => {
 
     return () => {
       stopAgoraStream();
+      remoteVideoRef.current = null; // Clear the reference
     };
   }, []);
 
@@ -27,7 +28,6 @@ const Stream = () => {
     cameraTrack.play('local-video');
     ShareScreen.play('share_screen')
     localStream.current = cameraTrack;
-
     client.on('user-published', async (user, mediaType) => {
       if (mediaType === 'video') {
         await client.subscribe(user, mediaType);
@@ -45,9 +45,7 @@ const Stream = () => {
 
   return (
     <div>
-      <div id="local-video" style={{ width: '320px', height: '240px', border: '1px solid #ccc', marginBottom: '10px' }}></div>
-      <div ref={remoteVideoRef}></div>
-      <div id="share_screen" style={{ width: '320px', height: '240px', border: '1px solid #ccc', marginBottom: '10px' }}></div>
+      <div className="local-video"></div>
       <div ref={remoteVideoRef}></div>
     </div>
   );
