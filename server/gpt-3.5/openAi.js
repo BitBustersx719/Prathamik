@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { Configuration, OpenAIApi } from 'openai';
 const apiKey = process.env.CHATGPT_API_KEY;
 const organization = process.env.CHATGPT_ORG;

@@ -1,12 +1,13 @@
-import { handleInput } from './gpt-3.5/gptController/inputController.js';
-import { config } from 'dotenv';
-config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 import cors from 'cors';
 
 import express from 'express';
 const app = express();
 const port = 3000;
+
+import { handleInput } from './gpt-3.5/gptController/inputController.js';
 
 app.use(express.json());
 app.use(cors({
