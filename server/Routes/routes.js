@@ -1,3 +1,6 @@
-const express= require('express')
+import express from 'express'
 const router= express.Router()
-router.post('/participant/credentials',)
+import {joinStream,startStream} from '../stream/room_rtc.js'
+router.post('/start',startStream)
+router.post('/join',joinStream)
+export default router
