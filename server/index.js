@@ -1,39 +1,44 @@
-import { config } from 'dotenv';
-config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 import cors from 'cors';
 
 import express from 'express';
 const app = express();
 const port = 3000;
-
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:3001'
 }));
 
-import { Configuration, OpenAIApi } from 'openai';
+import http from 'http';
+import { Server } from 'socket.io';
 
-const configuration = new Configuration({
-  apiKey: process.env.CHATGPT_API_KEY,
-  organization: process.env.CHATGPT_ORG
+import { handleInput } from './gpt-3.5/gptController/inputController.js';
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST']
+  }
 });
 
-const openai = new OpenAIApi(configuration);
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
 
-app.post('/input', async (req, res) => {
-  const input = req.body.input;
-
-  const response = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
-    messages: [{ role: 'user', content: input }],
+  socket.on("send_value", (data) => {
+    socket.broadcast.emit("ide_value", data);
   });
 
-  const output = response.data.choices[0].message.content;
-
-  res.json({ output });
+  socket.on("send_file", (data) => {
+    socket.broadcast.emit("ide_file", data);
+  });
 });
 
-app.listen(port, () => {
+app.post('/input', handleInput);
+
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

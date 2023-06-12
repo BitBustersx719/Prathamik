@@ -1,7 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef , useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import io from "socket.io-client";
+
+
+const socket = io.connect("http://localhost:3000");
 
 const initialFiles = [
   {
@@ -19,6 +23,20 @@ function IDE(props) {
   const [showAddBox, setShowAddBox] = useState(false);
   const [newFileName, setNewFileName] = useState('');
   const [newFileLanguage, setNewFileLanguage] = useState('html');
+  const [ideValue, setIdeValue] = useState("");
+  const [user, setUser] = useState("student");
+
+  useEffect(() => {
+    socket.on("ide_value", (data) => {
+      setIdeValue(data);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("ide_file", (data) => {
+      setFiles(data);
+    });
+  }, [socket]);
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -26,6 +44,7 @@ function IDE(props) {
 
   function handleEditorChange(value) {
     props.setCode(value);
+    socket.emit("send_value", value);
   }
 
   function handleAddFile() {
@@ -60,6 +79,8 @@ function IDE(props) {
     }
     setFiles([...files, newFile]);
     setShowAddBox(false);
+
+    socket.emit("send_file", newFile);
   }
 
   const [filesArrowRotate,setFilesArrowRotate]=useState(true);
@@ -119,6 +140,7 @@ function IDE(props) {
             </select>
             <button onClick={handleAddFile}>Add</button>
           </div>}
+          <input type='radio' value='teacher' onChange={(event) => setUser(event.target.value)} /> Teacher
           {files.map((file, index) =>
             <div>
               {index !== 0 && <button key={index} onClick={() => setfileIndex(index)}>
@@ -201,15 +223,30 @@ function IDE(props) {
 
 
         </div>
-
-        <Editor className='ide_in_ide_container'
+        {user === 'teacher' && <Editor className='ide_in_ide_container'
+          height="500px"
+          width="900px"
           theme="vs-dark"
           onMount={handleEditorDidMount}
           onChange={handleEditorChange}
           path={files[fileIndex].name}
           defaultLanguage={files[fileIndex].language}
           defaultValue={files[fileIndex].value}
-        />
+        />}
+        {user === 'student' && <Editor className='ide_in_ide_container'
+          height="500px"
+          width="900px"
+          theme="vs-dark"
+          onMount={handleEditorDidMount}
+          path={files[fileIndex].name}
+          defaultLanguage={files[fileIndex].language}
+          defaultValue={files[fileIndex].value}
+          value={ideValue}
+          options={{
+            readOnly: true
+          }}
+        />}
+        {ideValue}
       </div>
     </div>
   );
