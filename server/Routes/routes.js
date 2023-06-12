@@ -1,6 +1,9 @@
-import express from 'express'
-const router= express.Router()
-import {joinStream,startStream} from '../stream/room_rtc.js'
-router.post('/start',startStream)
-router.post('/join',joinStream)
-export default router
+const express = require('express');
+const { joinStream, startStream } = require('../stream/room_rtc.js');
+
+const router = express.Router();
+
+router.post('/start', startStream);
+router.post('/join', joinStream);
+
+module.exports = router;

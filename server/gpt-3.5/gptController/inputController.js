@@ -1,6 +1,6 @@
-import { openai } from '../openAi.js';
+const { openai } = require('../openAi.js');
 
-export async function handleInput(req, res) {
+async function handleInput(req, res) {
   const input = req.body.input;
 
   const response = await openai.createChatCompletion({
@@ -12,3 +12,7 @@ export async function handleInput(req, res) {
 
   res.json({ output });
 }
+
+module.exports = {
+  handleInput,
+};

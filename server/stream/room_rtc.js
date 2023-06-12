@@ -1,6 +1,5 @@
-// room_rtc.js
-import AgoraRTC from 'agora-rtc-sdk-ng'
-import asyncHandler from 'express-async-handler'
+const AgoraRTC = require('agora-rtc-sdk-ng');
+const asyncHandler = require('express-async-handler');
 
 const agoraAppId = process.env.APP_ID; // Replace with your Agora App ID
 
@@ -30,7 +29,7 @@ const startStream = asyncHandler(async (req, res) => {
   res.json({ message });
 });
 
-export  {
+module.exports = {
   joinStream,
   startStream,
 };

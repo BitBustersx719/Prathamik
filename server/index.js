@@ -1,9 +1,9 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import routes from './Routes/routes.js';
-import AgoraRTC from 'agora-rtc-sdk-ng';
-import cors from 'cors';
-import { handleInput } from './gpt-3.5/gptController/inputController.js';
+const dotenv = require('dotenv');
+const express = require('express');
+const routes = require('./Routes/routes.js');
+const AgoraRTC = require('agora-rtc-sdk-ng');
+const cors = require('cors');
+const { handleInput } = require('./gpt-3.5/gptController/inputController.js');
 
 dotenv.config();
 
