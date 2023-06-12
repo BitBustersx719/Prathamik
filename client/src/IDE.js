@@ -95,8 +95,6 @@ function IDE(props) {
     {
       setFilesShow(false);
       setFilesArrowRotate(false);
-      setShowAddBox(false);
-      // setToolsArrowRotate(false);
     }
     else
     {
@@ -107,7 +105,6 @@ function IDE(props) {
 
   function handleToolsHeadingClick()
   {
-
     setFilesShow(false);
     setFilesArrowRotate(false);
     if (toolsArrowRotate)
@@ -122,37 +119,26 @@ function IDE(props) {
     }
   }
 
+  function handleAddFileClick()
+  {
+    if (showAddBox)
+    {
+      setShowAddBox(false);
+    }
+    else
+    {
+      setShowAddBox(true);
+      setFilesShow(true);
+      setFilesArrowRotate(true);
+      setToolsArrowRotate(false);
+      setToolsShow(false);
+    }
+  }
+
 
   return (
     <div>
       <div className='ide_parent'>
-        {/* <div className='language_list'>
-          <button onClick={() => setShowAddBox(true)}>Add File</button>
-          {showAddBox && <div className='addFilePanel' style={{ display: 'inline' }}>
-            <input type='text' placeholder='Enter file name' onChange={(e) => setNewFileName(e.target.value)} />
-            <select onChange={(e) => setNewFileLanguage(e.target.value)} value={newFileLanguage}>
-              <option value='html'>HTML</option>
-              <option value='css'>CSS</option>
-              <option value='javascript'>Javascript</option>
-              <option value='java'>Java</option>
-              <option value='cpp'>C++</option>
-              <option value='python'>Python</option>
-            </select>
-            <button onClick={handleAddFile}>Add</button>
-          </div>}
-          <input type='radio' value='teacher' onChange={(event) => setUser(event.target.value)} /> Teacher
-          {files.map((file, index) =>
-            <div>
-              {index !== 0 && <button key={index} onClick={() => setfileIndex(index)}>
-                {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>
-                }
-                {file.name}
-              </button>}
-              <div className='line'></div>
-            </div>
-          )}
-          <button onClick={() => props.setShow('board')}>Switch to Board</button>
-        </div> */}
         <div className='left_block'>
 
           <div className='files_container'>
@@ -167,7 +153,7 @@ function IDE(props) {
                 </div>
 
                 <div className='files_heading_right'>
-                  <span className='add_file'onClick={() => {setShowAddBox(true);setFilesShow(true);setFilesArrowRotate(true);setToolsArrowRotate(false);setToolsShow(false)}}>
+                  <span className='add_file'onClick={handleAddFileClick}>
                     <i class="fa-solid fa-file-circle-plus"></i>
                   </span>
                   <span className='three_dot'>
@@ -180,16 +166,20 @@ function IDE(props) {
             <div className={filesShow?'files_show':'files_hide'}>
             {/* <button onClick={() => setShowAddBox(true)}>Add File</button> */}
               {showAddBox && <div className='addFilePanel'>
-                <input type='text' placeholder='Enter file name' onChange={(e) => setNewFileName(e.target.value)} />
-                <select onChange={(e) => setNewFileLanguage(e.target.value)} value={newFileLanguage}>
-                  <option value='html'>HTML</option>
-                  <option value='css'>CSS</option>
-                  <option value='javascript'>Javascript</option>
-                  <option value='java'>Java</option>
-                  <option value='cpp'>C++</option>
-                  <option value='python'>Python</option>
-                </select>
-                <button onClick={handleAddFile}>Add</button>
+                  <div className='addFilePanel_up'>
+                    <input type='text' placeholder='Enter file name' onChange={(e) => setNewFileName(e.target.value)} />
+                  </div>
+                  <div className='addFilePanel_down'>
+                    <select onChange={(e) => setNewFileLanguage(e.target.value)} value={newFileLanguage}>
+                      <option value='html'>HTML</option>
+                      <option value='css'>CSS</option>
+                      <option value='javascript'>Javascript</option>
+                      <option value='java'>Java</option>
+                      <option value='cpp'>C++</option>
+                      <option value='python'>Python</option>
+                    </select>
+                    <button onClick={handleAddFile}>Add</button>
+                  </div>
               </div>}
 
               <div className='file'>
@@ -205,6 +195,7 @@ function IDE(props) {
                   )}
               </div>
             </div>
+              {/* <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
             
           </div>
           
@@ -224,8 +215,6 @@ function IDE(props) {
 
         </div>
         {user === 'teacher' && <Editor className='ide_in_ide_container'
-          height="500px"
-          width="900px"
           theme="vs-dark"
           onMount={handleEditorDidMount}
           onChange={handleEditorChange}
@@ -234,8 +223,6 @@ function IDE(props) {
           defaultValue={files[fileIndex].value}
         />}
         {user === 'student' && <Editor className='ide_in_ide_container'
-          height="500px"
-          width="900px"
           theme="vs-dark"
           onMount={handleEditorDidMount}
           path={files[fileIndex].name}
