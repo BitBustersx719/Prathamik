@@ -14,10 +14,12 @@ function Platform() {
   const [message, setMessage] = useState('');
   const [show, setShow] = useState('editor');
   const canvasRef = useRef(null);
+  const [input, setInput] =useState('');
   const inputRef = useRef(null);
 
   const handleInput = async (e) => {
     e.preventDefault();
+    setInput(userInput);
     inputRef.current.value = '';
     const input = `${code}\n${userInput}`;
 
@@ -60,22 +62,34 @@ function Platform() {
   };
   
   return (
-    <div className="App">
-      <div className='app_body'>
-        <form onSubmit={handleImageInput}>
+    <div className='platform_parent'>
+        {/* <form onSubmit={handleImageInput}>
           <input type="file" name='image' />
           <button type="submit">Submit</button>
-        </form>
-        {show === 'editor' && <IDE setCode={setCode} setShow={setShow} />}
-        {show === 'board' && <Board handleImageInput={handleImageInput} canvasRef={canvasRef} />}
-        <ChatBox
-          message={message}
-          setCode={setMessage}
-          handleInput={handleInput}
-          setUserInput={setUserInput}
-          inputRef={inputRef}
-        />
-      </div>
+        </form> */}
+        {show === 'editor' && (
+          <div className="ide_in_platform_conatiner">
+            <IDE setCode={setCode} setShow={setShow} />
+          </div>
+        )}
+
+        {show === 'board' && (
+          <div className="board_in_platform_conatiner">
+            <Board handleImageInput={handleImageInput} canvasRef={canvasRef}/>
+          </div>
+        )}
+
+        <div className='chat_in_platform_conatiner'>
+          <ChatBox
+            message={message}
+            handleInput={handleInput}
+            setUserInput={setUserInput}
+            userInput={userInput}
+            inputRef={inputRef}
+            input={input}
+          />
+        </div>
+          
     </div>
   );
 }

@@ -40,13 +40,14 @@ body {
   position: fixed;
   box-sizing: border-box;
   z-index: 10;
-  background-color: #56BCD8;
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: 0.4s ease-in-out;
   animation-name: navSlideIn;
   animation-duration: 1s;
+  box-shadow: 0 6px 27px 0 rgba(0,3,2,0.08);
   animation-fill-mode: both;
 }
 
@@ -71,7 +72,7 @@ body {
 .logo-container h1
 {
   font-family: 'Roboto', sans-serif;
-  color: var(--deep-blue);
+  color: var(--light-blue);
   margin: 0;
   font-size: 32px;
   letter-spacing: 1px;
@@ -94,7 +95,7 @@ body {
   font-size: 17px;
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
-  color: white;
+  color: var(--light-blue);
   text-decoration: none;
 }
 
@@ -106,16 +107,16 @@ body {
 
 .login 
 {
-  border-top: 3px solid white;
-  border-bottom: 3px solid white;
-  border-left: 3px solid white;
+  border-top: 3px solid var(--light-blue);
+  border-bottom: 3px solid var(--light-blue);
+  border-left: 3px solid var(--light-blue);
   border-right: 0;
   border-radius: 20px 0px 0px 20px;
   padding: 8px 12px 8px 20px;
   font-size: 17px;
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
-  color: white;
+  color: var(--light-blue);
   background-color: transparent;
   cursor: pointer;
     transition: 0.2s ease-in-out;
@@ -132,16 +133,16 @@ body {
 
 .signup 
 {
-  border-top: 3px solid white;
-  border-bottom: 3px solid white;
-  border-right: 3px solid white;
+  border-top: 3px solid var(--light-blue);
+  border-bottom: 3px solid var(--light-blue);
+  border-right: 3px solid var(--light-blue);
   border-left: 0;
   border-radius: 0px 20px 20px 0px;
   padding: 8px 20px 8px 12px;
   font-size: 17px;
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
-  color: white;
+  color: var(--light-blue);
   background-color: transparent;
   cursor: pointer;
   transition: 0.2s ease-in-out;
