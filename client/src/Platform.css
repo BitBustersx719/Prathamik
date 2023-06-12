@@ -4,17 +4,27 @@
   }
 }
 
-.app_body{
+.platform_parent
+{
   display: flex;
+  width: 100%;
+  height: 91vh;
   padding-top: 65px;
   /* padding-left: 4.8rem; */
   /* background-color: red; */
 }
 
-.App
+.ide_in_platform_conatiner
 {
-  /* background-image: linear-gradient(90deg, #141e30 , #243b55); */
-  /* background-color: #29284B; */
-  /* height: 2000px; */
-  width: 100%;
+  width: 73%;
+}
+
+.board_in_platform_conatiner
+{
+  width: 73%;
+}
+
+.chat_in_platform_conatiner
+{
+  width: 27%;
 }
