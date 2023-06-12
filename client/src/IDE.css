@@ -80,21 +80,22 @@
 
 .files_heading_right
 {
-    width: 23%;
+    width: 22%;
     display: flex;
     justify-content: space-between;
 }
 
-.add_file
+.add_file, .three_dot
 {
-    padding: 3px 0px 3px 7px;
+    padding: 3px 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: 0.1s ease-in-out;
 }
 
-.three_dot
+.add_file:hover, .three_dot:hover
 {
-    padding: 3px 0px 3px 7px;
-    cursor: pointer;
+    background-color: rgb(219, 219, 219);
 }
 
 .files_show
@@ -120,54 +121,71 @@
 .addFilePanel
 {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.addFilePanel input
+.addFilePanel_up input
 {
-    font-size: 14px;
+    font-size: 14.4px;
+    border: 1px solid #bcbcbc;
     width: 91%;
     border-radius: 5px;
-    color: #bcbcbc;
+    color: #3D4047;
     background-color: white;
-    border: none;
     font-family: 'Roboto', sans-serif;
     padding: 8px 8px;
 }
 
-.addFilePanel input:focus
+.addFilePanel_up input:focus
 {
     outline: none;
 }
 
-.addFilePanel select
+.addFilePanel_down select
 {
     border: 0;
     border: 1px solid #bcbcbc;
-    color: rgb(124, 124, 124);
-    padding: 3px 3px;
+    color: #737373;
+    font-size: 13px;
+    padding: 5px 1px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
-.addFilePanel select:focus
+.addFilePanel_down select:focus
 {
     outline: 0;
 }
 
-.addFilePanel button
+.addFilePanel_down button
 {
-    width: 60px;
+    cursor: pointer;
+    width: 40px;
     background-color: white;
-    color: #bcbcbc;
+    color: #737373;
+
+
+    
     border-radius: 5px;
-    padding: 3px 38px;
+    padding: 5px 5px;
     border: 1px solid #bcbcbc;
     margin-left: 5px;
+    transition: 0.1s ease-in-out;
 
+}
+
+.addFilePanel_down button:hover
+{
+    color: #3D4047;
+    background-color: rgb(237, 237, 237);
 }
 
 
 .file button
 {
+    margin-top: 10px;
     color: #3D4047;
     display: flex;
     justify-content: flex-start;
@@ -182,6 +200,7 @@
     padding: 9px 5px 9px 8px;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+    font-size: 14.4px;
 
 }
 
@@ -232,6 +251,9 @@
 .tools_heading h4
 {
     margin: 0;
+    color: var(--ide-font);
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .tools_show
@@ -254,6 +276,9 @@
 
 .ide_in_ide_container
 {
+    border: 1px solid #bcbcbc;
+    overflow: hidden;
+    border-radius: 5px;
     width: 72%;
-    height: 500px;
+    height: 400px;
 }

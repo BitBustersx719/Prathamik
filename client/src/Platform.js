@@ -68,18 +68,18 @@ function Platform() {
           <button type="submit">Submit</button>
         </form> */}
         {show === 'editor' && (
-          <div className="ide_in_platform_conatiner">
+          <div className="ide_in_platform_container">
             <IDE setCode={setCode} setShow={setShow} />
           </div>
         )}
 
         {show === 'board' && (
-          <div className="board_in_platform_conatiner">
+          <div className="board_in_platform_container">
             <Board handleImageInput={handleImageInput} canvasRef={canvasRef}/>
           </div>
         )}
 
-        <div className='chat_in_platform_conatiner'>
+        <div className='chat_in_platform_container'>
           <ChatBox
             message={message}
             handleInput={handleInput}

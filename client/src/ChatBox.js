@@ -53,7 +53,8 @@ function ChatBox(props)
             ref={props.inputRef}
           />
           <button onClick={props.handleInput}> 
-            <img src={Send} alt="send"/>
+            {/* <img src={Send} alt="send"/> */}
+            <i class="fa-solid fa-paper-plane"></i>
           </button>
         </form>
     </div>

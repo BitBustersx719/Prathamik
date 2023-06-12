@@ -7,24 +7,28 @@
 .platform_parent
 {
   display: flex;
+  justify-content: space-between;
+  /* gap: 10px; */
   width: 100%;
   height: 91vh;
   padding-top: 65px;
+  box-sizing: border-box;
   /* padding-left: 4.8rem; */
   /* background-color: red; */
 }
 
-.ide_in_platform_conatiner
+.ide_in_platform_container
+{
+  width: 74.5%;
+}
+
+.board_in_platform_container
 {
   width: 73%;
 }
 
-.board_in_platform_conatiner
+.chat_in_platform_container
 {
-  width: 73%;
-}
-
-.chat_in_platform_conatiner
-{
-  width: 27%;
+  width: 25%;
+  height: 91vh;
 }
