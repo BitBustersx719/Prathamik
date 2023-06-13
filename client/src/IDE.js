@@ -47,30 +47,75 @@ function IDE(props) {
     socket.emit("send_value", value);
   }
 
-  function handleAddFile() {
+  // function handleAddFile() {
+  //   const newFile = {
+  //     name: newFileName,
+  //     language: newFileLanguage,
+  //   }
+  //   if (newFileLanguage === 'javascript') {
+  //     newFile.value = '// Enter your js code here';
+  //     newFile.icon = 'fab fa-js-square';
+  //   } else if (newFileLanguage === 'python') {
+  //     newFile.value = '# Enter your py code here';
+  //     newFile.icon = 'fab fa-python';
+  //   } else if (newFileLanguage === 'java') {
+  //     newFile.value = '// Enter your java code here';
+  //     newFile.icon = 'fab fa-java';
+  //   } else if (newFileLanguage === 'c') {
+  //     newFile.value = '// Enter your c code here';
+  //     newFile.icon = 'fab fa-cuttlefish';
+  //   } else if (newFileLanguage === 'cpp') {
+  //     newFile.value = '// Enter your c++ code here';
+  //     newFile.icon = 'fab fa-cuttlefish';
+  //   } else if (newFileLanguage === 'html') {
+  //     newFile.value = '<!-- Enter your html code here -->';
+  //     newFile.icon = 'fab fa-html5';
+  //   } else if (newFileLanguage === 'css') {
+  //     newFile.value = '/* Enter your css code here */';
+  //     newFile.icon = 'fab fa-css3-alt';
+  //   } else if (newFileLanguage === 'text') {
+  //     newFile.value = '';
+  //     newFile.icon = 'fas fa-file-alt';
+  //   }
+  //   setFiles([...files, newFile]);
+  //   setShowAddBox(false);
+
+  //   socket.emit("send_file", newFile);
+  // }
+
+  const handleAddFile = (e) =>  
+  {
+    // if (e.key === 'Enter') {
+    //   e.preventDefault(); // Prevent form submission
+    //   // Rest of your code...
+    //   // Trigger the desired function or action here
+    // }
     const newFile = {
       name: newFileName,
       language: newFileLanguage,
     }
-    if (newFileLanguage === 'javascript') {
+    const dotIndex = newFileName.indexOf('.');
+    const fileType = newFileName.substring(dotIndex);
+    // console.log(extractedPart);
+    if (fileType === '.js') {
       newFile.value = '// Enter your js code here';
       newFile.icon = 'fab fa-js-square';
-    } else if (newFileLanguage === 'python') {
+    } else if (fileType === '.py') {
       newFile.value = '# Enter your py code here';
       newFile.icon = 'fab fa-python';
-    } else if (newFileLanguage === 'java') {
+    } else if (fileType === '.java') {
       newFile.value = '// Enter your java code here';
       newFile.icon = 'fab fa-java';
-    } else if (newFileLanguage === 'c') {
+    } else if (fileType === '.c') {
       newFile.value = '// Enter your c code here';
       newFile.icon = 'fab fa-cuttlefish';
-    } else if (newFileLanguage === 'cpp') {
+    } else if (fileType === '.cpp') {
       newFile.value = '// Enter your c++ code here';
       newFile.icon = 'fab fa-cuttlefish';
-    } else if (newFileLanguage === 'html') {
+    } else if (fileType === '.html') {
       newFile.value = '<!-- Enter your html code here -->';
       newFile.icon = 'fab fa-html5';
-    } else if (newFileLanguage === 'css') {
+    } else if (fileType === '.css') {
       newFile.value = '/* Enter your css code here */';
       newFile.icon = 'fab fa-css3-alt';
     } else if (newFileLanguage === 'text') {
@@ -79,9 +124,17 @@ function IDE(props) {
     }
     setFiles([...files, newFile]);
     setShowAddBox(false);
+    setNewFileName('');
 
     socket.emit("send_file", newFile);
   }
+
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (showAddBox) {
+      inputRef.current.focus(); // Set focus on the input field
+    }
+  }, [showAddBox]);
 
   const [filesArrowRotate,setFilesArrowRotate]=useState(true);
   const [toolsArrowRotate,setToolsArrowRotate]=useState(false);
@@ -167,9 +220,26 @@ function IDE(props) {
             {/* <button onClick={() => setShowAddBox(true)}>Add File</button> */}
               {showAddBox && <div className='addFilePanel'>
                   <div className='addFilePanel_up'>
-                    <input type='text' placeholder='Enter file name' onChange={(e) => setNewFileName(e.target.value)} />
+                    <form>
+                      <input
+                        ref={inputRef}
+                        type='text'
+                        placeholder='Enter file name'
+                        value={newFileName}
+                        onChange={(e) => setNewFileName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') 
+                          {
+                            e.preventDefault(); // Prevent the default form submission behavior
+                            handleAddFile(e);
+                          }
+                        }}
+                      />
+                    </form>
+
+                  {/* <button onClick={handleAddFile}>Add</button> */}
                   </div>
-                  <div className='addFilePanel_down'>
+                  {/* <div className='addFilePanel_down'>
                     <select onChange={(e) => setNewFileLanguage(e.target.value)} value={newFileLanguage}>
                       <option value='html'>HTML</option>
                       <option value='css'>CSS</option>
@@ -179,7 +249,7 @@ function IDE(props) {
                       <option value='python'>Python</option>
                     </select>
                     <button onClick={handleAddFile}>Add</button>
-                  </div>
+                  </div> */}
               </div>}
 
               <div className='file'>
