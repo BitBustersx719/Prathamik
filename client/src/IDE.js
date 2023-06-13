@@ -9,18 +9,45 @@ const socket = io.connect("http://localhost:3000");
 
 const initialFiles = [
   {
+    id: 0,
     name: "",
     language: "text",
     value: "",
-    icon: "fas fa-file-alt"
+    icon: "fab fa-js-square"
   }
-]
+];
+
+const initialStaticFiles = [
+  {
+    id: 0,
+    name: "index.html",
+    language: ".html",
+    value: "<!-- Enter your html code here -->",
+    icon: "fab fa-html5"
+  },
+  {
+    id: 1,
+    name: "style.css",
+    language: ".css",
+    value: "/* Enter your css code here */",
+    icon: "fab fa-css3-alt"
+  },
+  {
+    id: 2,
+    name: "server.js",
+    language: ".js",
+    value: "// Enter your js code here",
+    icon: "fab fa-js-square"
+  },
+];
 
 function IDE(props) {
+  const [staticFiles, setStaticFiles] = useState(initialStaticFiles);
   const [files, setFiles] = useState(initialFiles);
   const [fileIndex, setfileIndex] = useState(0);
   const editorRef = useRef(null);
   const [showAddBox, setShowAddBox] = useState(false);
+  const [fileId, setFileId] = useState(1);
   const [newFileName, setNewFileName] = useState('');
   const [newFileLanguage, setNewFileLanguage] = useState('html');
   const [ideValue, setIdeValue] = useState("");
@@ -47,56 +74,25 @@ function IDE(props) {
     socket.emit("send_value", value);
   }
 
-  // function handleAddFile() {
-  //   const newFile = {
-  //     name: newFileName,
-  //     language: newFileLanguage,
-  //   }
-  //   if (newFileLanguage === 'javascript') {
-  //     newFile.value = '// Enter your js code here';
-  //     newFile.icon = 'fab fa-js-square';
-  //   } else if (newFileLanguage === 'python') {
-  //     newFile.value = '# Enter your py code here';
-  //     newFile.icon = 'fab fa-python';
-  //   } else if (newFileLanguage === 'java') {
-  //     newFile.value = '// Enter your java code here';
-  //     newFile.icon = 'fab fa-java';
-  //   } else if (newFileLanguage === 'c') {
-  //     newFile.value = '// Enter your c code here';
-  //     newFile.icon = 'fab fa-cuttlefish';
-  //   } else if (newFileLanguage === 'cpp') {
-  //     newFile.value = '// Enter your c++ code here';
-  //     newFile.icon = 'fab fa-cuttlefish';
-  //   } else if (newFileLanguage === 'html') {
-  //     newFile.value = '<!-- Enter your html code here -->';
-  //     newFile.icon = 'fab fa-html5';
-  //   } else if (newFileLanguage === 'css') {
-  //     newFile.value = '/* Enter your css code here */';
-  //     newFile.icon = 'fab fa-css3-alt';
-  //   } else if (newFileLanguage === 'text') {
-  //     newFile.value = '';
-  //     newFile.icon = 'fas fa-file-alt';
-  //   }
-  //   setFiles([...files, newFile]);
-  //   setShowAddBox(false);
-
-  //   socket.emit("send_file", newFile);
-  // }
-
+  function handleFileClick() 
+  {
+    // console.log(fileIndex);
+  }
+  
   const handleAddFile = (e) =>  
   {
-    // if (e.key === 'Enter') {
-    //   e.preventDefault(); // Prevent form submission
-    //   // Rest of your code...
-    //   // Trigger the desired function or action here
-    // }
+    const dotIndex = newFileName.indexOf('.');
+    const fileType = newFileName.substring(dotIndex);
+    setFileId((prevId) => prevId + 1);
+    // console.log(fileId);
     const newFile = {
+      id: fileId,
       name: newFileName,
       language: newFileLanguage,
     }
-    const dotIndex = newFileName.indexOf('.');
-    const fileType = newFileName.substring(dotIndex);
-    // console.log(extractedPart);
+
+    // console.log(fileId);
+
     if (fileType === '.js') {
       newFile.value = '// Enter your js code here';
       newFile.icon = 'fab fa-js-square';
@@ -118,7 +114,7 @@ function IDE(props) {
     } else if (fileType === '.css') {
       newFile.value = '/* Enter your css code here */';
       newFile.icon = 'fab fa-css3-alt';
-    } else if (newFileLanguage === 'text') {
+    } else if (fileType === '.txt') {
       newFile.value = '';
       newFile.icon = 'fas fa-file-alt';
     }
@@ -132,7 +128,7 @@ function IDE(props) {
   const inputRef = useRef(null);
   useEffect(() => {
     if (showAddBox) {
-      inputRef.current.focus(); // Set focus on the input field
+      inputRef.current.focus();
     }
   }, [showAddBox]);
 
@@ -188,6 +184,18 @@ function IDE(props) {
     }
   }
 
+  function handleFileDelete(id)
+  {
+    console.log(files);
+    const updatedFiles = files.filter((file) => file.id !== id);
+    setFiles(updatedFiles);
+  }
+
+  function handleStaticFileDelete(id)
+  {
+    const updatedFiles = staticFiles.filter((file) => file.id !== id);
+    setStaticFiles(updatedFiles);
+  }
 
   return (
     <div>
@@ -219,7 +227,6 @@ function IDE(props) {
             <div className={filesShow?'files_show':'files_hide'}>
             {/* <button onClick={() => setShowAddBox(true)}>Add File</button> */}
               {showAddBox && <div className='addFilePanel'>
-                  <div className='addFilePanel_up'>
                     <form>
                       <input
                         ref={inputRef}
@@ -236,36 +243,41 @@ function IDE(props) {
                         }}
                       />
                     </form>
-
-                  {/* <button onClick={handleAddFile}>Add</button> */}
-                  </div>
-                  {/* <div className='addFilePanel_down'>
-                    <select onChange={(e) => setNewFileLanguage(e.target.value)} value={newFileLanguage}>
-                      <option value='html'>HTML</option>
-                      <option value='css'>CSS</option>
-                      <option value='javascript'>Javascript</option>
-                      <option value='java'>Java</option>
-                      <option value='cpp'>C++</option>
-                      <option value='python'>Python</option>
-                    </select>
-                    <button onClick={handleAddFile}>Add</button>
-                  </div> */}
               </div>}
 
-              <div className='file'>
-                  {files.map((file, index) =>
-                    <div>
-                      {index !== 0 && <button key={index} onClick={() => setfileIndex(index)}>
-                        {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>
-                        }
-                        {file.name}
-                      </button>}
-                      {/* <div className='line'></div> */}
+              <div>
+                {staticFiles.map((staticFile, index) => (
+                    <div key={index}>
+                      <div className='file'>
+                          <button>
+                            {staticFile.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${staticFile.icon}`}></i>}
+                            {staticFile.name}
+                          </button>
+                          <span onClick={() => handleStaticFileDelete(staticFile.id)}>
+                            <i className="fa-solid fa-trash"></i>
+                          </span>
+                        </div>
                     </div>
-                  )}
+                  ))}
+                {files.map((file, index) => (
+                  <div key={index}>
+                    {index !== 0 && (
+                      <div className='file'>
+                        <button onClick={() => {setfileIndex(index); handleFileClick()}}>
+                          {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>}
+                          {file.name}
+                        </button>
+                        <span onClick={() => handleFileDelete(file.id)}>
+                          <i className="fa-solid fa-trash"></i>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
+
             </div>
-              {/* <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
+              {/*  onClick={handleFileDelete(file.id)} <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
             
           </div>
           
