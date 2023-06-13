@@ -5,66 +5,280 @@
 {
     display: flex;
     justify-content: center;
+    width: 100%;
+    height: 91vh;
+    /* gap: 5px; */
+}
+
+.left_block
+{
+    height: 100%;
+    width: 28%;
+    background-color: #eeeeee;
+    box-sizing: border-box;
+    padding: 10px;
+    
+}
+
+.files_heading_left i, .tools_heading i
+{
+    color: #07080A;
+    font-size: 14px;
+}
+
+.files_heading_right i
+{
+    color: #07080A;
+    font-size: 16px;
+}
+
+.files_container
+{
+    width: 100%;
+    border-bottom: 1px solid #bcbcbc;
+}
+
+.files_heading
+{
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.files_heading_left
+{
+    width: 75%;
+    display: flex;
+    cursor: pointer;
     gap: 5px;
 }
 
-.language_list
+.arrow_rotate_down
 {
+    transform: rotate(0deg);
+    transition: 0.3s ease-in-out;
+
+}
+
+.arrow_rotate_up
+{
+    transform: rotate(-90deg);
+    transition: 0.3s ease-in-out;
+}
+
+
+
+.files_heading_left h4
+{
+    margin: 0;
+    color: var(--ide-font);
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.files_heading_right
+{
+    width: 22%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.add_file, .three_dot
+{
+    padding: 3px 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+}
+
+.add_file:hover, .three_dot:hover
+{
+    background-color: rgb(219, 219, 219);
+}
+
+.files_show
+{
+    margin-top: 8px;
+    height: 80vh;
+    width: 100%;
+    background-color: transparent;
+    transition: 0.3s ease-in-out;
+}
+
+.files_hide
+{
+    margin-top: 8px;
+    overflow: hidden;
+    height: 0;
+    width: 100%;
+    background-color: transparent;
+    transition: 0.3s ease-in-out;
+}
+
+
+.addFilePanel
+{
+    width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 5px;
+}
+
+.addFilePanel_up input
+{
+    font-size: 14.4px;
+    border: 1px solid #bcbcbc;
+    width: 91%;
+    border-radius: 5px;
+    color: #3D4047;
+    background-color: white;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px 8px;
+}
+
+.addFilePanel_up input:focus
+{
+    outline: none;
+}
+
+.addFilePanel_down select
+{
+    border: 0;
+    border: 1px solid #bcbcbc;
+    color: #737373;
+    font-size: 13px;
+    padding: 5px 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.addFilePanel_down select:focus
+{
+    outline: 0;
+}
+
+.addFilePanel_down button
+{
+    cursor: pointer;
+    width: 40px;
+    background-color: white;
+    color: #737373;
+
+
+    
+    border-radius: 5px;
+    padding: 5px 5px;
+    border: 1px solid #bcbcbc;
+    margin-left: 5px;
+    transition: 0.1s ease-in-out;
+
+}
+
+.addFilePanel_down button:hover
+{
+    color: #3D4047;
+    background-color: rgb(237, 237, 237);
+}
+
+
+.file button
+{
+    margin-top: 10px;
+    color: #3D4047;
+    display: flex;
     justify-content: flex-start;
-    gap: 3px;
-    height: 92vh;
-    width: 180px;
+    align-items: center;
+    gap: 10px;
+    background-color: transparent;
+    transition: 0.2s ease-in-out;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    padding: 9px 5px 9px 8px;
     box-sizing: border-box;
-    /* background-image: linear-gradient(135deg,  #79CDFB, #C77385); */
-    background-color: #eeeeee;
-    border-right: 1.5px solid #CCCCCC;
-    padding: 5px;
-    /* background-image: linear-gradient(315deg, #1b2845 0%, #274060 74%); */
-    /* background-image: linear-gradient(315deg, #2b4162 0%, #12100e 74%); */
+    font-family: 'Roboto', sans-serif;
+    font-size: 14.4px;
+
+}
+
+.file button:hover
+{
+    background-color: rgb(219, 219, 219);
+}
+
+.file i
+{
+    font-size: 17px;
 }
 
 .line
 {
     width: 100%;
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #bcbcbc;
 }
 
-.ide_parent button
+
+.tools_container
 {
+    margin-top: 8px;
+}
+.tools_heading
+{
+    gap: 5px;
     display: flex;
-    align-items: center;
+    height: 25px;
     justify-content: flex-start;
-    gap: 7px;
-    border-radius: 5px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    background-color: transparent;
-    border: 0;
+    align-items: center;
     cursor: pointer;
-    color: var(--primary-color2);
-    padding: 8px 10px;
-    transition: 0.1s ease-in-out;
-    letter-spacing: 1px;
+}
+
+.tools_arrow_rotate_down
+{
+    transform: rotate(0deg);
+    transition: 0.3s ease-in-out;
 
 }
 
-.ide_parent button:hover
+.tools_arrow_rotate_up
 {
-    background-color: #CCCCCC;
+    transform: rotate(90deg);
+    transition: 0.3s ease-in-out;
 }
 
-.ide_parent button img
+.tools_heading h4
 {
-    margin-left: -1px;
-    height: 28px;
-    width: 28px;
+    margin: 0;
+    color: var(--ide-font);
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
 }
 
-.ide_parent button i
+.tools_show
 {
-    font-size: 26px;
-    color: var(--primary-color1);
+    /* height: 90%; */
+    height: 80vh;
+    width: 100%;
+    background-color: transparent;
+    transition: 0.3s ease-in-out;
+}
+
+.tools_hide
+{
+    height: 0;
+    background-color: transparent;
+    width: 100%;
+    transition: 0.3s ease-in-out;
+}
+
+
+.ide_in_ide_container
+{
+    border: 1px solid #bcbcbc;
+    overflow: hidden;
+    border-radius: 5px;
+    width: 72%;
+    height: 400px;
 }
