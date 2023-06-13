@@ -17,7 +17,32 @@ const initialFiles = [
   }
 ];
 
+const initialStaticFiles = [
+  {
+    id: 0,
+    name: "index.html",
+    language: ".html",
+    value: "<!-- Enter your html code here -->",
+    icon: "fab fa-html5"
+  },
+  {
+    id: 1,
+    name: "style.css",
+    language: ".css",
+    value: "/* Enter your css code here */",
+    icon: "fab fa-css3-alt"
+  },
+  {
+    id: 2,
+    name: "server.js",
+    language: ".js",
+    value: "// Enter your js code here",
+    icon: "fab fa-js-square"
+  },
+];
+
 function IDE(props) {
+  const [staticFiles, setStaticFiles] = useState(initialStaticFiles);
   const [files, setFiles] = useState(initialFiles);
   const [fileIndex, setfileIndex] = useState(0);
   const editorRef = useRef(null);
@@ -166,6 +191,11 @@ function IDE(props) {
     setFiles(updatedFiles);
   }
 
+  function handleStaticFileDelete(id)
+  {
+    const updatedFiles = staticFiles.filter((file) => file.id !== id);
+    setStaticFiles(updatedFiles);
+  }
 
   return (
     <div>
@@ -215,20 +245,37 @@ function IDE(props) {
                     </form>
               </div>}
 
-              <div className='file'>
-                  {files.map((file, index) =>
-                    <div>
-                      {index !== 0 && <button key={index} onClick={() => {setfileIndex(index); handleFileClick()}}>
-                        {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>
-                        }
-                        {file.name}
+              <div>
+                {staticFiles.map((staticFile, index) => (
+                    <div key={index}>
+                      <div className='file'>
+                          <button>
+                            {staticFile.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${staticFile.icon}`}></i>}
+                            {staticFile.name}
+                          </button>
+                          <span onClick={() => handleStaticFileDelete(staticFile.id)}>
+                            <i className="fa-solid fa-trash"></i>
+                          </span>
+                        </div>
+                    </div>
+                  ))}
+                {files.map((file, index) => (
+                  <div key={index}>
+                    {index !== 0 && (
+                      <div className='file'>
+                        <button onClick={() => {setfileIndex(index); handleFileClick()}}>
+                          {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>}
+                          {file.name}
+                        </button>
                         <span onClick={() => handleFileDelete(file.id)}>
                           <i className="fa-solid fa-trash"></i>
                         </span>
-                      </button>}
-                    </div>
-                  )}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
+
             </div>
               {/*  onClick={handleFileDelete(file.id)} <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
             

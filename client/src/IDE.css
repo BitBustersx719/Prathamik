@@ -144,20 +144,36 @@
     outline: none;
 }
 
-.file button
+.file
 {
     margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.1s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.file:hover
+{
+    background-color: rgb(219, 219, 219);
+}
+
+.file button
+{
     color: #3D4047;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
     gap: 10px;
     background-color: transparent;
-    transition: 0.1s ease-in-out;
     border: 0;
-    border-radius: 5px;
-    width: 100%;
-    cursor: pointer;
+    width: 90%;
     padding: 5px 8px 5px 8px;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
@@ -165,31 +181,26 @@
     /* background-color: red; */
 }
 
-.file button:hover
-{
-    background-color: rgb(219, 219, 219);
-}
-
 .file i
 {
     font-size: 17px;
 }
 
-.file button span
+.file span
 {
     margin-left: auto;
-    padding: 4px 5px;
+    padding: 4px 6px;
     border-radius: 5px;
     transition: 0.1s ease-in-out;
 }
 
-.file button span:hover
+.file span:hover
 {
     background-color: rgb(192, 192, 192);
 
 }
 
-.file button span i
+.file span i
 {
     font-size: 14.5px;
 }
