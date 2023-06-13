@@ -17,7 +17,7 @@
     background-color: #eeeeee;
     box-sizing: border-box;
     padding: 10px;
-    
+
 }
 
 .files_heading_left i, .tools_heading i
@@ -261,4 +261,10 @@
     border-radius: 10px;
     width: 72%;
     height: 400px;
+}
+
+.space{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

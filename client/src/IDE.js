@@ -1,4 +1,4 @@
-import React, { useState, useRef , useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -26,7 +26,11 @@ function IDE(props) {
   const [newFileName, setNewFileName] = useState('');
   const [newFileLanguage, setNewFileLanguage] = useState('html');
   const [ideValue, setIdeValue] = useState("");
-  const [user, setUser] = useState("student");
+  const [user, setUser] = useState("teacher");
+  const [filesArrowRotate, setFilesArrowRotate] = useState(true);
+  const [toolsArrowRotate, setToolsArrowRotate] = useState(false);
+  const [filesShow, setFilesShow] = useState(true);
+  const [toolsShow, setToolsShow] = useState(false);
 
   useEffect(() => {
     socket.on("ide_value", (data) => {
@@ -49,13 +53,11 @@ function IDE(props) {
     socket.emit("send_value", value);
   }
 
-  function handleFileClick() 
-  {
-    // console.log(fileIndex);
-  }
-  
-  const handleAddFile = (e) =>  
-  {
+  // function handleFileClick() {
+  //   // console.log(fileIndex);
+  // }
+
+  const handleAddFile = (e) => {
     const dotIndex = newFileName.indexOf('.');
     const fileType = newFileName.substring(dotIndex);
     setFileId((prevId) => prevId + 1);
@@ -107,50 +109,37 @@ function IDE(props) {
     }
   }, [showAddBox]);
 
-  const [filesArrowRotate,setFilesArrowRotate]=useState(true);
-  const [toolsArrowRotate,setToolsArrowRotate]=useState(false);
-  const [filesShow,setFilesShow]=useState(true);
-  const [toolsShow,setToolsShow]=useState(false);
-  function handleFilesHeadingClick()
-  {
+  function handleFilesHeadingClick() {
     setToolsShow(false);
     setToolsArrowRotate(false);
-    if (filesArrowRotate)
-    {
+    if (filesArrowRotate) {
       setFilesShow(false);
       setFilesArrowRotate(false);
     }
-    else
-    {
+    else {
       setFilesShow(true);
       setFilesArrowRotate(true);
     }
   }
 
-  function handleToolsHeadingClick()
-  {
+  function handleToolsHeadingClick() {
     setFilesShow(false);
     setFilesArrowRotate(false);
-    if (toolsArrowRotate)
-    {
+    if (toolsArrowRotate) {
       setToolsShow(false);
       setToolsArrowRotate(false);
     }
-    else
-    {
+    else {
       setToolsShow(true);
       setToolsArrowRotate(true);
     }
   }
 
-  function handleAddFileClick()
-  {
-    if (showAddBox)
-    {
+  function handleAddFileClick() {
+    if (showAddBox) {
       setShowAddBox(false);
     }
-    else
-    {
+    else {
       setShowAddBox(true);
       setFilesShow(true);
       setFilesArrowRotate(true);
@@ -159,9 +148,7 @@ function IDE(props) {
     }
   }
 
-  function handleFileDelete(id)
-  {
-    console.log(files);
+  function handleFileDelete(id) {
     const updatedFiles = files.filter((file) => file.id !== id);
     setFiles(updatedFiles);
   }
@@ -175,74 +162,72 @@ function IDE(props) {
           <div className='files_container'>
 
             <div className='files_heading'>
-                
-                <div className='files_heading_left' onClick={handleFilesHeadingClick}>
-                  <span className={filesArrowRotate?'arrow_rotate_down':'arrow_rotate_up'}>
-                    <i class="fa-solid fa-angle-down"></i>
-                  </span>
-                  <h4>Files</h4>
-                </div>
+              <div className='files_heading_left' onClick={handleFilesHeadingClick}>
+                <span className={filesArrowRotate ? 'arrow_rotate_down' : 'arrow_rotate_up'}>
+                  <i class="fa-solid fa-angle-down"></i>
+                </span>
+                <h4>Files</h4>
+              </div>
 
-                <div className='files_heading_right'>
-                  <span className='add_file'onClick={handleAddFileClick}>
-                    <i class="fa-solid fa-file-circle-plus"></i>
-                  </span>
-                  <span className='three_dot'>
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                  </span>
-                </div>
+              <div className='files_heading_right'>
+                <span className='add_file' onClick={handleAddFileClick}>
+                  <i class="fa-solid fa-file-circle-plus"></i>
+                </span>
+                <span className='three_dot'>
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </span>
+              </div>
 
             </div>
 
-            <div className={filesShow?'files_show':'files_hide'}>
-            {/* <button onClick={() => setShowAddBox(true)}>Add File</button> */}
+            <div className={filesShow ? 'files_show' : 'files_hide'}>
+              {/* <button onClick={() => setShowAddBox(true)}>Add File</button> */}
               {showAddBox && <div className='addFilePanel'>
-                    <form>
-                      <input
-                        ref={inputRef}
-                        type='text'
-                        placeholder='Enter file name'
-                        value={newFileName}
-                        onChange={(e) => setNewFileName(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') 
-                          {
-                            e.preventDefault(); // Prevent the default form submission behavior
-                            handleAddFile(e);
-                          }
-                        }}
-                      />
-                    </form>
+                <form>
+                  <input
+                    ref={inputRef}
+                    type='text'
+                    placeholder='Enter file name'
+                    value={newFileName}
+                    onChange={(e) => setNewFileName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault(); // Prevent the default form submission behavior
+                        handleAddFile(e);
+                      }
+                    }}
+                  />
+                </form>
               </div>}
 
               <div className='file'>
-                  {files.map((file, index) =>
-                    <div>
-                      {index !== 0 && <button key={index} onClick={() => {setfileIndex(index); handleFileClick()}}>
-                        {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>
-                        }
-                        {file.name}
-                        <span onClick={() => handleFileDelete(file.id)}>
-                          <i className="fa-solid fa-trash"></i>
-                        </span>
-                      </button>}
-                    </div>
-                  )}
+                {files.map((file, index) =>
+                  <div className='space'>
+                    {index !== 0 && <button key={index} onClick={() => { setfileIndex(index); handleFileClick() }}>
+                      {file.language === 'text' ? <i className="fas fa-file-alt"></i> : <i className={`fab fa-${file.icon}`}></i>
+                      }
+                      {file.name}
+                    </button>}
+                    {index !== 0 && <span onClick={() => handleFileDelete(file.id)}>
+                      <i className="fa-solid fa-trash"></i>
+                    </span>}
+                  </div>
+                )}
               </div>
             </div>
-              {/*  onClick={handleFileDelete(file.id)} <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
-            
+            {/*  onClick={handleFileDelete(file.id)} <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
+
           </div>
-          
+
           <div className='tools_container'>
             <div className='tools_heading' onClick={handleToolsHeadingClick}>
-              <span className={toolsArrowRotate?'arrow_rotate_down':'arrow_rotate_up'}>
+              <span className={toolsArrowRotate ? 'arrow_rotate_down' : 'arrow_rotate_up'}>
                 <i class="fa-solid fa-angle-down"></i>
               </span>
               <h4>Tools</h4>
             </div>
 
-            <div className={toolsShow?'tools_show':'tools_hide'}>
+            <div className={toolsShow ? 'tools_show' : 'tools_hide'}>
 
             </div>
           </div>
