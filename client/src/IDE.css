@@ -154,7 +154,6 @@
 
 }
 
-
 .file
 {
     margin-top: 10px;
@@ -166,7 +165,7 @@
     box-sizing: border-box;
     border-radius: 5px;
     cursor: pointer;
-    padding: 5px;
+    padding: 4px 4px 4px 15px;
 }
 
 .file:hover
@@ -186,7 +185,7 @@
     background-color: transparent;
     border: 0;
     width: 90%;
-    padding: 5px 8px 5px 8px;
+    padding: 0px;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     font-size: 14.4px;

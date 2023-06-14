@@ -16,7 +16,7 @@ router.post('/leave', (req, res) => {
 
   participants.delete(participantId);
 
-  res.json({ message: 'Participant left successfully' });
+  res.json({ message: 'Participant left successfully'});
 });
 
 module.exports = router;

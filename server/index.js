@@ -1,7 +1,9 @@
 require('dotenv').config();
+const connectDb = require('./configDatabase/database');
 const cors = require('cors');
 const express = require('express');
 const app = express();
+connectDb();
 const http = require('http');
 const { Server } = require('socket.io');
 const { handleUpgrade, handleWebSocketConnection, initializeSignalingServer } = require('./stream/streamrtc');
