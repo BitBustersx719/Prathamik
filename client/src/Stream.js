@@ -20,7 +20,12 @@ const Stream = () => {
     await client.join(agoraAppId, 'stream', null);
 
     const microphoneTrack = await AgoraRTC.createMicrophoneAudioTrack();
-    const cameraTrack = await AgoraRTC.createCameraVideoTrack();
+    const cameraTrack = await AgoraRTC.createCameraVideoTrack({
+      encoderConfig: {
+        width: { ideal: 1920 },
+        height: { ideal: 1080 }
+      }
+    });
     const ShareScreen= await AgoraRTC.createScreenVideoTrack()
     await client.publish(microphoneTrack, cameraTrack);
     await client.publish(ShareScreen)
