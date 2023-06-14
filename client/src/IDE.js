@@ -51,7 +51,26 @@ function IDE(props) {
   const [newFileName, setNewFileName] = useState('');
   const [newFileLanguage, setNewFileLanguage] = useState('html');
   const [ideValue, setIdeValue] = useState("");
+  const [isInvalid, setIsInvalid] = useState(false);
+  const [showWarning, setShowWarning] = useState(true);
+
   const [user, setUser] = useState("student");
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+  
+  const handleBeforeUnload = (e) => {
+    if (showWarning) {
+      e.preventDefault();
+      e.returnValue = ''; // Needed for Chrome
+    }
+  };
+  
 
   useEffect(() => {
     socket.on("ide_value", (data) => {
@@ -82,6 +101,11 @@ function IDE(props) {
   const handleAddFile = (e) =>  
   {
     const dotIndex = newFileName.indexOf('.');
+    // if (dotIndex === -1) 
+    // {
+    //   setIsInvalid(true);
+    //   return;
+    // }
     const fileType = newFileName.substring(dotIndex);
     setFileId((prevId) => prevId + 1);
     // console.log(fileId);
@@ -119,6 +143,7 @@ function IDE(props) {
       newFile.icon = 'fas fa-file-alt';
     }
     setFiles([...files, newFile]);
+    // setIsInvalid(false);
     setShowAddBox(false);
     setNewFileName('');
 
@@ -200,6 +225,7 @@ function IDE(props) {
   return (
     <div>
       <div className='ide_parent'>
+        
         <div className='left_block'>
 
           <div className='files_container'>
@@ -233,6 +259,7 @@ function IDE(props) {
                         type='text'
                         placeholder='Enter file name'
                         value={newFileName}
+                        id='inputFileName'
                         onChange={(e) => setNewFileName(e.target.value)}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') 
@@ -242,6 +269,7 @@ function IDE(props) {
                           }
                         }}
                       />
+                      {isInvalid && <label htmlFor='inputFileName'>Invalid file type.</label>}
                     </form>
               </div>}
 
@@ -305,7 +333,7 @@ function IDE(props) {
           defaultValue={files[fileIndex].value}
         />}
         {user === 'student' && <Editor className='ide_in_ide_container'
-          theme="vs-dark"
+          theme="vs-dar"
           onMount={handleEditorDidMount}
           path={files[fileIndex].name}
           defaultLanguage={files[fileIndex].language}

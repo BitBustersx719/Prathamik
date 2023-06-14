@@ -95,7 +95,9 @@
 
 .add_file:hover, .three_dot:hover
 {
-    background-color: rgb(219, 219, 219);
+    /* background-color: rgb(219, 219, 219); */
+    background-color: white;
+
 }
 
 .files_show
@@ -144,6 +146,15 @@
     outline: none;
 }
 
+.addFilePanel label
+{
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: red;
+
+}
+
+
 .file
 {
     margin-top: 10px;
@@ -160,7 +171,8 @@
 
 .file:hover
 {
-    background-color: rgb(219, 219, 219);
+    /* background-color: rgb(219, 219, 219); */
+    background-color: white;
 }
 
 .file button
@@ -196,7 +208,9 @@
 
 .file span:hover
 {
-    background-color: rgb(192, 192, 192);
+    /* background-color: rgb(192, 192, 192); */
+    background-color: rgb(228, 228, 228);
+
 
 }
 
