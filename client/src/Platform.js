@@ -125,14 +125,14 @@ function Platform() {
           )}
 
           <div className='chat_in_platform_container'>
-            {/* <ChatBox
+            <ChatBox
               message={message}
               handleInput={handleInput}
               setUserInput={setUserInput}
               userInput={userInput}
               inputRef={inputRef}
               input={input}
-            /> */}
+            />
           </div>
         </div>
     </div>
