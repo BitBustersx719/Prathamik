@@ -253,7 +253,7 @@ function IDE(props) {
             <div className={filesShow?'files_show':'files_hide'}>
             {/* <button onClick={() => setShowAddBox(true)}>Add File</button> */}
               {showAddBox && <div className='addFilePanel'>
-                    <form>
+                    <form autoComplete='off'>
                       <input
                         ref={inputRef}
                         type='text'
