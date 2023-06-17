@@ -1,7 +1,7 @@
 const { Server } = require('socket.io');
-
 let io;
 const participants = new Map();
+let streamCode;
 
 function initializeSignalingServer(server) {
   io = new Server(server, {
@@ -10,12 +10,8 @@ function initializeSignalingServer(server) {
       methods: ['GET', 'POST']
     }
   });
-
-  io.on('connection', (socket) => {
-    handleWebSocketConnection(socket);
-  });
+  io.on('connection', handleWebSocketConnection);
 }
-
 function handleWebSocketConnection(socket) {
   console.log(`User Connected: ${socket.id}`);
 
@@ -31,7 +27,6 @@ function handleWebSocketConnection(socket) {
     handleParticipantLeave(socket);
   });
 }
-
 function handleParticipantJoin(socket, streamCode) {
   const participantId = generateParticipantId();
 
@@ -58,13 +53,11 @@ function handleParticipantLeave(socket) {
 }
 
 function handleUpgrade(request, socket, head) {
-  // Handle the WebSocket upgrade manually
-  io.handleUpgrade(request, socket, head, (socket) => {
+  io.engine.handleUpgrade(request, socket, head, (socket) => {
     io.emit('connection', socket);
     handleWebSocketConnection(socket);
   });
 }
-
 function generateParticipantId() {
   return Math.random().toString(36).substr(2, 9);
 }
@@ -84,4 +77,6 @@ module.exports = {
   handleUpgrade,
   handleParticipantJoin,
   handleParticipantLeave,
+  generateParticipantId,
+  participants,
 };

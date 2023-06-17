@@ -16,15 +16,13 @@ app.use(cors({
 app.use('/api', routes);
 
 const server = http.createServer(app);
-initializeSignalingServer(server);
-
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:3001',
     methods: ['GET', 'POST']
   }
 });
-
+initializeSignalingServer(io);
 io.on('connection', handleWebSocketConnection);
 
 server.on('upgrade', handleUpgrade);
