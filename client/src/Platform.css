@@ -11,6 +11,7 @@
   background-color: #eeeeee;
   width: 100vw;
   height: 100vh;
+  min-width: 1440px;
   /* display: flex;
   flex-direction: column;
   gap: 5px; */
