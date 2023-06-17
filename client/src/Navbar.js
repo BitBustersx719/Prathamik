@@ -9,11 +9,18 @@ import Platform from './Platform';
 function Navbar() 
 {
   const [navbarShadow, setNavbarShadow] = useState(false);
+  const [navTabscolor, setNavTabsColor]= useState(false);
+  const [loginSignupColor, setLoginSignupColor]= useState(false);
   const showShadow = () => {
-    if (window.scrollY > 50) {
+    if (window.scrollY > 50) 
+    {
+      setNavTabsColor(true);
+      setLoginSignupColor(true);
       setNavbarShadow(true);
     }
     else {
+      setNavTabsColor(false);
+      setLoginSignupColor(false);
       setNavbarShadow(false);
     }
   }
@@ -37,15 +44,15 @@ function Navbar()
             </li>
         </ul>
 
-        <ul className='navigations-tabs'>
+        <ul className={navTabscolor?'navigations-tabs nav-tabs-color':'navigations-tabs nav-tabs-white'}>
           <li><a href="/">HOME</a></li>
           <li><a href="/">ABOUT US</a></li>
           <li><a href="/">SERVICE</a></li>
           <li><a href="/">BLOG</a></li>
           <li>
             <div className='login-signup-container'>
-              <button type="button" className='login'>LOG IN</button>
-              <button type="button" className='signup'>SIGN UP</button>
+              <button type="button" className={loginSignupColor?'login login-color' : 'login login-white'}>LOG IN</button>
+              <button type="button" className={loginSignupColor?'signup signup-color' : 'signup signup-white'}>SIGN UP</button>
             </div>
           </li>
         </ul>

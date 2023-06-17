@@ -6,18 +6,27 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 91vh;
-    /* gap: 5px; */
+    height: calc(100vh - 60px);
+    gap: 5px;
+    box-sizing: border-box;
 }
 
 .left_block
 {
     height: 100%;
     width: 28%;
-    background-color: #eeeeee;
     box-sizing: border-box;
+    /* border-right: 1px solid #bcbcbc; */
+    /* border-top: 1px solid #bcbcbc; */
+    border-radius: 10px;
     padding: 10px;
     
+}
+
+.files_container
+{
+    width: 100%;
+    border-bottom: 1px solid #bcbcbc;
 }
 
 .files_heading_left i, .tools_heading i
@@ -30,12 +39,6 @@
 {
     color: #07080A;
     font-size: 16px;
-}
-
-.files_container
-{
-    width: 100%;
-    border-bottom: 1px solid #bcbcbc;
 }
 
 .files_heading
@@ -67,8 +70,6 @@
     transition: 0.3s ease-in-out;
 }
 
-
-
 .files_heading_left h4
 {
     margin: 0;
@@ -76,7 +77,6 @@
     font-size: 15px;
     font-family: 'Roboto', sans-serif;
 }
-
 
 .files_heading_right
 {
@@ -95,16 +95,19 @@
 
 .add_file:hover, .three_dot:hover
 {
-    background-color: rgb(219, 219, 219);
+    /* background-color: rgb(219, 219, 219); */
+    background-color: white;
+
 }
 
 .files_show
 {
     margin-top: 8px;
-    height: 80vh;
+    height: 81vh;
+    overflow: hidden;
     width: 100%;
     background-color: transparent;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 .files_hide
@@ -114,7 +117,7 @@
     height: 0;
     width: 100%;
     background-color: transparent;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
 
 
@@ -126,7 +129,7 @@
     gap: 5px;
 }
 
-.addFilePanel_up input
+.addFilePanel input
 {
     font-size: 14.4px;
     border: 1px solid #bcbcbc;
@@ -138,80 +141,81 @@
     padding: 8px 8px;
 }
 
-.addFilePanel_up input:focus
+.addFilePanel input:focus
 {
     outline: none;
 }
 
-.addFilePanel_down select
+.addFilePanel label
 {
-    border: 0;
-    border: 1px solid #bcbcbc;
-    color: #737373;
-    font-size: 13px;
-    padding: 5px 1px;
-    border-radius: 5px;
-    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: red;
+
 }
 
-.addFilePanel_down select:focus
+.file
 {
-    outline: 0;
-}
-
-.addFilePanel_down button
-{
-    cursor: pointer;
-    width: 40px;
-    background-color: white;
-    color: #737373;
-
-
-    
-    border-radius: 5px;
-    padding: 5px 5px;
-    border: 1px solid #bcbcbc;
-    margin-left: 5px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     transition: 0.1s ease-in-out;
-
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 4px 4px 4px 15px;
 }
 
-.addFilePanel_down button:hover
+.file:hover
 {
-    color: #3D4047;
-    background-color: rgb(237, 237, 237);
+    /* background-color: rgb(219, 219, 219); */
+    background-color: white;
 }
-
 
 .file button
 {
-    margin-top: 10px;
     color: #3D4047;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
     gap: 10px;
     background-color: transparent;
-    transition: 0.2s ease-in-out;
     border: 0;
-    border-radius: 5px;
-    width: 100%;
-    cursor: pointer;
-    padding: 9px 5px 9px 8px;
+    width: 90%;
+    padding: 0px;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     font-size: 14.4px;
-
-}
-
-.file button:hover
-{
-    background-color: rgb(219, 219, 219);
+    /* background-color: red; */
 }
 
 .file i
 {
     font-size: 17px;
+}
+
+.file span
+{
+    margin-left: auto;
+    padding: 4px 6px;
+    border-radius: 5px;
+    transition: 0.1s ease-in-out;
+}
+
+.file span:hover
+{
+    /* background-color: rgb(192, 192, 192); */
+    background-color: rgb(228, 228, 228);
+
+
+}
+
+.file span i
+{
+    font-size: 14.5px;
 }
 
 .line
@@ -220,10 +224,14 @@
     border-bottom: 1px solid #bcbcbc;
 }
 
-
 .tools_container
 {
-    margin-top: 8px;
+    width: 100%;
+    border-bottom: 1px solid #bcbcbc;
+    padding: 10px 0px;
+    /*box-sizing: border-box; */
+    /* margin-top: 8px; */
+
 }
 .tools_heading
 {
@@ -258,8 +266,7 @@
 
 .tools_show
 {
-    /* height: 90%; */
-    height: 80vh;
+    height: 81.5vh;
     width: 100%;
     background-color: transparent;
     transition: 0.3s ease-in-out;
@@ -278,7 +285,7 @@
 {
     border: 1px solid #bcbcbc;
     overflow: hidden;
-    border-radius: 5px;
-    width: 72%;
+    border-radius: 10px;
+    width: 500px;
     height: 400px;
 }

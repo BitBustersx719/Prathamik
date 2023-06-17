@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ChatBox.css';
 import './index.css';
-import Send from './images/send.png';
+
 import Bot from './images/bot.jpeg';
 import User from './images/user.jpeg'
 
@@ -28,15 +28,16 @@ function ChatBox(props)
 
           
 
+          <div className='user_chat'>
+            <p>User I apologize, jwehr but as an AI language model.</p>
+            <img src={User}/>
+          </div>
           <div className='bot_chat'>
             <img src={Bot}/>
             <p> AI I apologize, but as an AI language model, I don't have real-time data or the ability to access current weather information.</p>
           </div>
           
-          <div className='user_chat'>
-            <p>User I apologize, jwehr but as an AI language model.</p>
-            <img src={User}/>
-          </div>
+          
 
         {/* {props.input && <div className='user_chat'>
           <p>{props.input}</p>

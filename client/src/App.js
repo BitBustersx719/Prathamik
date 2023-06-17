@@ -9,13 +9,13 @@ import Footer from './Footer';
 import Platform from './Platform';
 import Stream from './Stream';
 import StreamJoin from './StreamJoin';
+import File from './File';
 import 'font-awesome/css/font-awesome.min.css';
 
 function App() {
   return (
     <Router>
       <div>
-        <Navbar /> 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/platform" element={<Platform />} />
@@ -24,12 +24,16 @@ function App() {
         </Routes>
       </div>
     </Router>
+    // <div>
+    //   <File />
+    // </div>
   );
 }
 
 function Home() {
   return (
     <div>
+      <Navbar />
       <Landing />
       <About />
       <Service />
