@@ -103,7 +103,7 @@
 .files_show
 {
     margin-top: 8px;
-    height: 81.5vh;
+    height: 81vh;
     overflow: hidden;
     width: 100%;
     background-color: transparent;
@@ -226,8 +226,11 @@
 
 .tools_container
 {
+    width: 100%;
     border-bottom: 1px solid #bcbcbc;
-    margin-top: 8px;
+    padding: 10px 0px;
+    /*box-sizing: border-box; */
+    /* margin-top: 8px; */
 
 }
 .tools_heading
