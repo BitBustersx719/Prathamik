@@ -37,9 +37,11 @@ function Navbar()
         <ul className='tempo'>
             <li>
               <Link to="/platform">Platform.js</Link>
-            </li><li>
+            </li>
+            <li>
               <Link to="/stream">Stream.js</Link>
-            </li><li>
+            </li>
+            <li>
               <Link to="/streamjoin">StreamJoin.js</Link>
             </li>
         </ul>
@@ -51,8 +53,8 @@ function Navbar()
           <li><a href="/">BLOG</a></li>
           <li>
             <div className='login-signup-container'>
-              <button type="button" className={loginSignupColor?'login login-color' : 'login login-white'}>LOG IN</button>
-              <button type="button" className={loginSignupColor?'signup signup-color' : 'signup signup-white'}>SIGN UP</button>
+              <Link to="/login" className={loginSignupColor?'login login-color' : 'login login-white'}>LOG IN</Link>
+              <Link to="/signup" className={loginSignupColor?'signup signup-color' : 'signup signup-white'}>SIGN UP</Link>
             </div>
           </li>
         </ul>
