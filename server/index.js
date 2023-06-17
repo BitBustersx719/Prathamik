@@ -1,7 +1,6 @@
 require('dotenv').config();
 const connectDb = require('./configDatabase/database');
 const File=require('./models/file');
-
 const cors = require('cors');
 const express = require('express');
 const app = express();
