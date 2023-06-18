@@ -32,7 +32,7 @@ body {
   animation-delay: 600ms;
 }
 
-.transparency 
+.transparency
 {
   height: 70px;
   width: 100%;
@@ -62,11 +62,12 @@ body {
 
 .logo
 {
-  width: 59px;
-  height: 57px;
-  background-image: url('./images/logo.png');
+  width: 30px;
+  height: 30px;
+  background-image: url("../public/p.png");
   background-size: cover;
-
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .logo-container h1
@@ -74,11 +75,11 @@ body {
   font-family: 'Roboto', sans-serif;
   color: var(--deep-blue);
   margin: 0;
-  font-size: 32px;
+  font-size: 20px;
   letter-spacing: 1px;
 }
 
-.navigations-tabs 
+.navigations-tabs
 {
   justify-content: space-between;
   display: flex;
@@ -97,7 +98,16 @@ body {
   font-weight: 600;
   text-decoration: none;
   transition: 0.2s ease-in-out;
+}
 
+.navigations-tabs .li{
+  font-size: 17px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s ease-in-out;
+  text-decoration: none;
+  color: var(--deep-blue);
 }
 
 .nav-tabs-color li a
@@ -107,7 +117,7 @@ body {
 
 .nav-tabs-white li a
 {
-  color: white;
+  color: var(--deep-blue);
 }
 
 .login-signup-container {
@@ -116,9 +126,9 @@ body {
   /* width: 12.8rem; */
 }
 
-.login 
+.login
 {
-  
+
   border-right: 0;
   border-radius: 20px 0px 0px 20px;
   padding: 8px 12px 8px 20px;
@@ -154,9 +164,9 @@ body {
   color: white;
 }
 
-.signup 
+.signup
 {
-  
+
   border-left: 0;
   border-radius: 0px 20px 20px 0px;
   padding: 8px 20px 8px 12px;
