@@ -11,6 +11,7 @@ function Login()
         password:'',
     });
 
+    const navigate=useNavigate();
     const [error,setError]=useState('');
 
     const handleChange=({currentTarget:input})=>{
@@ -24,6 +25,8 @@ function Login()
             const response=await axios.post(url,data);
             const res=response.data;
             localStorage.setItem('user', JSON.stringify(res));
+            navigate('/');
+            setError('');
             // console.log(res);
             console.log(res.data);
             console.log(res.message);
