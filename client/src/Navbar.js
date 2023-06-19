@@ -42,6 +42,9 @@ function Navbar()
             </li><li>
               <Link to="/streamjoin">StreamJoin.js</Link>
             </li>
+            <li>
+              <Link to= "/board">Board</Link>
+            </li>
         </ul>
 
         <ul className={navTabscolor?'navigations-tabs nav-tabs-color':'navigations-tabs nav-tabs-white'}>
