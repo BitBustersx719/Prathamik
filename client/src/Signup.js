@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Signup.css';
@@ -24,6 +24,11 @@ function Signup()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (data.password!==data.confirm_password)
+        {
+            setError('Passwords do not match');
+            return;
+        }
         try {
             const url = 'http://localhost:3000/signup';
             const response = await axios.post(url, data);
@@ -37,85 +42,101 @@ function Signup()
           }
         }
     };
+
+    const [shouldRender,setShouldRender]=useState(false);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+          setShouldRender(true);
+        }, 100);
+    
+        return () => clearTimeout(timeout);
+    }, []);
       
     return(
-        <div className='signup-container'>
-            <div className='signup_contents'>
-                <div className='signup_left'>
+        <div>
+            {shouldRender && <div className='signup-container'>
+                <div className='signup_contents'>
+                    <div className='signup_left'>
 
-                    <div className='signup_logo'>
-                        <img src={Logo}/>
-                        <h1>Prathamik</h1>
+                        <a href='/' className='signup_logo'>
+                            <img src={Logo}/>
+                            <h1>Prathamik</h1>
+                        </a>
+
+                        <form onSubmit={handleSubmit} className='signup_form'>
+
+                            <h1>Welcome Back</h1>
+                            
+                            {/* <div className='api_buttons'>
+                                <button type='submit'><i class="fa-brands fa-google"></i></button>
+                                <button type='submit'><i class="fa-brands fa-facebook-f"></i></button>
+                            </div> */}
+
+                            {/* <label htmlFor='name'>Full Name</label> */}
+                            <input
+                                type="text"
+                                placeholder='Name'
+                                name="name"
+                                id='name'
+                                value={data.name}
+                                onChange={handleChange}
+                                required
+                            />
+                            
+
+                            {/* <label htmlFor='email'>Email</label> */}
+                            <input
+                                type="email"
+                                placeholder='Email'
+                                name="email"
+                                id='email'
+                                value={data.email}
+                                onChange={handleChange}
+                                required
+                            />
+                            
+
+                            {/* <label htmlFor='password'>Password</label> */}
+                            <input
+                                type="password"
+                                placeholder='Password'
+                                name="password"
+                                id='password'
+                                value={data.password}
+                                onChange={handleChange}
+                                required
+                            />
+                            
+
+                            {/* <label htmlFor='confirm_password'>Confirm Password</label> */}
+                            <input
+                                type="password"
+                                placeholder='Confirm Password'
+                                name="confirm_password"
+                                id='confirm_password'
+                                value={data.confirm_password}
+                                onChange={handleChange}
+                                required
+                            />
+                            
+
+                            
+                            {error && <p className='error'>
+                                {error}
+                            </p>}
+
+                            <p className='already_have_acc'>Already have an account? <a href='/login'>Log in</a></p>
+
+                            
+                            <button type="submit" className='signup_button'>Register</button>
+
+
+                        </form>
+
                     </div>
-
-                    <form onSubmit={handleSubmit} className='signup_form'>
-
-                        <h1>Welcome Back</h1>
-                        
-                        {/* <div className='api_buttons'>
-                            <button type='submit'><i class="fa-brands fa-google"></i></button>
-                            <button type='submit'><i class="fa-brands fa-facebook-f"></i></button>
-                        </div> */}
-
-                        {/* <label htmlFor='name'>Full Name</label> */}
-                        <input
-                            type="text"
-                            placeholder='Name'
-                            name="name"
-                            value={data.name}
-                            onChange={handleChange}
-                            required
-                        />
-                        
-
-                        {/* <label htmlFor='email'>Email</label> */}
-                        <input
-                            type="email"
-                            placeholder='Email'
-                            name="email"
-                            value={data.email}
-                            onChange={handleChange}
-                            required
-                        />
-                        
-
-                        {/* <label htmlFor='password'>Password</label> */}
-                        <input
-                            type="password"
-                            placeholder='Password'
-                            name="password"
-                            value={data.password}
-                            onChange={handleChange}
-                            required
-                        />
-                        
-
-                        {/* <label htmlFor='confirm_password'>Confirm Password</label> */}
-                        <input
-                            type="password"
-                            placeholder='Confirm Password'
-                            name="confirm_password"
-                            value={data.confirm_password}
-                            onChange={handleChange}
-                            // required
-                        />
-                        
-
-                        
-                        {error && <div className='error'>
-                            {error}
-                        </div>}
-
-                        <p>Already have an account? <a href='/login'>Log in</a></p>
-
-                        
-                        <button type="submit" className='signup_button'>Register</button>
-
-
-                    </form>
-
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }
