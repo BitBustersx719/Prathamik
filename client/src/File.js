@@ -14,10 +14,10 @@ function File()
             <form className='fileForm'>
                 <label for="file" class="label-file">File name</label>
 
-                <input 
-                type="text" 
-                id="file" 
-                class="inputfile" 
+                <input
+                type="text"
+                id="file"
+                class="inputfile"
                 onChange={(e)=>setNewFileName(e.target.value)}
                 />
 
