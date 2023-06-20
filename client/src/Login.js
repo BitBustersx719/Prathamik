@@ -29,8 +29,8 @@ function Login()
             navigate('/');
             setError('');
             // console.log(res);
-            console.log(res.data);
-            console.log(res.message);
+            // console.log(res.data);
+            // console.log(res.message);
             
         }catch(error){
             if (error.response && error.response.status>=400 && error.response.status<500)
