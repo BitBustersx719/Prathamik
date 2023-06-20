@@ -200,7 +200,7 @@
     }
 }
 
-#name
+#signup_name
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
@@ -208,7 +208,7 @@
     animation-delay: 1050ms;
 }
 
-#email
+#signup_email
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
@@ -216,7 +216,7 @@
     animation-delay: 900ms;
 }
 
-#password
+#signup_password
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
@@ -224,7 +224,7 @@
     animation-delay: 750ms;
 }
 
-#confirm_password
+#signup_confirm_password
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
