@@ -316,18 +316,17 @@ function IDE(props) {
               </div>
 
             </div>
-            {/*  onClick={handleFileDelete(file.id)} <button onClick={() => props.setShow('board')}>Switch to Board</button> */}
-
           </div>
-
           <div>
             <select className='select_user' onChange={(e) => setUser(e.target.value)}>
               <option value='teacher'>Teacher</option>
               <option value="student">Student</option>
+              <option value="browser">Browser</option>
             </select>
+            {/* <button style={{ backgroundColor: 'white' }} onClick={() => props.setShow('board')}>Switch to Board</button> */}
           </div>
 
-          <div className='tools_container'>
+          {/* <div className='tools_container'>
             <div className='tools_heading' onClick={handleToolsHeadingClick}>
               <span className={toolsArrowRotate ? 'arrow_rotate_down' : 'arrow_rotate_up'}>
                 <i class="fa-solid fa-angle-down"></i>
@@ -338,7 +337,7 @@ function IDE(props) {
             <div className={toolsShow ? 'tools_show' : 'tools_hide'}>
 
             </div>
-          </div>
+          </div> */}
 
 
         </div>
@@ -361,11 +360,16 @@ function IDE(props) {
             readOnly: true
           }}
         />}
-        {fileIndex}
+        {user === 'browser' && <iframe
+          title='output'
+          sandbox='allow-scripts'
+          width='100%'
+          height='100%'
+          srcDoc={props.code}
+        />}
       </div>
     </div>
   );
 }
 
 export default IDE;
-
