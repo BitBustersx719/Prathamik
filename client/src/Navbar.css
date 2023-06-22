@@ -224,19 +224,32 @@ body {
 {
   display: flex;
   align-items: center;
-  gap: 10px;
   cursor: pointer;
 }
 
-.user_img
+.user
 {
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   background-color: #eeeeee;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.user img
+{
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.navbar_profile span
+{
+  padding: 8px;
+  font-size: 14px;
 }
 
 .navbar_profile ul

@@ -4,6 +4,7 @@
     width: 100vw;
     display: flex;
     min-width: 1440px;
+    min-height: 789px;
     justify-content: center;
     align-items: center;
     font-family: 'Roboto', sans-serif;
@@ -18,6 +19,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     height: 80vh;
     width: 85vw;
+    min-height: 631.195px;
     min-width: 1224px;
     background-image: url('./images/bluelogin-whitebg.svg');
     background-size: cover;
