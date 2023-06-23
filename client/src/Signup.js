@@ -66,7 +66,7 @@ function Signup()
 
                         <form onSubmit={handleSubmit} className='signup_form'>
 
-                            <h1>Welcome Back</h1>
+                            <h1>Join Us</h1>
                             
                             {/* <div className='api_buttons'>
                                 <button type='submit'><i class="fa-brands fa-google"></i></button>
@@ -122,7 +122,7 @@ function Signup()
                             
 
                             
-                            {error && <p className='error'>
+                            {error && <p className='signup_error'>
                                 {error}
                             </p>}
 

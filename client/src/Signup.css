@@ -55,14 +55,14 @@
 
 .signup_logo img
 {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
 }
 
 .signup_logo h1
 {
     color: var(--deep-blue);
-    font-size: 20px;
+    font-size: 18px;
     margin: 0px;
 }
 
@@ -131,7 +131,7 @@
     outline: none;
 }
 
-.error
+.signup_error
 {
     text-align: left;
     margin: 5px 0px 0px 0px;
@@ -143,7 +143,7 @@
 {
     cursor: pointer;
     margin: auto;
-    margin-top: 35px;
+    margin-top: 30px;
     background-color: var(--pink-red);
     font-weight: 700;
     color: white;
@@ -200,7 +200,7 @@
     }
 }
 
-#name
+#signup_name
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
@@ -208,7 +208,7 @@
     animation-delay: 1050ms;
 }
 
-#email
+#signup_email
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
@@ -216,7 +216,7 @@
     animation-delay: 900ms;
 }
 
-#password
+#signup_password
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
@@ -224,7 +224,7 @@
     animation-delay: 750ms;
 }
 
-#confirm_password
+#signup_confirm_password
 {
     animation-name: slideIn;
     animation-duration: 0.5s;
