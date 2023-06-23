@@ -8,13 +8,13 @@
 
 .platform_parent
 {
-  background-color: #eeeeee;
-  width: 100vw;
-  height: 100vh;
-  min-width: 1440px;
-  /* display: flex;
-  flex-direction: column;
-  gap: 5px; */
+  background-color: #ffffff;
+}
+
+.profile-pic{
+  height: 10px;
+  width: 10px;
+  background-image: url()
 }
 
 .platform_navbar
@@ -27,7 +27,7 @@
 .navbar_1
 {
   padding: 0px 0px 0px 30px;
-  width: 74.5%;
+  width: 72.5%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@
   color: #07080A;
   font-size: 19px;
   letter-spacing: 1px;
-} 
+}
 
 .platform_navbar p
 {
@@ -63,8 +63,8 @@
   font-size: 13px;
   color: #07080A;
   letter-spacing: 0.5px;
-  
-} 
+
+}
 
 .platform_logo img
 {
@@ -74,13 +74,11 @@
 
 .navbar_1 button
 {
-  height: 40px;
-  padding: 0px 10px;
-  width: 100px;
+  padding: 8px 12px;
+  width: 5rem;
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
   background-color: var(--deep-blue);
-  font-size: 18px;
   color: white;
   border: 1px solid var(--deep-blue);
   border-radius: 5px;
@@ -91,14 +89,10 @@
   justify-content: space-around;
 }
 
-.navbar_1 button:hover
-{
-}
-
 .navbar_2
 {
   padding-right: 20px;
-  width: 25.5%;
+  width: 22.5%;
   height: 100%;
   background-color: transparent;
   display: flex;
@@ -114,14 +108,14 @@
   gap: 10px;
   height: 40px;
   cursor: pointer;
-  
+
 }
 .profile img
 {
   height: 30px;
   width: 30px;
   border-radius: 50%;
-  
+
 }
 
 .profile ul
@@ -154,41 +148,31 @@
 
 .platform_components
 {
-  /* margin-top: 20px; */
   display: flex;
-  justify-content: center;
-  gap: 5px;
+  justify-content: space-evenly;
   width: 100%;
   height: calc(100% - 70px);
-  /* padding-top: 60px; */
   box-sizing: border-box;
-  /* padding-left: 4.8rem; */
-
 }
 
 .ide_in_platform_container
 {
-  
   width: 74.5%;
-  /* height: 100%; */
-  background-color: #eeeeee;
 }
 
 .board_in_platform_container
 {
   width: 74.5%;
-  /* height: 100%; */
-  background-color: #eeeeee;
+  background-color: #ffffff;
 }
 
 .chat_in_platform_container
 {
   background-color: white;
   height: 100%;
-  width: 25.5%;
+  width: 20.5%;
   border: 1px solid #bcbcbc;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  overflow: hidden;
-  /* height: 95%; */
+  /* overflow: hidden; */
 }
