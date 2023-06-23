@@ -29,31 +29,6 @@ const storage = multer.diskStorage({
 // Configure Multer for handling file uploads
 const upload = multer({ storage });
 
-// Handle the image upload
-app.post('/', upload.single('image'), async (req, res) => 
-{
-  const { userId } = req.body;
-
-  try {
-    // Find the user by ID
-    const user = await User.findOne({ _id: userId });
-
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-
-    user.profilePic = req.file.filename;
-
-    await user.save();
-
-
-    return res.send('Image uploaded successfully');
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('Internal Server Error');
-  }
-});
-
 //middleware
 
 const http = require('http');
@@ -74,6 +49,32 @@ app.use('/login', loginController);
 
 
 app.use('/api', routes);
+
+// Handle the image upload
+app.post('/', upload.single('image'), async (req, res) =>
+{
+  const { userId } = req.body;
+
+  try {
+    // Find the user by ID
+    const user = await User.findOne({ _id: userId });
+    console.log(user);
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    user.profilePic = req.file.filename;
+
+    await user.save();
+
+
+    res.send(req.file.filename);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Internal Server Error');
+  }
+});
 
 const server = http.createServer(app);
 const io = new Server(server, {

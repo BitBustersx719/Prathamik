@@ -14,7 +14,7 @@ const addImage = async (req, res) => {
     // Save the updated user object
     await user.save();
 
-    res.status(200).json({ message: 'Image uploaded successfully.' });
+    res.send(req.file.filename);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error uploading image.' });

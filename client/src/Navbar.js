@@ -49,7 +49,8 @@ function Navbar() {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((res) => {
-        console.log(res.data);
+        setDp(res.data);
+        localStorage.setItem( 'user', JSON.stringify({data: {...user.data, profilePic: res.data}}));
       })
       .catch((err) => {
         console.error(err);
