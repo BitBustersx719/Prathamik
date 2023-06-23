@@ -10,7 +10,8 @@ import Platform from './Platform';
 import Whiteboard from './whiteboard'
 import Stream from './Stream';
 import StreamJoin from './StreamJoin';
-import File from './File';
+import Signup from './Signup';
+import Login from './Login';
 import 'font-awesome/css/font-awesome.min.css';
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/platform" element={<Platform />} />
           <Route path="/stream" element={<Stream />} />
           <Route path="/streamjoin" element={<StreamJoin />} />
@@ -27,9 +30,6 @@ function App() {
         </Routes>
       </div>
     </Router>
-    // <div>
-    //   <File />
-    // </div>
   );
 }
 
