@@ -31,6 +31,10 @@ function handleWebSocketConnection(socket) {
     socket.broadcast.emit("new_file", data);
   });
 
+  socket.on("chat_message", (data) => {
+    socket.broadcast.emit("new_message", data);
+  });
+
   socket.on('disconnect', () => {
     handleParticipantLeave(socket);
   });
