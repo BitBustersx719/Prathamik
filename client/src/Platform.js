@@ -32,8 +32,18 @@ function Platform() {
       setChats((chats) => [...chats, incommingMessage]);
     });
 
-    return() => {
+    return () => {
       socket.off("new_message");
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("bot_message", (data) => {
+      setChats((chats) => [...chats, data]);
+    });
+
+    return () => {
+      socket.off("bot_message");
     }
   }, [socket]);
 
@@ -44,29 +54,31 @@ function Platform() {
     inputRef.current.value = '';
     const input = `${code}\n${userInput}`;
 
-    // try {
-    //   const response = await fetch('http://localhost:3000/input', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ input })
-    //   });
+    try {
+      const response = await fetch('http://localhost:3000/input', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input })
+      });
 
-    //   if (!response.ok) {
-    //     throw new Error('Request failed');
-    //   }
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
 
-    //   const data = await response.json();
-    //   setMessage(data.output);
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
+      const data = await response.json();
+      setMessage(data.output);
+      setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
+      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
-    socket.emit("chat_message", {input , user});
+    socket.emit("chat_message", { input, user });
   }
 
   const handleImageInput = (e) => {

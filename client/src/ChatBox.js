@@ -18,9 +18,9 @@ function ChatBox(props) {
 
         {/* {props.input && <div className='user_chat'>
           <p>{props.input}</p>
-        </div>}
+        </div>} */}
 
-        {props.message && <div className='bot_chat'>
+        {/* {props.message && <div className='bot_chat'>
             <img src='/x.png'/>
             <p>{props.message}</p>
           </div>} */}
