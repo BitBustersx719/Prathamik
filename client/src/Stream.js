@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import io from 'socket.io-client';
-const agoraAppId = "29447eacf962489299f833c012f37e15"; // Replace with your Agora App ID
+const agoraAppId = "3ec3dc68e69e4b539553415e34ce7b03"; // Replace with your Agora App ID
 const signalingServerUrl = 'http://localhost:3000'; // Replace with the URL of your signaling server
-
 const Stream = () => {
   const remoteVideoRef = useRef(null);
   const screenShareRef = useRef(null);

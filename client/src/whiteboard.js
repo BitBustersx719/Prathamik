@@ -1,48 +1,75 @@
-import React from "react";
-import { useEffect } from "react";
-import { createFastboard, createUI } from "@netless/fastboard";
+import React, { useEffect } from "react";
+import request from "request";
+import whiteWebSdk from 'white-web-sdk'
+
 const Whiteboard = () => {
-  const styles = {
-    width: "100%",
-    height: "72vh",
-    backgroundColor: "#fff",
-  };
-
-  let app;
-  async function mountFastboard(div) {
-    app = await createFastboard({
-      sdkConfig: {
-        appIdentifier: "yj-J8GWuEe2PfG3c9c975A/Qx3WgUu-5RCjDQ",
-        region: "in-mum",
-      },
-      joinRoom: {
-        uid: "114",
-        uuid: "415545207d0111eda6858354054d6a12",
-        roomToken:
-          "netlessroom_yws9nu1hluttnu5ob2s1tmrjqszlehbpcmvbdd0xnjcxnzczodizmda4jm5vbmnlpte2nze3nzaymjmwmdgwmczyb2xlptemc2lnpwvkzjjlzjfmnwmzzjrjnwnlyjfizwyymjhhotnkodhjytliymywzdiyngnjowzmywq2nti2mjlmntg3ywqyowymdxvpzd00mtu1nduymddkmdexmwvkyty4ntgzntqwntrknmexmg",
-        isWritable: true,
-      },
-      managerConfig: {
-        cursor: false,
-      },
-    });
-    window.app = app;
-    return createUI(app, div);
-  }
-
   useEffect(() => {
-    const timeout_id = setTimeout(
-      () => mountFastboard(document.getElementById("whiteboard")),
-      0
-    );
-    return () => clearTimeout(timeout_id);
+    const createRoom = () => {
+      const createRoomOptions = {
+        method: "POST",
+        url: "https://api.netless.link/v5/rooms",
+        headers: {
+          token: "NETLESSSDK_YWs9V20tWE1leXplVFJ1Vmd0ZiZub25jZT1lMzI5MzIzMC0xMWZkLTExZWUtOTBlYi0yZjYwMTQyNDhjZGImcm9sZT0wJnNpZz02ODgwNDhjYjI0MmYwMjE1MGVmZmUwMDg4NGYxMjY0N2Y0ZWM1Y2RjZjEzMTliNmQ5MTNhNDhlNDljY2RkNDE5",
+          "Content-Type": "application/json",
+          region: "us-sv",
+        },
+        body: JSON.stringify({
+          isRecord: false,
+        }),
+      };
+
+      request(createRoomOptions, function (error, response, body) {
+        if (error) throw new Error(error);
+        const { uuid } = JSON.parse(body);
+        createRoomToken(uuid);
+      });
+    };
+
+    const createRoomToken = (roomUUID) => {
+      const roomTokenOptions = {
+        method: "POST",
+        url: `https://api.netless.link/v5/tokens/rooms/${roomUUID}`,
+        headers: {
+          token: "NETLESSSDK_YWs9V20tWE1leXplVFJ1Vmd0ZiZub25jZT1lMzI5MzIzMC0xMWZkLTExZWUtOTBlYi0yZjYwMTQyNDhjZGImcm9sZT0wJnNpZz02ODgwNDhjYjI0MmYwMjE1MGVmZmUwMDg4NGYxMjY0N2Y0ZWM1Y2RjZjEzMTliNmQ5MTNhNDhlNDljY2RkNDE5",
+          "Content-Type": "application/json",
+          region: "in-mum",
+        },
+        body: JSON.stringify({ lifespan: 3600000, role: "admin" }),
+      };
+
+      request(roomTokenOptions, function (error, response, body) {
+        if (error) throw new Error(error);
+        const { token } = JSON.parse(body);
+        initializeWhiteboard(token, roomUUID);
+      });
+    };
+
+    const initializeWhiteboard = (roomToken, roomUUID) => {
+      const whiteWebSdk = new window.WhiteWebSdk({
+        appIdentifier: "JnjjQA6FEe6NdMG0QBrsCw/ZDpaiGBmY7KXOQ",
+        region: "us-sv",
+      });
+
+      const joinRoomParams = {
+        uuid: roomUUID,
+        uid: "user uid",
+        roomToken: roomToken,
+      };
+
+      whiteWebSdk
+        .joinRoom(joinRoomParams)
+        .then(function (room) {
+          room.bindHtmlElement(document.getElementById("whiteboard"));
+        })
+        .catch(function (err) {
+          console.error(err);
+        });
+    };
+
+    createRoom();
   }, []);
 
-  return (
-    <div>
-      <div id="whiteboard" style={styles}></div>
-    </div>
-  );
+  return <div id="whiteboard" style={{ width: "100%", height: "100vh" }}></div>;
 };
 
 export default Whiteboard;

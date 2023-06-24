@@ -7,7 +7,7 @@ import About from './About';
 import Service from './Service';
 import Footer from './Footer';
 import Platform from './Platform';
-import Whiteboard from './whiteboard'
+import Whiteboard from './Whiteboard'
 import Stream from './Stream';
 import StreamJoin from './StreamJoin';
 import Signup from './Signup';
@@ -26,7 +26,6 @@ function App() {
           <Route path="/stream" element={<Stream />} />
           <Route path="/streamjoin" element={<StreamJoin />} />
           <Route path="/board" element={<Whiteboard/>}/>
-        
         </Routes>
       </div>
     </Router>
