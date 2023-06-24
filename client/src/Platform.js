@@ -12,7 +12,7 @@ import Logo from './images/logo.png';
 import User from './images/user.jpeg';
 import io from "socket.io-client";
 import { useEffect } from 'react';
-
+import {useParams} from 'react-router-dom';
 
 const socket = io.connect("http://localhost:3000");
 
@@ -26,6 +26,7 @@ function Platform() {
   const [input, setInput] = useState('');
   const inputRef = useRef(null);
   const [chats, setChats] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     socket.on("new_message", (data) => {

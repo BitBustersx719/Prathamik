@@ -103,6 +103,7 @@
     color: lightgray;
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .line{
