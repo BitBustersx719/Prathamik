@@ -47,6 +47,40 @@ function Platform() {
     }
   }, [socket]);
 
+  setTimeout(async () => {
+    const userInput = 'tell me a mcq question on the above code';
+    console.log('code' + code);
+    const input = `${code}\n${userInput}`;
+    console.log('input' + input);
+    // try {
+    //   const response = await fetch('http://localhost:3000/input', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ input })
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error('Request failed');
+    //   }
+
+    //   const data = await response.json();
+    //   setMessage(data.output);
+    //   setChats((chats) => [
+    //     ...chats,
+    //     { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }
+    //   ]);
+    //   socket.emit('bot_message', {
+    //     input: data.output,
+    //     ownedByCurrentUser: false,
+    //     profilePic: 'x.png'
+    //   });
+    // } catch (error) {
+    //   console.error('Error:', error);
+    // }
+  }, 30000);
+
   const handleInput = async (e) => {
     e.preventDefault();
     setInput(userInput);
