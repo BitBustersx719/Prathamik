@@ -78,7 +78,7 @@ function Signup()
                                 type="text"
                                 placeholder='Name'
                                 name="name"
-                                id='name'
+                                id='signup_name'
                                 value={data.name}
                                 onChange={handleChange}
                                 required
@@ -90,7 +90,7 @@ function Signup()
                                 type="email"
                                 placeholder='Email'
                                 name="email"
-                                id='email'
+                                id='signup_email'
                                 value={data.email}
                                 onChange={handleChange}
                                 required
@@ -102,7 +102,7 @@ function Signup()
                                 type="password"
                                 placeholder='Password'
                                 name="password"
-                                id='password'
+                                id='signup_password'
                                 value={data.password}
                                 onChange={handleChange}
                                 required
@@ -114,7 +114,7 @@ function Signup()
                                 type="password"
                                 placeholder='Confirm Password'
                                 name="confirm_password"
-                                id='confirm_password'
+                                id='signup_confirm_password'
                                 value={data.confirm_password}
                                 onChange={handleChange}
                                 required
