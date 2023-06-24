@@ -26,7 +26,8 @@ function Platform() {
     socket.on("new_message", (data) => {
       const incommingMessage = {
         ...data,
-        ownedByCurrentUser: data.user === JSON.parse(localStorage.getItem('user')).data._id
+        ownedByCurrentUser: data.user === JSON.parse(localStorage.getItem('user')).data._id,
+        profilePic: data.profile.profilePic
       }
       setChats((chats) => [...chats, incommingMessage]);
     });

@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const { User} = require('../models/user');
 let io;
 const participants = new Map();
 const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage';
@@ -40,7 +41,13 @@ function handleWebSocketConnection(socket) {
     socket.broadcast.emit("new_file", data);
   });
 
-  socket.on("chat_message", (data) => {
+  socket.on("chat_message", async (data) => {
+    const userID = data.user;
+    const user = await User.findOne({ _id: userID });
+    data = {
+      ...data,
+      profile: user
+    }
     socket.emit("new_message", data);
     socket.broadcast.emit("new_message", data);
   });

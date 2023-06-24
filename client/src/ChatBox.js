@@ -27,6 +27,7 @@ function ChatBox(props) {
 
         {props.chats.map((chat) => (
           <div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
+            {!chat.ownedByCurrentUser && <img src={`http://localhost:3000/uploads/${chat.profilePic}`}/>}
             <p>{chat.input}</p>
           </div>
         ))}
