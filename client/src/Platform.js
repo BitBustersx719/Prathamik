@@ -1,18 +1,13 @@
 import './Platform.css';
 import './index.css';
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react';
-import Navbar from './Navbar';
 import ChatBox from './ChatBox';
 import IDE from './IDE';
 import { useState } from 'react';
 import Board from './Board';
 import { useRef } from 'react';
-import Logo from './images/logo.png';
-import User from './images/user.jpeg';
 import io from "socket.io-client";
 import { useEffect } from 'react';
-import {useParams} from 'react-router-dom';
 
 const socket = io.connect("http://localhost:3000");
 
@@ -26,16 +21,19 @@ function Platform() {
   const [input, setInput] = useState('');
   const inputRef = useRef(null);
   const [chats, setChats] = useState([]);
-  const { id } = useParams();
 
   useEffect(() => {
     socket.on("new_message", (data) => {
-      setChats((chats) => [...chats, data]);
+      const incommingMessage = {
+        ...data,
+        ownedByCurrentUser: data.user === JSON.parse(localStorage.getItem('user')).data._id
+      }
+      setChats((chats) => [...chats, incommingMessage]);
     });
 
-    return () => {
-      socket.off();
-    };
+    return() => {
+      socket.off("new_message");
+    }
   }, [socket]);
 
   const handleInput = async (e) => {
@@ -66,7 +64,8 @@ function Platform() {
   };
 
   function sendInput(input) {
-    socket.emit("chat_message", input);
+    const user = JSON.parse(localStorage.getItem('user')).data._id;
+    socket.emit("chat_message", {input , user});
   }
 
   const handleImageInput = (e) => {

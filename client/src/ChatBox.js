@@ -26,8 +26,8 @@ function ChatBox(props) {
           </div>} */}
 
         {props.chats.map((chat) => (
-          <div className='bot_chat'>
-            <p>{chat}</p>
+          <div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
+            <p>{chat.input}</p>
           </div>
         ))}
 
