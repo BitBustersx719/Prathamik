@@ -89,6 +89,7 @@ function IDE(props) {
 
   useEffect(() => {
     socket.on("ide_value", (data) => {
+      props.setCode(data);
       setIdeValue(data);
     });
   }, [socket]);

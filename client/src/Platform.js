@@ -203,7 +203,7 @@ function Platform(props) {
       <div className='platform_components'>
         {show === 'editor' && (
           <div className="ide_in_platform_container">
-            <IDE isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} code={code} />
+            <IDE code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
           </div>
         )}
 
