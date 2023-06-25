@@ -13,31 +13,32 @@ import StreamJoin from './StreamJoin';
 import Signup from './Signup';
 import Login from './Login';
 import 'font-awesome/css/font-awesome.min.css';
+import {useState} from 'react';
 
 function App() {
+  const [isAdmin,setIsAdmin] = useState(false);
   return (
     <Router>
       <div>
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Home setIsAdmin={setIsAdmin} />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/:id" element={<Platform />} />
+          <Route exact path="/:id" element={<Platform isAdmin={isAdmin} />} />
           <Route exact path="/stream" element={<Stream />} />
           <Route exact path="/streamjoin" element={<StreamJoin />} />
           <Route exact path="/board" element={<Whiteboard/>}/>
-
         </Routes>
       </div>
     </Router>
   );
 }
 
-function Home() {
+function Home(props) {
   return (
     <div>
       <Navbar />
-      <Landing />
+      <Landing setIsAdmin={props.setIsAdmin}  />
       <About />
       <Service />
       <Footer />

@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 
 const socket = io.connect("http://localhost:3000");
 
-function Platform() {
+function Platform(props) {
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
   const [code, setCode] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -203,7 +203,7 @@ function Platform() {
       <div className='platform_components'>
         {show === 'editor' && (
           <div className="ide_in_platform_container">
-            <IDE setCode={setCode} setShow={setShow} code={code} />
+            <IDE isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} code={code} />
           </div>
         )}
 

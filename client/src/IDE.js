@@ -63,6 +63,15 @@ function IDE(props) {
     };
   }, []);
 
+  useEffect(() => {
+    if(props.isAdmin){
+      setUser('teacher');
+    }
+    else{
+      setUser('student');
+    }
+  },[])
+
   const handleBeforeUnload = (e) => {
     if (showWarning) {
       e.preventDefault();
@@ -332,11 +341,6 @@ function IDE(props) {
             </div>
           </div>
           <div>
-            <select className='select_user' onChange={(e) => setUser(e.target.value)}>
-              <option value='teacher'>Teacher</option>
-              <option value="student">Student</option>
-              <option value="browser">Browser</option>
-            </select>
             {/* <button style={{ backgroundColor: 'white' }} onClick={() => props.setShow('board')}>Switch to Board</button> */}
           </div>
 
