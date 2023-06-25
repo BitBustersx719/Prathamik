@@ -8,7 +8,7 @@ import Board from './Board';
 import { useRef } from 'react';
 import io from "socket.io-client";
 import { useEffect } from 'react';
-// import { set } from 'mongoose';
+import axios from 'axios';
 
 const socket = io.connect("http://localhost:3000");
 
@@ -22,6 +22,9 @@ function Platform(props) {
   const [input, setInput] = useState('');
   const inputRef = useRef(null);
   const [chats, setChats] = useState([]);
+  const [output, setOutput] = useState('');
+  const [inputX, setInputX] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState('cpp');
 
   useEffect(() => {
     socket.on("new_message", (data) => {
@@ -39,6 +42,22 @@ function Platform(props) {
   }, [socket]);
 
   useEffect(() => {
+    socket.on("output", (data) => {
+      setOutput(data);
+    });
+
+    return () => {
+      socket.off("output");
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("input", (data) => {
+      setInputX(data);
+    });
+  }, [socket]);
+
+  useEffect(() => {
     socket.on("bot_message", (data) => {
       setChats((chats) => [...chats, data]);
     });
@@ -48,6 +67,7 @@ function Platform(props) {
     }
   }, [socket]);
 
+  // DO NOT DELETE THIS CODE
   // setTimeout(async () => {
   //   const userInput = 'tell me a mcq question on the above code';
   //   console.log('code' + code);
@@ -117,26 +137,26 @@ function Platform(props) {
   }
 
   function voice() {
-  let recognition = new window.webkitSpeechRecognition();
-  recognition.lang = "en-GB";
+    let recognition = new window.webkitSpeechRecognition();
+    recognition.lang = "en-GB";
 
-  recognition.onstart = function () {
-    console.log('Speech recognition started');
-  };
+    recognition.onstart = function () {
+      console.log('Speech recognition started');
+    };
 
-  recognition.onresult = function (event) {
-    console.log('Speech recognition result');
-    let result = event.results[0][0].transcript;
-    inputRef.current.value = result;
-    setUserInput(result);
-  };
+    recognition.onresult = function (event) {
+      console.log('Speech recognition result');
+      let result = event.results[0][0].transcript;
+      inputRef.current.value = result;
+      setUserInput(result);
+    };
 
-  recognition.onerror = function (event) {
-    console.log('Speech recognition error:', event.error);
-  };
+    recognition.onerror = function (event) {
+      console.log('Speech recognition error:', event.error);
+    };
 
-  recognition.start();
-}
+    recognition.start();
+  }
 
   const handleImageInput = (e) => {
     e.preventDefault();
@@ -165,6 +185,30 @@ function Platform(props) {
     }
   }
 
+  const handleRun = async (e) => {
+    try {
+      const response = await axios.request({
+        method: 'POST',
+        url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+        headers: {
+          'content-type': 'application/json',
+          'X-RapidAPI-Key': '743ef54f88mshced8245741bbd13p19bbaejsne9c59b00aae5',
+          'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+        },
+        data: {
+          language: currentLanguage,
+          version: 'latest',
+          code: code,
+          input: inputX
+        }
+      });
+      setOutput(response.data.output);
+      socket.emit("output", response.data.output);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className='platform_parent'>
       {/* <form onSubmit={handleImageInput}>
@@ -182,7 +226,7 @@ function Platform(props) {
           </div>
 
           <form>
-            <button>Run <i class="fa-solid fa-play"></i></button>
+            <button type='button' onClick={handleRun}>Run <i class="fa-solid fa-play"></i></button>
           </form>
         </div>
 
@@ -203,7 +247,7 @@ function Platform(props) {
       <div className='platform_components'>
         {show === 'editor' && (
           <div className="ide_in_platform_container">
-            <IDE code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
+            <IDE setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
           </div>
         )}
 

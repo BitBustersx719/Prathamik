@@ -56,6 +56,14 @@ function handleWebSocketConnection(socket) {
     socket.broadcast.emit("bot_message", data);
   });
 
+  socket.on("output", (data) => {
+    socket.broadcast.emit("output", data);
+  });
+
+  socket.on("input", (data) => {
+    socket.broadcast.emit("input", data);
+  });
+
   socket.on('disconnect', () => {
     handleParticipantLeave(socket);
   });
