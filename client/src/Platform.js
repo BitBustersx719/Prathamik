@@ -8,6 +8,7 @@ import Board from './Board';
 import { useRef } from 'react';
 import io from "socket.io-client";
 import { useEffect } from 'react';
+// import { set } from 'mongoose';
 
 const socket = io.connect("http://localhost:3000");
 
@@ -47,39 +48,39 @@ function Platform() {
     }
   }, [socket]);
 
-  setTimeout(async () => {
-    const userInput = 'tell me a mcq question on the above code';
-    console.log('code' + code);
-    const input = `${code}\n${userInput}`;
-    console.log('input' + input);
-    // try {
-    //   const response = await fetch('http://localhost:3000/input', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ input })
-    //   });
+  // setTimeout(async () => {
+  //   const userInput = 'tell me a mcq question on the above code';
+  //   console.log('code' + code);
+  //   const input = `${code}\n${userInput}`;
+  //   console.log('input' + input);
+  //   try {
+  //     const response = await fetch('http://localhost:3000/input', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ input })
+  //     });
 
-    //   if (!response.ok) {
-    //     throw new Error('Request failed');
-    //   }
+  //     if (!response.ok) {
+  //       throw new Error('Request failed');
+  //     }
 
-    //   const data = await response.json();
-    //   setMessage(data.output);
-    //   setChats((chats) => [
-    //     ...chats,
-    //     { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }
-    //   ]);
-    //   socket.emit('bot_message', {
-    //     input: data.output,
-    //     ownedByCurrentUser: false,
-    //     profilePic: 'x.png'
-    //   });
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
-  }, 30000);
+  //     const data = await response.json();
+  //     setMessage(data.output);
+  //     setChats((chats) => [
+  //       ...chats,
+  //       { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }
+  //     ]);
+  //     socket.emit('bot_message', {
+  //       input: data.output,
+  //       ownedByCurrentUser: false,
+  //       profilePic: 'x.png'
+  //     });
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // }, 30000);
 
   const handleInput = async (e) => {
     e.preventDefault();
@@ -114,6 +115,28 @@ function Platform() {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
     socket.emit("chat_message", { input, user });
   }
+
+  function voice() {
+  let recognition = new window.webkitSpeechRecognition();
+  recognition.lang = "en-GB";
+
+  recognition.onstart = function () {
+    console.log('Speech recognition started');
+  };
+
+  recognition.onresult = function (event) {
+    console.log('Speech recognition result');
+    let result = event.results[0][0].transcript;
+    inputRef.current.value = result;
+    setUserInput(result);
+  };
+
+  recognition.onerror = function (event) {
+    console.log('Speech recognition error:', event.error);
+  };
+
+  recognition.start();
+}
 
   const handleImageInput = (e) => {
     e.preventDefault();
@@ -200,6 +223,7 @@ function Platform() {
             input={input}
             sendInput={sendInput}
             chats={chats}
+            voice={voice}
           />
         </div>
       </div>

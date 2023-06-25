@@ -41,6 +41,9 @@ function ChatBox(props) {
           }}
           ref={props.inputRef}
         />
+        <button type='button' onClick={props.voice}>
+          say!
+        </button>
         <button onClick={props.handleInput}>
           {/* <img src={Send} alt="send"/> */}
           <i class="fa-solid fa-paper-plane"></i>

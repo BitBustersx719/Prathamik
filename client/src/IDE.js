@@ -53,6 +53,7 @@ function IDE(props) {
   const [isInvalid, setIsInvalid] = useState(false);
   const [showWarning, setShowWarning] = useState(true);
   const [user, setUser] = useState("teacher");
+  const [fileValues, setFileValues] = useState({});
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -68,6 +69,14 @@ function IDE(props) {
       e.returnValue = '';
     }
   };
+
+  useEffect(() => {
+    const newFileValues = {};
+    files.forEach((file) => {
+      newFileValues[file.id] = file.value;
+    });
+    setFileValues(newFileValues);
+  }, [files]);
 
   useEffect(() => {
     socket.on("ide_value", (data) => {
@@ -99,6 +108,11 @@ function IDE(props) {
 
   function handleEditorChange(value) {
     props.setCode(value);
+
+    const updatedFiles = [...files];
+    updatedFiles[fileIndex].value = value;
+
+    setFiles(updatedFiles);
     socket.emit("send_value", value);
   }
 
@@ -341,14 +355,17 @@ function IDE(props) {
 
 
         </div>
-        {user === 'teacher' && <Editor className='ide_in_ide_container'
+        {user === 'teacher' && (
+        <Editor
+          className='ide_in_ide_container'
           theme="vs-dark"
           onMount={handleEditorDidMount}
           onChange={handleEditorChange}
           path={files[fileIndex].name}
           defaultLanguage={files[fileIndex].language}
-          defaultValue={files[fileIndex].value}
-        />}
+          value={fileValues[files[fileIndex].id]}
+        />
+      )}
         {user === 'student' && <Editor className='ide_in_ide_container'
           theme="vs-light"
           onMount={handleEditorDidMount}
