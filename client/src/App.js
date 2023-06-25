@@ -9,7 +9,6 @@ import Footer from './Footer';
 import Platform from './Platform';
 import Whiteboard from './whiteboard'
 import Stream from './Stream';
-import StreamJoin from './StreamJoin';
 import Signup from './Signup';
 import Login from './Login';
 import 'font-awesome/css/font-awesome.min.css';
@@ -26,7 +25,6 @@ function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/:id" element={<Platform isAdmin={isAdmin} />} />
           <Route exact path="/stream" element={<Stream />} />
-          <Route exact path="/streamjoin" element={<StreamJoin />} />
           <Route exact path="/board" element={<Whiteboard/>}/>
         </Routes>
       </div>
