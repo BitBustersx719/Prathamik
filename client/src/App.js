@@ -7,7 +7,7 @@ import About from './About';
 import Service from './Service';
 import Footer from './Footer';
 import Platform from './Platform';
-import Whiteboard from './whiteboard'
+import Whiteboard from './Whiteboard'
 import Stream from './Stream';
 import Signup from './Signup';
 import Login from './Login';
