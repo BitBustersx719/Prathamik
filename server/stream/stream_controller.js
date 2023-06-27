@@ -19,7 +19,6 @@ const joinStream = asyncHandler(async (req, res) => {
 
 const leaveStream = asyncHandler(async (req, res) => {
   const { participantId } = req.body;
-
   participants.delete(participantId);
 
   res.json({ message: 'Participant left successfully' });

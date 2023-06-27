@@ -12,6 +12,7 @@ function initializeSignalingServer(server) {
   });
   io.on('connection', handleWebSocketConnection);
 }
+
 function handleWebSocketConnection(socket) {
   console.log(`User Connected: ${socket.id}`);
 
@@ -38,7 +39,12 @@ function handleWebSocketConnection(socket) {
   socket.on('disconnect', () => {
     handleParticipantLeave(socket);
   });
+  socket.on("whiteboardData", (data) => {
+    // Broadcast the whiteboard data to all connected participants
+    socket.broadcast.emit("whiteboardData", data);
+  });
 }
+
 function handleParticipantJoin(socket, streamCode) {
   const participantId = generateParticipantId();
 
@@ -64,12 +70,28 @@ function handleParticipantLeave(socket) {
   }
 }
 
+function handleWhiteboardData(data) {
+  // Broadcast the whiteboard data to all connected participants
+  io.emit('whiteboardData', data);
+}
+function getWhiteboardData() {
+  // Collect and return the whiteboard data from all participants
+  const whiteboardData = [];
+  for (const participantSocket of participants.values()) {
+    const participantData = participantSocket.whiteboardData;
+    if (participantData) {
+      whiteboardData.push(participantData);
+    }
+  }
+  return whiteboardData;
+}
 function handleUpgrade(request, socket, head) {
   io.engine.handleUpgrade(request, socket, head, (socket) => {
     io.emit('connection', socket);
     handleWebSocketConnection(socket);
   });
 }
+
 function generateParticipantId() {
   return Math.random().toString(36).substr(2, 9);
 }
@@ -89,6 +111,8 @@ module.exports = {
   handleUpgrade,
   handleParticipantJoin,
   handleParticipantLeave,
+  handleWhiteboardData,
   generateParticipantId,
   participants,
+  getWhiteboardData
 };
