@@ -1,8 +1,5 @@
-// Container.js
 import React from 'react';
 import Board from './BoardX';
-import io from 'socket.io-client';
-
 import './Container.css';
 
 class Container extends React.Component {
@@ -13,9 +10,6 @@ class Container extends React.Component {
       color: '#000000',
       size: '5',
     };
-
-    // Create Socket.io connection
-    this.socket = io.connect("http://localhost:3000");
   }
 
   changeColor(event) {
@@ -63,7 +57,7 @@ class Container extends React.Component {
           <Board
             color={this.state.color}
             size={this.state.size}
-            socket={this.socket} // Pass the socket prop here
+            socket={this.props.socket}
           ></Board>
         </div>
       </div>

@@ -2,9 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:3000");
 
 const initialFiles = [
   {
@@ -63,29 +60,41 @@ function IDE(props) {
   }, [files]);
 
   useEffect(() => {
-    socket.on("ide_value", (data) => {
+    props.socket.on("ide_value", (data) => {
       props.setCode(data);
       setIdeValue(data);
     });
-  }, [socket]);
+  }, [props.socket]);
 
   useEffect(() => {
-    socket.on("ide_file", (data) => {
+    props.socket.on("ide_file", (data) => {
       setFiles(data);
     });
-  }, [socket]);
+
+    return () => {
+      props.socket.off("ide_file");
+    }
+  }, [props.socket]);
 
   useEffect(() => {
-    socket.on("ide_index", (data) => {
+    props.socket.on("ide_index", (data) => {
       setfileIndex(data);
     });
-  }, [socket]);
+
+    return () => {
+      props.socket.off("ide_index");
+    }
+  }, [props.socket]);
 
   useEffect(() => {
-    socket.on("new_file", (data) => {
+    props.socket.on("new_file", (data) => {
       setFiles(data);
     });
-  }, [socket]);
+
+    return () => {
+      props.socket.off("new_file");
+    }
+  }, [props.socket]);
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -98,13 +107,13 @@ function IDE(props) {
     updatedFiles[fileIndex].value = value;
 
     setFiles(updatedFiles);
-    socket.emit("send_value", value);
+    props.socket.emit("send_value", value);
   }
 
   function handleFileClick(index) {
     setfileIndex((prevIndex) => {
       const updatedIndex = index;
-      socket.emit("send_index", updatedIndex);
+      props.socket.emit("send_index", updatedIndex);
       return updatedIndex;
     });
 
@@ -126,8 +135,7 @@ function IDE(props) {
       id: fileId,
       name: newFileName,
     };
-
-    // Set the initial value and icon based on the file type
+    
     if (fileType === '.js') {
       newFile.value = '// Enter your js code here';
       newFile.icon = 'fab fa-js-square';
@@ -172,7 +180,7 @@ function IDE(props) {
 
     setFiles((prevFiles) => {
       const updatedFiles = [...prevFiles, newFile];
-      socket.emit("send_file", updatedFiles);
+      props.socket.emit("send_file", updatedFiles);
       return updatedFiles;
     });
 
@@ -233,13 +241,13 @@ function IDE(props) {
 
   function handleFileDelete(id) {
     const updatedFiles = files.filter((file) => file.id !== id);
-    socket.emit("delete_file", updatedFiles);
+    props.socket.emit("delete_file", updatedFiles);
     setFiles(updatedFiles);
   }
 
   function handleInputValue (e) {
     props.setInput(e.target.value);
-    socket.emit("input", e.target.value);
+    props.socket.emit("input", e.target.value);
   }
 
   return (
