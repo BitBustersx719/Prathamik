@@ -1,5 +1,5 @@
 const { Server } = require('socket.io');
-const { User} = require('../models/user');
+const { User } = require('../models/user');
 let io;
 const participants = new Map();
 const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage';
@@ -63,6 +63,10 @@ function handleWebSocketConnection(socket) {
   socket.on("input", (data) => {
     socket.broadcast.emit("input", data);
   });
+
+  socket.on('canvas-data', (data) => {
+    socket.broadcast.emit('canvas-data', data);
+  })
 
   socket.on('disconnect', () => {
     handleParticipantLeave(socket);
