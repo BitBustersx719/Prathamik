@@ -6,6 +6,7 @@ const loginController = require('./controllers/login');
 // const File=require('./models/file');
 const cors = require('cors');
 const express = require('express');
+// const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -30,7 +31,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 //middleware
-
+// app.use(bodyParser.urlencoded({ extended: true }));
 const http = require('http');
 const { Server } = require('socket.io');
 const { handleUpgrade, handleWebSocketConnection, initializeSignalingServer } = require('./stream/streamrtc');

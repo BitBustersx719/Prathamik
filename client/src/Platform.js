@@ -1,22 +1,18 @@
 import './Platform.css';
 import './index.css';
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react';
-import Navbar from './Navbar';
 import ChatBox from './ChatBox';
 import IDE from './IDE';
 import { useState } from 'react';
 import Board from './Board';
 import { useRef } from 'react';
-import Logo from './images/logo.png';
-import User from './images/user.jpeg';
 import io from "socket.io-client";
 import { useEffect } from 'react';
-
+import axios from 'axios';
 
 const socket = io.connect("http://localhost:3000");
 
-function Platform() {
+function Platform(props) {
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
   const [code, setCode] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -26,16 +22,85 @@ function Platform() {
   const [input, setInput] = useState('');
   const inputRef = useRef(null);
   const [chats, setChats] = useState([]);
+  const [output, setOutput] = useState('');
+  const [inputX, setInputX] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState('cpp');
 
   useEffect(() => {
     socket.on("new_message", (data) => {
+      const incommingMessage = {
+        ...data,
+        ownedByCurrentUser: data.user === JSON.parse(localStorage.getItem('user')).data._id,
+        profilePic: data.profile.profilePic
+      }
+      setChats((chats) => [...chats, incommingMessage]);
+    });
+
+    return () => {
+      socket.off("new_message");
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("output", (data) => {
+      setOutput(data);
+    });
+
+    return () => {
+      socket.off("output");
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("input", (data) => {
+      setInputX(data);
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on("bot_message", (data) => {
       setChats((chats) => [...chats, data]);
     });
 
     return () => {
-      socket.off();
-    };
+      socket.off("bot_message");
+    }
   }, [socket]);
+
+  // DO NOT DELETE THIS CODE
+  // setTimeout(async () => {
+  //   const userInput = 'tell me a mcq question on the above code';
+  //   console.log('code' + code);
+  //   const input = `${code}\n${userInput}`;
+  //   console.log('input' + input);
+  //   try {
+  //     const response = await fetch('http://localhost:3000/input', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ input })
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Request failed');
+  //     }
+
+  //     const data = await response.json();
+  //     setMessage(data.output);
+  //     setChats((chats) => [
+  //       ...chats,
+  //       { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }
+  //     ]);
+  //     socket.emit('bot_message', {
+  //       input: data.output,
+  //       ownedByCurrentUser: false,
+  //       profilePic: 'x.png'
+  //     });
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // }, 30000);
 
   const handleInput = async (e) => {
     e.preventDefault();
@@ -44,28 +109,53 @@ function Platform() {
     inputRef.current.value = '';
     const input = `${code}\n${userInput}`;
 
-    // try {
-    //   const response = await fetch('http://localhost:3000/input', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ input })
-    //   });
+    try {
+      const response = await fetch('http://localhost:3000/input', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input })
+      });
 
-    //   if (!response.ok) {
-    //     throw new Error('Request failed');
-    //   }
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
 
-    //   const data = await response.json();
-    //   setMessage(data.output);
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
+      const data = await response.json();
+      setMessage(data.output);
+      setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
+      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   function sendInput(input) {
-    socket.emit("chat_message", input);
+    const user = JSON.parse(localStorage.getItem('user')).data._id;
+    socket.emit("chat_message", { input, user });
+  }
+
+  function voice() {
+    let recognition = new window.webkitSpeechRecognition();
+    recognition.lang = "en-GB";
+
+    recognition.onstart = function () {
+      console.log('Speech recognition started');
+    };
+
+    recognition.onresult = function (event) {
+      console.log('Speech recognition result');
+      let result = event.results[0][0].transcript;
+      inputRef.current.value = result;
+      setUserInput(result);
+    };
+
+    recognition.onerror = function (event) {
+      console.log('Speech recognition error:', event.error);
+    };
+
+    recognition.start();
   }
 
   const handleImageInput = (e) => {
@@ -95,6 +185,30 @@ function Platform() {
     }
   }
 
+  const handleRun = async (e) => {
+    try {
+      const response = await axios.request({
+        method: 'POST',
+        url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+        headers: {
+          'content-type': 'application/json',
+          'X-RapidAPI-Key': '743ef54f88mshced8245741bbd13p19bbaejsne9c59b00aae5',
+          'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+        },
+        data: {
+          language: currentLanguage,
+          version: 'latest',
+          code: code,
+          input: inputX
+        }
+      });
+      setOutput(response.data.output);
+      socket.emit("output", response.data.output);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className='platform_parent'>
       {/* <form onSubmit={handleImageInput}>
@@ -112,7 +226,7 @@ function Platform() {
           </div>
 
           <form>
-            <button>Run <i class="fa-solid fa-play"></i></button>
+            <button type='button' onClick={handleRun}>Run <i class="fa-solid fa-play"></i></button>
           </form>
         </div>
 
@@ -133,7 +247,7 @@ function Platform() {
       <div className='platform_components'>
         {show === 'editor' && (
           <div className="ide_in_platform_container">
-            <IDE setCode={setCode} setShow={setShow} code={code} />
+            <IDE setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
           </div>
         )}
 
@@ -153,6 +267,7 @@ function Platform() {
             input={input}
             sendInput={sendInput}
             chats={chats}
+            voice={voice}
           />
         </div>
       </div>

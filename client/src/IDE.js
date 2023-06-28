@@ -4,7 +4,6 @@ import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import io from "socket.io-client";
 
-
 const socket = io.connect("http://localhost:3000");
 
 const initialFiles = [
@@ -13,36 +12,12 @@ const initialFiles = [
     name: "",
     language: "text",
     value: "",
-    icon: "fab fa-js-square"
+    icon: "fab fa-js-square",
+    other: "text"
   }
 ];
 
-// const initialStaticFiles = [
-//   {
-//     id: 0,
-//     name: "index.html",
-//     language: ".html",
-//     value: "<!-- Enter your html code here -->",
-//     icon: "fab fa-html5"
-//   },
-//   {
-//     id: 1,
-//     name: "style.css",
-//     language: ".css",
-//     value: "/* Enter your css code here */",
-//     icon: "fab fa-css3-alt"
-//   },
-//   {
-//     id: 2,
-//     name: "server.js",
-//     language: ".js",
-//     value: "// Enter your js code here",
-//     icon: "fab fa-js-square"
-//   },
-// ];
-
 function IDE(props) {
-  // const [staticFiles, setStaticFiles] = useState(initialStaticFiles);
   const [files, setFiles] = useState(initialFiles);
   const [fileIndex, setfileIndex] = useState(0);
   const editorRef = useRef(null);
@@ -53,6 +28,7 @@ function IDE(props) {
   const [isInvalid, setIsInvalid] = useState(false);
   const [showWarning, setShowWarning] = useState(true);
   const [user, setUser] = useState("teacher");
+  const [fileValues, setFileValues] = useState({});
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -62,6 +38,15 @@ function IDE(props) {
     };
   }, []);
 
+  useEffect(() => {
+    if (props.isAdmin) {
+      setUser('teacher');
+    }
+    else {
+      setUser('student');
+    }
+  }, [])
+
   const handleBeforeUnload = (e) => {
     if (showWarning) {
       e.preventDefault();
@@ -70,7 +55,16 @@ function IDE(props) {
   };
 
   useEffect(() => {
+    const newFileValues = {};
+    files.forEach((file) => {
+      newFileValues[file.id] = file.value;
+    });
+    setFileValues(newFileValues);
+  }, [files]);
+
+  useEffect(() => {
     socket.on("ide_value", (data) => {
+      props.setCode(data);
       setIdeValue(data);
     });
   }, [socket]);
@@ -99,6 +93,11 @@ function IDE(props) {
 
   function handleEditorChange(value) {
     props.setCode(value);
+
+    const updatedFiles = [...files];
+    updatedFiles[fileIndex].value = value;
+
+    setFiles(updatedFiles);
     socket.emit("send_value", value);
   }
 
@@ -108,6 +107,8 @@ function IDE(props) {
       socket.emit("send_index", updatedIndex);
       return updatedIndex;
     });
+
+    props.setCurrentLanguage(files[index].other);
   }
 
   const handleAddFile = (e) => {
@@ -131,34 +132,42 @@ function IDE(props) {
       newFile.value = '// Enter your js code here';
       newFile.icon = 'fab fa-js-square';
       newFile.language = 'javascript';
+      newFile.other = 'javascript';
     } else if (fileType === '.py') {
       newFile.value = '# Enter your py code here';
       newFile.icon = 'fab fa-python';
       newFile.language = 'python';
+      newFile.other = 'python3';
     } else if (fileType === '.java') {
       newFile.value = '// Enter your java code here';
       newFile.icon = 'fab fa-java';
       newFile.language = 'java';
+      newFile.other = 'java';
     } else if (fileType === '.c') {
       newFile.value = '// Enter your c code here';
       newFile.icon = 'fab fa-cuttlefish';
       newFile.language = 'c';
+      newFile.other = 'c';
     } else if (fileType === '.cpp') {
       newFile.value = '// Enter your c++ code here';
       newFile.icon = 'fab fa-cuttlefish';
       newFile.language = 'cpp';
+      newFile.other = 'cpp';
     } else if (fileType === '.html') {
       newFile.value = '<!-- Enter your html code here -->';
       newFile.icon = 'fab fa-html5';
       newFile.language = 'html';
+      newFile.other = 'html';
     } else if (fileType === '.css') {
       newFile.value = '/* Enter your css code here */';
       newFile.icon = 'fab fa-css3-alt';
       newFile.language = 'css';
+      newFile.other = 'css';
     } else if (fileType === '.txt') {
       newFile.value = '';
       newFile.icon = 'fas fa-file-alt';
       newFile.language = 'text';
+      newFile.other = 'text';
     }
 
     setFiles((prevFiles) => {
@@ -228,11 +237,10 @@ function IDE(props) {
     setFiles(updatedFiles);
   }
 
-  // function handleStaticFileDelete(id)
-  // {
-  //   const updatedFiles = staticFiles.filter((file) => file.id !== id);
-  //   setStaticFiles(updatedFiles);
-  // }
+  function handleInputValue (e) {
+    props.setInput(e.target.value);
+    socket.emit("input", e.target.value);
+  }
 
   return (
     <div>
@@ -314,15 +322,12 @@ function IDE(props) {
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
+          {(user === 'teacher' || user === 'student') && <button onClick={() => setUser('browser')}>Switch to Browser</button>}
+          {user === 'browser' && props.isAdmin && <button onClick={() => setUser('teacher')}>Switch to IDE</button>}
+          {user === 'browser' && !props.isAdmin && <button onClick={() => setUser('student')}>Switch to IDE</button>}
           <div>
-            <select className='select_user' onChange={(e) => setUser(e.target.value)}>
-              <option value='teacher'>Teacher</option>
-              <option value="student">Student</option>
-              <option value="browser">Browser</option>
-            </select>
             {/* <button style={{ backgroundColor: 'white' }} onClick={() => props.setShow('board')}>Switch to Board</button> */}
           </div>
 
@@ -341,31 +346,62 @@ function IDE(props) {
 
 
         </div>
-        {user === 'teacher' && <Editor className='ide_in_ide_container'
-          theme="vs-dark"
-          onMount={handleEditorDidMount}
-          onChange={handleEditorChange}
-          path={files[fileIndex].name}
-          defaultLanguage={files[fileIndex].language}
-          defaultValue={files[fileIndex].value}
-        />}
-        {user === 'student' && <Editor className='ide_in_ide_container'
-          theme="vs-light"
-          onMount={handleEditorDidMount}
-          path={files[fileIndex].name}
-          defaultLanguage={files[fileIndex].language}
-          defaultValue={files[fileIndex].value}
-          value={ideValue}
-          options={{
-            readOnly: true
-          }}
-        />}
+        {user === 'teacher' && (
+          <div className='ide_in_ide_container'>
+            <Editor
+              theme="vs-dark"
+              onMount={handleEditorDidMount}
+              onChange={handleEditorChange}
+              path={files[fileIndex].name}
+              defaultLanguage={files[fileIndex].language}
+              value={fileValues[files[fileIndex].id]}
+            />
+            <div className="inputNoutput">
+              <div className="inputF">
+                <h4>Input</h4>
+                <textarea
+                  value={props.input}
+                  // onChange={(e) => props.setInput(e.target.value)}
+                  onChange={(e) => {handleInputValue(e)}}
+                />
+              </div>
+              <div className="outputF">
+                <h4>Output</h4>
+                <textarea
+                  value={props.output}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {user === 'student' && (<div className='ide_in_ide_container'>
+          <Editor theme="vs-light" onMount={handleEditorDidMount} path={files[fileIndex].name}
+            defaultLanguage={files[fileIndex].language} defaultValue={files[fileIndex].value} value={ideValue} options={{
+              readOnly: true
+            }} />
+          <div className="inputNoutput">
+            <div className="inputF">
+              <h4>Input</h4>
+              <textarea value={props.input} onChange={(e) => props.setInput(e.target.value)}
+              />
+            </div>
+            <div className="outputF">
+              <h4>Output</h4>
+              <textarea
+                value={props.output}
+                readOnly
+              />
+            </div>
+          </div>
+        </div>)}
         {user === 'browser' && <iframe
           title='output'
           sandbox='allow-scripts'
           width='100%'
           height='100%'
           srcDoc={props.code}
+          className='iframe'
         />}
       </div>
     </div>

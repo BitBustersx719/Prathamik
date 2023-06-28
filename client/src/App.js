@@ -9,34 +9,36 @@ import Footer from './Footer';
 import Platform from './Platform';
  import Whiteboard from './Whiteboard'
 import Stream from './Stream';
-import StreamJoin from './StreamJoin';
 import Signup from './Signup';
 import Login from './Login';
 import 'font-awesome/css/font-awesome.min.css';
+import {useState} from 'react';
+import Container from './Container';
 
 function App() {
+  const [isAdmin,setIsAdmin] = useState(false);
   return (
     <Router>
       <div>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/platform" element={<Platform />} />
-          <Route path="/stream" element={<Stream />} />
-          <Route path="/streamjoin" element={<StreamJoin />} />
-          { <Route path="/board" element={<Whiteboard/>}/>}
+          <Route exact path="/" element={<Home setIsAdmin={setIsAdmin} />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/:id" element={<Platform isAdmin={isAdmin} />} />
+          <Route exact path="/stream" element={<Stream />} />
+          <Route exact path="/board" element={<Whiteboard/>}/>
+          <Route exact path='/whiteboard' element={<Container/>} />
         </Routes>
       </div>
     </Router>
   );
 }
 
-function Home() {
+function Home(props) {
   return (
     <div>
       <Navbar />
-      <Landing />
+      <Landing setIsAdmin={props.setIsAdmin}  />
       <About />
       <Service />
       <Footer />
