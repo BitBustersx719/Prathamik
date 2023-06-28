@@ -6,11 +6,8 @@ import IDE from './IDE';
 import { useState } from 'react';
 import Board from './Board';
 import { useRef } from 'react';
-import io from "socket.io-client";
 import { useEffect } from 'react';
 import axios from 'axios';
-
-const socket = io.connect("http://localhost:3000");
 
 function Platform(props) {
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
@@ -27,7 +24,7 @@ function Platform(props) {
   const [currentLanguage, setCurrentLanguage] = useState('cpp');
 
   useEffect(() => {
-    socket.on("new_message", (data) => {
+    props.socket.on("new_message", (data) => {
       const incommingMessage = {
         ...data,
         ownedByCurrentUser: data.user === JSON.parse(localStorage.getItem('user')).data._id,
@@ -37,35 +34,39 @@ function Platform(props) {
     });
 
     return () => {
-      socket.off("new_message");
+      props.socket.off("new_message");
     }
-  }, [socket]);
+  }, [props.socket]);
 
   useEffect(() => {
-    socket.on("output", (data) => {
+    props.socket.on("output", (data) => {
       setOutput(data);
     });
 
     return () => {
-      socket.off("output");
+      props.socket.off("output");
     }
-  }, [socket]);
+  }, [props.socket]);
 
   useEffect(() => {
-    socket.on("input", (data) => {
+    props.socket.on("input", (data) => {
       setInputX(data);
     });
-  }, [socket]);
+
+    return () => {
+      props.socket.off("input");
+    }
+  }, [props.socket]);
 
   useEffect(() => {
-    socket.on("bot_message", (data) => {
+    props.socket.on("bot_message", (data) => {
       setChats((chats) => [...chats, data]);
     });
 
     return () => {
-      socket.off("bot_message");
+      props.socket.off("bot_message");
     }
-  }, [socket]);
+  }, [props.socket]);
 
   // DO NOT DELETE THIS CODE
   // setTimeout(async () => {
@@ -92,7 +93,7 @@ function Platform(props) {
   //       ...chats,
   //       { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }
   //     ]);
-  //     socket.emit('bot_message', {
+  //     props.socket.emit('bot_message', {
   //       input: data.output,
   //       ownedByCurrentUser: false,
   //       profilePic: 'x.png'
@@ -125,7 +126,7 @@ function Platform(props) {
       const data = await response.json();
       setMessage(data.output);
       setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
+      props.socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -133,7 +134,7 @@ function Platform(props) {
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
-    socket.emit("chat_message", { input, user });
+    props.socket.emit("chat_message", { input, user });
   }
 
   function voice() {
@@ -203,7 +204,7 @@ function Platform(props) {
         }
       });
       setOutput(response.data.output);
-      socket.emit("output", response.data.output);
+      props.socket.emit("output", response.data.output);
     } catch (error) {
       console.error(error);
     }
@@ -247,7 +248,7 @@ function Platform(props) {
       <div className='platform_components'>
         {show === 'editor' && (
           <div className="ide_in_platform_container">
-            <IDE setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
+            <IDE socket={props.socket} setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
           </div>
         )}
 

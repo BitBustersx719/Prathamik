@@ -3,6 +3,7 @@ const { User } = require('../models/user');
 let io;
 const participants = new Map();
 const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage';
+let drawingData = [];
 
 function initializeSignalingServer(server) {
   io = new Server(server, {
@@ -68,6 +69,14 @@ function handleWebSocketConnection(socket) {
   socket.on('canvas-data', (data) => {
     socket.broadcast.emit('canvas-data', data);
   })
+
+  socket.emit('drawingData', drawingData);
+
+  socket.on('draw', (data) => {
+    console.log(data);
+    drawingData.push(data);
+    socket.broadcast.emit('draw', data);
+  });
 
   socket.on('disconnect', () => {
     handleParticipantLeave(socket);
