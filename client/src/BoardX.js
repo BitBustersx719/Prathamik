@@ -95,20 +95,17 @@ class Board extends React.Component {
       const formData = new FormData();
       formData.append('image', blob, 'screenshot.png');
     
-      // Send the screenshot to the localhost server
       fetch('http://localhost:5000/ocr', {
         method: 'POST',
         body: formData,
       })
         .then((response) => {
           if (response.ok) {
-            // Successful response
             response.json().then((data) => {
               console.log('Screenshot sent successfully');
-              console.log('Server output:', data); // Access the data returned by the server
+              console.log('Server output:', data);
             });
           } else {
-            // Handle error response
             console.error('Error sending screenshot:', response.statusText);
           }
         })

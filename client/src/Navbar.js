@@ -128,9 +128,6 @@ function Navbar() {
             <Link className='li' to='/stream'>
               STREAM
             </Link>
-            <Link className='li' to='/streamjoin'>
-              STREAMJOIN
-            </Link>
             <li className='login-signup-container'>
               <Link to='/login' className='login'>
                 LOG IN
