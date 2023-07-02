@@ -13,7 +13,8 @@ const Stream = () => {
   const screenShareRef = useRef(null);
   const localStream = useRef({
     cameraTrack: null,
-    screenTrack: null
+    screenTrack: null,
+    microphoneTrack: null
   });
   const socketRef = useRef(null);
   const [screenShareStarted, setScreenShareStarted] = useState(false);
@@ -108,13 +109,15 @@ const Stream = () => {
 
       const microphoneTrack = await AgoraRTC.createMicrophoneAudioTrack();
       await client.publish(microphoneTrack);
+
+      localStream.current.microphoneTrack = microphoneTrack;
     }
   };
 
   const stopVideo = () => {
     if (videoStarted) {
       localStream.current.cameraTrack.close();
-      client.unpublish(localStream.current.cameraTrack);
+      client.off(localStream.current.cameraTrack);
       localStream.current.cameraTrack = null;
       setVideoStarted(false);
     }
@@ -123,7 +126,7 @@ const Stream = () => {
   const stopScreenShare = () => {
     if (screenShareStarted) {
       localStream.current.screenTrack.close();
-      client.unpublish(localStream.current.screenTrack);
+      client.off(localStream.current.screenTrack);
       localStream.current.screenTrack = null;
       setScreenShareStarted(false);
     }
@@ -131,7 +134,7 @@ const Stream = () => {
 
   const stopAudio = () => {
     if (audioStarted) {
-      client.unpublish(localStream.current.microphoneTrack);
+      client.off(localStream.current.microphoneTrack);
       setAudioStarted(false);
     }
   };

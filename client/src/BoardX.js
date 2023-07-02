@@ -72,7 +72,7 @@ class Board extends React.Component {
       ctx.stroke();
 
       if (this.timeout != undefined) clearTimeout(this.timeout);
-      
+
       const base64ImageData = canvas.toDataURL('image/png');
       this.props.socket.emit('canvas-data', base64ImageData);
     };
@@ -94,7 +94,7 @@ class Board extends React.Component {
     canvas.toBlob((blob) => {
       const formData = new FormData();
       formData.append('image', blob, 'screenshot.png');
-    
+
       fetch('http://localhost:5000/ocr', {
         method: 'POST',
         body: formData,
@@ -104,6 +104,7 @@ class Board extends React.Component {
             response.json().then((data) => {
               console.log('Screenshot sent successfully');
               console.log('Server output:', data);
+              this.props.setBoardText(data.output.text);
             });
           } else {
             console.error('Error sending screenshot:', response.statusText);
@@ -113,7 +114,7 @@ class Board extends React.Component {
           console.error('Error sending screenshot:', error);
         });
     });
-  }  
+  }
   render() {
     return (
       <div className="sketch" id="sketch">

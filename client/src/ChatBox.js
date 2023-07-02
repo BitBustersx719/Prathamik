@@ -44,10 +44,12 @@ function ChatBox(props) {
         <button type='button' onClick={props.voice}>
           say!
         </button>
-        <button onClick={props.handleInput}>
-          {/* <img src={Send} alt="send"/> */}
+        {props.show === 'editor' && <button onClick={props.handleInput}>
           <i class="fa-solid fa-paper-plane"></i>
-        </button>
+        </button>}
+        {props.show === 'board' && <button onClick={props.handleInputBoard}>
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>}
       </form>
     </div>
   );
