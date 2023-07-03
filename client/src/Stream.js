@@ -20,6 +20,7 @@ const Stream = () => {
   const [screenShareStarted, setScreenShareStarted] = useState(false);
   const [audioStarted, setAudioStarted] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [user, setUser] = useState('teacher');
 
   const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 
@@ -32,7 +33,7 @@ const Stream = () => {
     };
   }, []);
 
-  useEffect(() => {
+  useEffect(async () => {
     client.on('user-published', async (user, mediaType) => {
       if (mediaType === 'video') {
         await client.subscribe(user, mediaType);
@@ -53,16 +54,11 @@ const Stream = () => {
       if (mediaType === 'audio') {
         await client.subscribe(user, mediaType);
         const remoteAudioTrack = user.audioTrack;
-        remoteAudioTrack.play(remoteVideoRef.current);
+        remoteAudioTrack.play(screenShareRef.current);
       }
     });
 
-    try {
-      console.log('Joining channel');
-      client.join(agoraAppId, 'stream', null);
-    } catch (error) {
-      console.log('Error joining Agora channel:', error);
-    }
+    await client.join(agoraAppId, 'stream', null);
 
     return () => {
       stopAgoraStream();
@@ -70,9 +66,14 @@ const Stream = () => {
   }, []);
 
   const startVideo = async () => {
+    const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+
+    await client.join(agoraAppId, 'stream', null);
     if (screenShareStarted) {
       stopScreenShare();
     }
+
+    await client.unpublish();
 
     if (!videoStarted) {
       setVideoStarted(true);
@@ -87,9 +88,14 @@ const Stream = () => {
   };
 
   const startScreenShare = async () => {
+    const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+
+    await client.join(agoraAppId, 'stream', null);
     if (videoStarted) {
       stopVideo();
     }
+
+    await client.unpublish();
 
     if (!screenShareStarted) {
       setScreenShareStarted(true);
@@ -104,6 +110,9 @@ const Stream = () => {
   };
 
   const startAudio = async () => {
+    const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+
+    await client.join(agoraAppId, 'stream', null);
     if (!audioStarted) {
       setAudioStarted(true);
 
@@ -116,25 +125,30 @@ const Stream = () => {
 
   const stopVideo = () => {
     if (videoStarted) {
-      localStream.current.cameraTrack.close();
-      client.off(localStream.current.cameraTrack);
-      localStream.current.cameraTrack = null;
+      // localStream.current.cameraTrack.stop();
+      // client.unpublish(localStream.current.cameraTrack);
+      // localStream.current.cameraTrack.close();
+      client.off();
       setVideoStarted(false);
     }
   };
 
+
   const stopScreenShare = () => {
     if (screenShareStarted) {
-      localStream.current.screenTrack.close();
-      client.off(localStream.current.screenTrack);
-      localStream.current.screenTrack = null;
+      // localStream.current.screenTrack.stop();
+      // localStream.current.screenTrack.close();
+      // client.unpublish(localStream.current.screenTrack);
+      client.off();
       setScreenShareStarted(false);
     }
   };
 
   const stopAudio = () => {
     if (audioStarted) {
-      client.off(localStream.current.microphoneTrack);
+      localStream.current.microphoneTrack.stop();
+      // client.unpublish(localStream.current.microphoneTrack);
+      localStream.current.microphoneTrack.close();
       setAudioStarted(false);
     }
   };
@@ -159,7 +173,16 @@ const Stream = () => {
 
   return (
     <div className='stream-body'>
-      <div className='videoBox' id="local-video"></div>
+      <select className='user-select' onChange={(e) => setUser(e.target.value)}>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+      </select>
+      {user}
+      {user === 'teacher' && <div className='videoBox' id="local-video"></div>}
+      {user === 'teacher' && <video ref={screenShareRef} className='videoBox display-none'></video>}
+      {user === 'student' && <div className='videoBox display-none' id="local-video"></div>}
+      {user === 'student' && <video ref={screenShareRef} className='videoBox'></video>}
+      {/* <video ref={screenShareRef} className='videoBox'></video> */}
       <div className='stream-btns'>
         {!audioStarted && <button className='sxbtn' onClick={startAudio}><FontAwesomeIcon icon={faMicrophoneSlash} /></button>}
         {audioStarted && <button className='sbtn' onClick={stopAudio}><FontAwesomeIcon icon={faMicrophone} /></button>}
@@ -167,7 +190,7 @@ const Stream = () => {
         {videoStarted && <button className='sbtn' onClick={stopVideo}><FontAwesomeIcon icon={faVideo} /></button>}
         {!screenShareStarted && <button className='sbtn' onClick={startScreenShare}><FontAwesomeIcon icon={faSquarePlus} /></button>}
         <video ref={remoteVideoRef} style={{ width: '320px', height: '240px', border: '1px solid #ccc', marginBottom: '10px' }}></video>
-        <video ref={screenShareRef} id="share-screen" style={{ width: '320px', height: '240px', border: '1px solid #ccc', marginBottom: '10px' }}></video>
+        {/* <video ref={screenShareRef} className='videoBox'></video> */}
       </div>
     </div>
   );

@@ -46,3 +46,7 @@
     background-color: rgb(235, 235, 235);
     cursor: pointer;
 }
+
+.display-none{
+    display: none;
+}
