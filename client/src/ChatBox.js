@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ChatBox.css';
 import './index.css';
 
@@ -7,20 +7,31 @@ function ChatBox(props) {
   return (
     <div className='chatbox_parent'>
       <div className='chatbox_header'>
-          <img src='/x.png' alt='bot'></img>
-          <div className='bot_details'>
-            <h3>Cupkaks</h3>
-            <p>AI bot</p>
-          </div>
+        <img src='/x.png' alt='bot'></img>
+        <div className='bot_details'>
+          <h3>Cupkaks</h3>
+          <p>AI bot</p>
+        </div>
       </div>
 
       <div className='chat_container'>
 
         {props.chats.map((chat) => (
-          <div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
-            {!chat.ownedByCurrentUser && <img src={`http://localhost:3000/uploads/${chat.profilePic}`}/>}
-            <p>{chat.input}</p>
-          </div>
+          chat.type !== 'mcq' ?
+            (<div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
+              {!chat.ownedByCurrentUser && <img src={`http://localhost:3000/uploads/${chat.profilePic}`} />}
+              <p>{chat.input}</p>
+            </div>) :
+            (<div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
+              {!chat.ownedByCurrentUser && <img src={`http://localhost:3000/uploads/${chat.profilePic}`} />}
+              <div className='col'>
+                <p>{chat.question}</p>
+                <div className='mcq_options'>
+                  <p className='mcq_option'>{chat.options[0]}</p>
+                  <p className='mcq_option'>{chat.options[1]}</p>
+                </div>
+              </div>
+            </div>)
         ))}
 
       </div>

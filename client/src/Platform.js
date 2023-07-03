@@ -4,7 +4,6 @@ import React from 'react';
 import ChatBox from './ChatBox';
 import IDE from './IDE';
 import { useState } from 'react';
-import Board from './Board';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -23,6 +22,100 @@ function Platform(props) {
   const [output, setOutput] = useState('');
   const [inputX, setInputX] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('cpp');
+  const [change, setChange] = useState(false);
+  const [correctAnswer, setCorrectAnswer] = useState('');
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setChange(prevChange => !prevChange);
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const input = `You are a teacher preparing a quiz for your students. Please help me create a multiple-choice question with two options (A and B) based on the given context.
+
+      Context: will be given by the user
+
+      Question: [Insert your question related to the context]
+
+      A) [Option A]
+
+      B) [Option B]
+
+      Please specify the correct answer by choosing one of the following:
+      1) A
+      2) B
+
+      Example 1:
+      Context: The following question is about the solar system.
+      Question: Which planet is closest to the Sun?
+      A) Venus
+      B) Mercury
+      Correct Answer: B
+
+      Example 2:
+      Context: The following question is about European geography.
+      Question: What is the capital of France?
+      A) Paris
+      B) Berlin
+      Correct Answer: A
+
+      Actual Question:
+      Context: ${code}
+      Question: [Your generated question goes here]
+      A) [Option A]
+      B) [Option B]
+      Correct Answer: [Specify the correct answer by choosing A or B]
+      `;
+      console.log(input);
+      try {
+        const response = await fetch('http://localhost:3000/input', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ input })
+        });
+
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+
+        const data = await response.json();
+        setMessage(data.output);
+        const questionRegex = /Question: (.+)/;
+        const questionMatch = data.output.match(questionRegex);
+        const question = questionMatch ? questionMatch[1].trim() : "";
+
+        const optionsRegex = /[A-Z]\) (.+)/g;
+        const optionsMatches = data.output.matchAll(optionsRegex);
+        const options = Array.from(optionsMatches, match => match[1].trim());
+
+        const correctAnswerRegex = /Correct Answer: ([A-Z])/;
+        const correctAnswerMatch = data.output.match(correctAnswerRegex);
+        const correctAnswer = correctAnswerMatch ? correctAnswerMatch[1] : "";
+        setCorrectAnswer(correctAnswer);
+        setChats((chats) => [
+          ...chats,
+          { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', type: 'mcq' , question, options, correctAnswer }
+        ]);
+        props.socket.emit('bot_message', {
+          input: data.output,
+          ownedByCurrentUser: false,
+          profilePic: 'x.png'
+        });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    if (code !== '')
+      fetchData();
+  }, [change]);
+
 
   useEffect(() => {
     props.socket.on("new_message", (data) => {
@@ -68,41 +161,6 @@ function Platform(props) {
       props.socket.off("bot_message");
     }
   }, [props.socket]);
-
-  // DO NOT DELETE THIS CODE
-  // setTimeout(async () => {
-  //   const userInput = 'tell me a mcq question on the above code';
-  //   console.log('code' + code);
-  //   const input = `${code}\n${userInput}`;
-  //   console.log('input' + input);
-  //   try {
-  //     const response = await fetch('http://localhost:3000/input', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ input })
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Request failed');
-  //     }
-
-  //     const data = await response.json();
-  //     setMessage(data.output);
-  //     setChats((chats) => [
-  //       ...chats,
-  //       { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }
-  //     ]);
-  //     props.socket.emit('bot_message', {
-  //       input: data.output,
-  //       ownedByCurrentUser: false,
-  //       profilePic: 'x.png'
-  //     });
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }, 30000);
 
   const handleInput = async (e) => {
     e.preventDefault();
