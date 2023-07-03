@@ -4,6 +4,32 @@ import './index.css';
 
 function ChatBox(props) {
 
+  const handleColorChange = (option) => {
+    if (option === 'A') {
+      if(props.correctAnswer === 'A')
+      props.setColor({
+        A: 'green',
+        B: 'lightgrey'
+      });
+      else
+      props.setColor({
+        A: 'red',
+        B: 'lightgrey'
+      });
+    } else {
+      if(props.correctAnswer === 'B')
+      props.setColor({
+        B: 'green',
+        A: 'lightgrey'
+      });
+      else
+      props.setColor({
+        B: 'red',
+        A: 'lightgrey'
+      });
+    }
+  }
+
   return (
     <div className='chatbox_parent'>
       <div className='chatbox_header'>
@@ -27,8 +53,8 @@ function ChatBox(props) {
               <div className='col'>
                 <p>{chat.question}</p>
                 <div className='mcq_options'>
-                  <p className='mcq_option'>{chat.options[0]}</p>
-                  <p className='mcq_option'>{chat.options[1]}</p>
+                  <p className='mcq_option' style={{backgroundColor : props.color.A}} onClick={() => handleColorChange('A')}>{chat.options[0]}</p>
+                  <p className='mcq_option' style={{backgroundColor : props.color.B}} onClick={() => handleColorChange('B')}>{chat.options[1]}</p>
                 </div>
               </div>
             </div>)

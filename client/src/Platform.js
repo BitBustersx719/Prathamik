@@ -24,6 +24,10 @@ function Platform(props) {
   const [currentLanguage, setCurrentLanguage] = useState('cpp');
   const [change, setChange] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState('');
+  const [color, setColor] = useState({
+    A: 'lightgrey',
+    B: 'lightgrey'
+  });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -98,6 +102,11 @@ function Platform(props) {
         const correctAnswerMatch = data.output.match(correctAnswerRegex);
         const correctAnswer = correctAnswerMatch ? correctAnswerMatch[1] : "";
         setCorrectAnswer(correctAnswer);
+        setChats((chats) => chats.filter((chat) => chat.type !== 'mcq'));
+        setColor({
+          A: 'lightgrey',
+          B: 'lightgrey'
+        });
         setChats((chats) => [
           ...chats,
           { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', type: 'mcq' , question, options, correctAnswer }
@@ -385,6 +394,9 @@ function Platform(props) {
             show={show}
             handleInputBoard={handleInputBoard}
             captureScreenshot={captureScreenshot}
+            correctAnswer={correctAnswer}
+            color={color}
+            setColor={setColor}
           />
         </div>
       </div>
