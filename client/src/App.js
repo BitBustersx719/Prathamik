@@ -12,10 +12,6 @@ import Signup from './Signup';
 import Login from './Login';
 import 'font-awesome/css/font-awesome.min.css';
 import { useState } from 'react';
-import Container from './Container';
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:3000");
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -26,9 +22,8 @@ function App() {
           <Route exact path="/" element={<Home setIsAdmin={setIsAdmin} />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/:id" element={<Platform isAdmin={isAdmin} socket={socket} />} />
+          <Route exact path="/:id" element={<Platform isAdmin={isAdmin} />} />
           <Route exact path="/stream" element={<Stream />} />
-          <Route exact path='/whiteboard' element={<Container socket={socket} />} />
         </Routes>
       </div>
     </Router>

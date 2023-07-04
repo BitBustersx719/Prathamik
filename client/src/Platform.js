@@ -8,6 +8,9 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import Container from './Container';
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:3000");
 
 function Platform(props) {
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
@@ -111,7 +114,7 @@ function Platform(props) {
           ...chats,
           { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', type: 'mcq' , question, options, correctAnswer }
         ]);
-        props.socket.emit('bot_message', {
+        socket.emit('bot_message', {
           input: data.output,
           ownedByCurrentUser: false,
           profilePic: 'x.png'
@@ -127,7 +130,7 @@ function Platform(props) {
 
 
   useEffect(() => {
-    props.socket.on("new_message", (data) => {
+    socket.on("new_message", (data) => {
       const incommingMessage = {
         ...data,
         ownedByCurrentUser: data.user === JSON.parse(localStorage.getItem('user')).data._id,
@@ -137,39 +140,39 @@ function Platform(props) {
     });
 
     return () => {
-      props.socket.off("new_message");
+      socket.off("new_message");
     }
-  }, [props.socket]);
+  }, [socket]);
 
   useEffect(() => {
-    props.socket.on("output", (data) => {
+    socket.on("output", (data) => {
       setOutput(data);
     });
 
     return () => {
-      props.socket.off("output");
+      socket.off("output");
     }
-  }, [props.socket]);
+  }, [socket]);
 
   useEffect(() => {
-    props.socket.on("input", (data) => {
+    socket.on("input", (data) => {
       setInputX(data);
     });
 
     return () => {
-      props.socket.off("input");
+      socket.off("input");
     }
-  }, [props.socket]);
+  }, [socket]);
 
   useEffect(() => {
-    props.socket.on("bot_message", (data) => {
+    socket.on("bot_message", (data) => {
       setChats((chats) => [...chats, data]);
     });
 
     return () => {
-      props.socket.off("bot_message");
+      socket.off("bot_message");
     }
-  }, [props.socket]);
+  }, [socket]);
 
   const handleInput = async (e) => {
     e.preventDefault();
@@ -194,7 +197,7 @@ function Platform(props) {
       const data = await response.json();
       setMessage(data.output);
       setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-      props.socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
+      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -212,7 +215,7 @@ function Platform(props) {
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
-    props.socket.emit("chat_message", { input, user });
+    socket.emit("chat_message", { input, user });
   }
 
   function voice() {
@@ -264,7 +267,7 @@ function Platform(props) {
         }
       });
       setOutput(response.data.output);
-      props.socket.emit("output", response.data.output);
+      socket.emit("output", response.data.output);
     } catch (error) {
       console.error(error);
     }
@@ -320,7 +323,7 @@ function Platform(props) {
               const data = await response.json();
               setMessage(data.output);
               setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-              props.socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });// <-- This should reflect the updated state
+              socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });// <-- This should reflect the updated state
             });
           } else {
             console.error('Error sending screenshot:', response.statusText);
@@ -370,13 +373,13 @@ function Platform(props) {
       <div className='platform_components'>
         {show === 'editor' && (
           <div className="ide_in_platform_container">
-            <IDE socket={props.socket} setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
+            <IDE socket={socket} setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
           </div>
         )}
 
         {show === 'board' && (
           <div className="board_in_platform_container">
-            <Container socket={props.socket} canvasRef={canvasRef} />
+            <Container socket={socket} canvasRef={canvasRef} />
           </div>
         )}
 
