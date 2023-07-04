@@ -1,0 +1,17 @@
+.stream-container {
+    background: white;
+    color: black;
+    height: 100%;
+    border: 1px solid lightgrey;
+}
+
+.videoCam{
+    height: 400px !important;
+    width: 800px !important;
+}
+
+.pview{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -113,7 +113,7 @@ function ParticipantView(props) {
     }, [micStream, micOn]);
 
     return (
-        <div>
+        <div className="pview">
             <p>
                 Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
                 {micOn ? "ON" : "OFF"}
@@ -133,6 +133,7 @@ function ParticipantView(props) {
                     onError={(err) => {
                         console.log(err, "participant video error");
                     }}
+                    className="videoCam"
                 />
             )}
         </div>
@@ -186,15 +187,22 @@ function MeetingView(props) {
             props.onMeetingLeave();
         },
     });
+
     const joinMeeting = () => {
         setJoined("JOINING");
         join();
     };
 
+    useEffect(() => {
+        setTimeout(() => {
+            joinMeeting();
+        }, 1000);
+    }, []);
+
     const { presenterId } = useMeeting();
 
     return (
-        <div className="container">
+        <div className="stream-container">
             <h3>Meeting Id: {props.meetingId}</h3>
             {joined && joined == "JOINED" ? (
                 <div>
