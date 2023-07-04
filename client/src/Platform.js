@@ -8,6 +8,7 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import Container from './Container';
+import StreamZ from './StreamZ';
 import io from "socket.io-client";
 
 const socket = io.connect("http://localhost:3000");
@@ -17,7 +18,7 @@ function Platform(props) {
   const [code, setCode] = useState('');
   const [userInput, setUserInput] = useState('');
   const [message, setMessage] = useState('');
-  const [show, setShow] = useState('editor');
+  const [show, setShow] = useState('stream');
   const canvasRef = useRef(null);
   const [input, setInput] = useState('');
   const inputRef = useRef(null);
@@ -104,7 +105,7 @@ function Platform(props) {
         const correctAnswerRegex = /Correct Answer: ([AB])/;
         const correctAnswerMatch = data.output.match(correctAnswerRegex);
         const correctAnswer = correctAnswerMatch ? correctAnswerMatch[1] : "";
-        if(question === "" || options.length !== 2 || correctAnswer === "") {
+        if (question === "" || options.length !== 2 || correctAnswer === "") {
           return;
         }
         setCorrectAnswer(correctAnswer);
@@ -115,7 +116,7 @@ function Platform(props) {
         });
         setChats((chats) => [
           ...chats,
-          { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', type: 'mcq' , question, options, correctAnswer }
+          { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', type: 'mcq', question, options, correctAnswer }
         ]);
         socket.emit('bot_message', {
           input: data.output,
@@ -132,7 +133,7 @@ function Platform(props) {
     };
 
     // if (code !== '')
-      // fetchData();
+    //   fetchData();
   }, [change]);
 
 
@@ -354,6 +355,7 @@ function Platform(props) {
           </div>
           <div>
             <select onChange={(e) => setShow(e.target.value)}>
+              <option value="stream">Stream</option>
               <option value="editor">IDE</option>
               <option value="board">Board</option>
             </select>
@@ -387,6 +389,12 @@ function Platform(props) {
         {show === 'board' && (
           <div className="board_in_platform_container">
             <Container socket={socket} canvasRef={canvasRef} />
+          </div>
+        )}
+
+        {show === 'stream' && (
+          <div className="stream_in_platform_container">
+            <StreamZ socket={socket} roomid={roomid} />
           </div>
         )}
 

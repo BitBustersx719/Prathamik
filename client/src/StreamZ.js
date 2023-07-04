@@ -33,8 +33,7 @@ function JoinScreen({ getMeetingAndToken }) {
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
     useParticipant(presenterId);
-
-    //Creating a media stream from the screen share stream
+    
     const mediaStream = useMemo(() => {
         if (screenShareOn && screenShareStream) {
             const mediaStream = new MediaStream();
@@ -72,18 +71,14 @@ const PresenterView = ({ presenterId }) => {
     return (
         <>
             <ReactPlayer
-                //
-                playsinline // very very imp prop
+                playsinline
                 playIcon={<></>}
-                //
                 pip={false}
                 light={false}
                 controls={false}
                 muted={true}
                 playing={true}
-                //
-                url={mediaStream} // passing mediastream here
-                //
+                url={mediaStream}
                 height={"100%"}
                 width={"100%"}
                 onError={(err) => {
@@ -147,16 +142,13 @@ function ParticipantView(props) {
             <audio ref={micRef} autoPlay playsInline muted={isLocal} />
             {webcamOn && (
                 <ReactPlayer
-                    //
-                    playsinline // very very imp prop
+                    playsinline
                     pip={false}
                     light={false}
                     controls={false}
                     muted={true}
                     playing={true}
-                    //
                     url={videoStream}
-                    //
                     height={"300px"}
                     width={"300px"}
                     onError={(err) => {
@@ -207,12 +199,10 @@ function MeetingView(props) {
     }
 
     const { join, participants } = useMeeting({
-        //callback for when meeting is joined successfully
         onMeetingJoined: () => {
             setJoined("JOINED");
         },
         onPresenterChanged,
-        //callback for when meeting is left
         onMeetingLeft: () => {
             props.onMeetingLeave();
         },
@@ -250,14 +240,12 @@ function MeetingView(props) {
 function StreamZ(props) {
     const [meetingId, setMeetingId] = useState(null);
 
-    //Getting the meeting id by calling the api we just wrote
     const getMeetingAndToken = async (id) => {
         const meetingId =
             id == null ? await createMeeting({ token: authToken }) : id;
         setMeetingId(meetingId);
     };
 
-    //This will set Meeting Id to null when meeting is left or ended
     const onMeetingLeave = () => {
         setMeetingId(null);
     };

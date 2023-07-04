@@ -24,7 +24,7 @@ function App() {
           <Route exact path="/" element={<Home setIsAdmin={setIsAdmin} />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/:id" element={<Platform isAdmin={isAdmin} />} />
+          <Route exact path="/:roomid" element={<Platform isAdmin={isAdmin} />} />
           {/* <Route exact path="/stream" element={<Stream />} /> */}
           <Route exact path='/whiteboard' element={<Container />} />
           <Route exact path='/streamz' element={<StreamZ />} />
