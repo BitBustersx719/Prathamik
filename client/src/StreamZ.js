@@ -71,7 +71,6 @@ const PresenterView = ({ presenterId }) => {
 
     return (
         <>
-        // playing the media stream in the ReactPlayer
             <ReactPlayer
                 //
                 playsinline // very very imp prop
@@ -100,7 +99,6 @@ function ParticipantView(props) {
     const micRef = useRef(null);
     const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
         useParticipant(props.participantId, { onStreamEnabled, onStreamDisabled });
-    const { presenterId } = useMeeting();
 
     function onStreamEnabled(stream) {
         if (stream.kind === 'share') {
@@ -166,7 +164,6 @@ function ParticipantView(props) {
                     }}
                 />
             )}
-            {presenterId && <PresenterView presenterId={presenterId} />}
         </div>
     );
 }
@@ -225,6 +222,8 @@ function MeetingView(props) {
         join();
     };
 
+    const { presenterId } = useMeeting();
+
     return (
         <div className="container">
             <h3>Meeting Id: {props.meetingId}</h3>
@@ -243,6 +242,7 @@ function MeetingView(props) {
             ) : (
                 <button onClick={joinMeeting}>Join</button>
             )}
+            {presenterId && <PresenterView presenterId={presenterId} />}
         </div>
     );
 }
@@ -268,7 +268,7 @@ function StreamZ(props) {
                 meetingId,
                 micEnabled: true,
                 webcamEnabled: true,
-                name: "C.V. Raman",
+                name: "Niladri",
             }}
             token={authToken}
         >
