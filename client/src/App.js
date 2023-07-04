@@ -13,10 +13,6 @@ import Login from './Login';
 import StreamZ from './StreamZ';
 import 'font-awesome/css/font-awesome.min.css';
 import { useState } from 'react';
-import Container from './Container';
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:3000");
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
