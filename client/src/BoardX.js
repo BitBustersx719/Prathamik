@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './BoardX.css';
 
 class Board extends React.Component {
@@ -89,38 +88,11 @@ class Board extends React.Component {
       image.src = data;
     });
   }
-  captureScreenshot() {
-    const canvas = document.querySelector('#board');
-    canvas.toBlob((blob) => {
-      const formData = new FormData();
-      formData.append('image', blob, 'screenshot.png');
 
-      fetch('http://localhost:5000/ocr', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => {
-          if (response.ok) {
-            response.json().then((data) => {
-              console.log('Screenshot sent successfully');
-              console.log('Server output:', data);
-              this.props.setBoardText(data.text);
-              console.log(data.text)
-            });
-          } else {
-            console.error('Error sending screenshot:', response.statusText);
-          }
-        })
-        .catch((error) => {
-          console.error('Error sending screenshot:', error);
-        });
-    });
-  }
   render() {
     return (
       <div className="sketch" id="sketch">
-        <canvas className="board" id="board"></canvas>
-        <button onClick={() => this.captureScreenshot()}>Capture Screenshot</button>
+        <canvas className="board" id="board" ref={this.props.canvasRef}></canvas>
       </div>
     );
   }
