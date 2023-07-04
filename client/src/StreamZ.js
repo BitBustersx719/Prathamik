@@ -30,87 +30,191 @@ function JoinScreen({ getMeetingAndToken }) {
     );
 }
 
+const PresenterView = ({ presenterId }) => {
+    const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
+    useParticipant(presenterId);
+
+    //Creating a media stream from the screen share stream
+    const mediaStream = useMemo(() => {
+        if (screenShareOn && screenShareStream) {
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(screenShareStream.track);
+            return mediaStream;
+        }
+    }, [screenShareStream, screenShareOn]);
+
+    const audioPlayer = useRef();
+
+    useEffect(() => {
+        if (
+          !isLocal &&
+          audioPlayer.current &&
+          screenShareOn &&
+          screenShareAudioStream
+        ) {
+          const mediaStream = new MediaStream();
+          mediaStream.addTrack(screenShareAudioStream.track);
+    
+          audioPlayer.current.srcObject = mediaStream;
+          audioPlayer.current.play().catch((err) => {
+            if (
+              err.message ===
+              "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+            ) {
+              console.error("audio" + err.message);
+            }
+          });
+        } else {
+          audioPlayer.current.srcObject = null;
+        }
+      }, [screenShareAudioStream, screenShareOn, isLocal]);
+
+    return (
+        <>
+        // playing the media stream in the ReactPlayer
+            <ReactPlayer
+                //
+                playsinline // very very imp prop
+                playIcon={<></>}
+                //
+                pip={false}
+                light={false}
+                controls={false}
+                muted={true}
+                playing={true}
+                //
+                url={mediaStream} // passing mediastream here
+                //
+                height={"100%"}
+                width={"100%"}
+                onError={(err) => {
+                    console.log(err, "presenter video error");
+                }}
+            />
+            <audio autoPlay playsInline controls={false} ref={audioPlayer} />
+        </>
+    );
+};
+
 function ParticipantView(props) {
     const micRef = useRef(null);
     const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
-      useParticipant(props.participantId);
-  
-    const videoStream = useMemo(() => {
-      if (webcamOn && webcamStream) {
-        const mediaStream = new MediaStream();
-        mediaStream.addTrack(webcamStream.track);
-        return mediaStream;
-      }
-    }, [webcamStream, webcamOn]);
-  
-    useEffect(() => {
-      if (micRef.current) {
-        if (micOn && micStream) {
-          const mediaStream = new MediaStream();
-          mediaStream.addTrack(micStream.track);
-  
-          micRef.current.srcObject = mediaStream;
-          micRef.current
-            .play()
-            .catch((error) =>
-              console.error("videoElem.current.play() failed", error)
-            );
-        } else {
-          micRef.current.srcObject = null;
-        }
-      }
-    }, [micStream, micOn]);
-  
-    return (
-      <div>
-        <p>
-          Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
-          {micOn ? "ON" : "OFF"}
-        </p>
-        <audio ref={micRef} autoPlay playsInline muted={isLocal} />
-        {webcamOn && (
-          <ReactPlayer
-            //
-            playsinline // very very imp prop
-            pip={false}
-            light={false}
-            controls={false}
-            muted={true}
-            playing={true}
-            //
-            url={videoStream}
-            //
-            height={"300px"}
-            width={"300px"}
-            onError={(err) => {
-              console.log(err, "participant video error");
-            }}
-          />
-        )}
-      </div>
-    );
-  }
+        useParticipant(props.participantId, { onStreamEnabled, onStreamDisabled });
+    const { presenterId } = useMeeting();
 
-function Controls() {
+    function onStreamEnabled(stream) {
+        if (stream.kind === 'share') {
+            console.log("Share Stream On: onStreamEnabled", stream);
+        }
+    }
+
+    function onStreamDisabled(stream) {
+        if (stream.kind === 'share') {
+            console.log("Share Stream Off: onStreamDisabled", stream);
+        }
+    }
+
+    const videoStream = useMemo(() => {
+        if (webcamOn && webcamStream) {
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(webcamStream.track);
+            return mediaStream;
+        }
+    }, [webcamStream, webcamOn]);
+
+    useEffect(() => {
+        if (micRef.current) {
+            if (micOn && micStream) {
+                const mediaStream = new MediaStream();
+                mediaStream.addTrack(micStream.track);
+
+                micRef.current.srcObject = mediaStream;
+                micRef.current
+                    .play()
+                    .catch((error) =>
+                        console.error("videoElem.current.play() failed", error)
+                    );
+            } else {
+                micRef.current.srcObject = null;
+            }
+        }
+    }, [micStream, micOn]);
+
+    return (
+        <div>
+            <p>
+                Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
+                {micOn ? "ON" : "OFF"}
+            </p>
+            <audio ref={micRef} autoPlay playsInline muted={isLocal} />
+            {webcamOn && (
+                <ReactPlayer
+                    //
+                    playsinline // very very imp prop
+                    pip={false}
+                    light={false}
+                    controls={false}
+                    muted={true}
+                    playing={true}
+                    //
+                    url={videoStream}
+                    //
+                    height={"300px"}
+                    width={"300px"}
+                    onError={(err) => {
+                        console.log(err, "participant video error");
+                    }}
+                />
+            )}
+            {presenterId && <PresenterView presenterId={presenterId} />}
+        </div>
+    );
+}
+
+function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
     return (
         <div>
             <button onClick={() => leave()}>Leave</button>
             <button onClick={() => toggleMic()}>toggleMic</button>
             <button onClick={() => toggleWebcam()}>toggleWebcam</button>
+            <button onClick={() => props.handleEnableScreenShare()}>Enable Screen Share</button>
+            <button onClick={() => props.handleDisableScreenShare()}>Disable Screen Share</button>
+            <button onClick={() => props.handleToggleScreenShare()}>Toggle Screen Share</button>
         </div>
     );
 }
 
 function MeetingView(props) {
     const [joined, setJoined] = useState(null);
-    //Get the method which will be used to join the meeting.
-    //We will also get the participants list to display all participants
+    const { enableScreenShare, disableScreenShare, toggleScreenShare } = useMeeting();
+
+    const handleEnableScreenShare = () => {
+        enableScreenShare();
+    }
+
+    const handleDisableScreenShare = () => {
+        disableScreenShare();
+    }
+
+    const handleToggleScreenShare = () => {
+        toggleScreenShare();
+    }
+
+    function onPresenterChanged(presenterId) {
+        if (presenterId) {
+            console.log(presenterId, "started screen share");
+        } else {
+            console.log("someone stopped screen share");
+        }
+    }
+
     const { join, participants } = useMeeting({
         //callback for when meeting is joined successfully
         onMeetingJoined: () => {
             setJoined("JOINED");
         },
+        onPresenterChanged,
         //callback for when meeting is left
         onMeetingLeft: () => {
             props.onMeetingLeave();
@@ -126,8 +230,7 @@ function MeetingView(props) {
             <h3>Meeting Id: {props.meetingId}</h3>
             {joined && joined == "JOINED" ? (
                 <div>
-                    <Controls />
-            //For rendering all the participants in the meeting
+                    <Controls handleEnableScreenShare={handleEnableScreenShare} handleDisableScreenShare={handleDisableScreenShare} handleToggleScreenShare={handleToggleScreenShare} />
                     {[...participants.keys()].map((participantId) => (
                         <ParticipantView
                             participantId={participantId}
@@ -146,12 +249,6 @@ function MeetingView(props) {
 
 function StreamZ(props) {
     const [meetingId, setMeetingId] = useState(null);
-    // const webcamRef = useRef(null);
-    // const micRef = useRef(null);
-
-    // const { webcamStream, micStream, webcamOn, micOn } = useParticipant(
-    //     props.participantId
-    // );
 
     //Getting the meeting id by calling the api we just wrote
     const getMeetingAndToken = async (id) => {
