@@ -58,6 +58,7 @@ class Container extends React.Component {
             color={this.state.color}
             size={this.state.size}
             socket={this.props.socket}
+            setBoardText={this.props.setBoardText}
           ></Board>
         </div>
       </div>

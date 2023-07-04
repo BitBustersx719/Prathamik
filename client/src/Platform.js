@@ -8,13 +8,14 @@ import Board from './Board';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import Container from './Container';
 
 function Platform(props) {
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
   const [code, setCode] = useState('');
   const [userInput, setUserInput] = useState('');
   const [message, setMessage] = useState('');
-  const [show, setShow] = useState('editor');
+  const [show, setShow] = useState('board');
   const canvasRef = useRef(null);
   const [input, setInput] = useState('');
   const inputRef = useRef(null);
@@ -22,6 +23,7 @@ function Platform(props) {
   const [output, setOutput] = useState('');
   const [inputX, setInputX] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('cpp');
+  const [boardText, setBoardText] = useState('');
 
   useEffect(() => {
     props.socket.on("new_message", (data) => {
@@ -131,6 +133,35 @@ function Platform(props) {
       console.error('Error:', error);
     }
   };
+
+  const handleInputBoard = async (e) => {
+    e.preventDefault();
+    setInput(userInput);
+    sendInput(userInput);
+    inputRef.current.value = '';
+    const input = `${boardText}\n${userInput}`;
+
+    try {
+      const response = await fetch('http://localhost:3000/input', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input })
+      });
+
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+
+      const data = await response.json();
+      setMessage(data.output);
+      setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
+      props.socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
@@ -254,7 +285,8 @@ function Platform(props) {
 
         {show === 'board' && (
           <div className="board_in_platform_container">
-            <Board handleImageInput={handleImageInput} canvasRef={canvasRef} />
+            {/* <Board handleImageInput={handleImageInput} canvasRef={canvasRef} /> */}
+            <Container socket={props.socket} setBoardText={setBoardText} />
           </div>
         )}
 
@@ -269,6 +301,8 @@ function Platform(props) {
             sendInput={sendInput}
             chats={chats}
             voice={voice}
+            show={show}
+            handleInputBoard={handleInputBoard}
           />
         </div>
       </div>

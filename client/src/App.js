@@ -7,7 +7,6 @@ import About from './About';
 import Service from './Service';
 import Footer from './Footer';
 import Platform from './Platform';
-// import Whiteboard from './Whiteboard'
 import Stream from './Stream';
 import Signup from './Signup';
 import Login from './Login';
@@ -29,7 +28,6 @@ function App() {
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/:id" element={<Platform isAdmin={isAdmin} socket={socket} />} />
           <Route exact path="/stream" element={<Stream />} />
-          {/* <Route exact path="/board" element={<Whiteboard />} /> */}
           <Route exact path='/whiteboard' element={<Container socket={socket} />} />
         </Routes>
       </div>

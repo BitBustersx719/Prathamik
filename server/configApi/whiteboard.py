@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from google.cloud import vision_v1
+from google.cloud import speech
 from PIL import Image
 import base64
 import requests
@@ -60,6 +61,5 @@ def upload():
     response = requests.post(url, files=payload)
 
     return response.text, response.status_code
-
 if __name__ == '__main__':
     app.run(debug=True)
