@@ -94,13 +94,16 @@ function Platform(props) {
         const questionMatch = data.output.match(questionRegex);
         const question = questionMatch ? questionMatch[1].trim() : "";
 
-        const optionsRegex = /[A-Z]\) (.+)/g;
+        const optionsRegex = /[AB]\) (.+)/g;
         const optionsMatches = data.output.matchAll(optionsRegex);
         const options = Array.from(optionsMatches, match => match[1].trim());
 
-        const correctAnswerRegex = /Correct Answer: ([A-Z])/;
+        const correctAnswerRegex = /Correct Answer: ([AB])/;
         const correctAnswerMatch = data.output.match(correctAnswerRegex);
         const correctAnswer = correctAnswerMatch ? correctAnswerMatch[1] : "";
+        if(question === "" || options.length !== 2 || correctAnswer === "") {
+          return;
+        }
         setCorrectAnswer(correctAnswer);
         setChats((chats) => chats.filter((chat) => chat.type !== 'mcq'));
         setColor({
@@ -114,15 +117,19 @@ function Platform(props) {
         props.socket.emit('bot_message', {
           input: data.output,
           ownedByCurrentUser: false,
-          profilePic: 'x.png'
+          profilePic: 'x.png',
+          type: 'mcq',
+          question,
+          options,
+          correctAnswer
         });
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
-    if (code !== '')
-      fetchData();
+    // if (code !== '')
+      // fetchData();
   }, [change]);
 
 
