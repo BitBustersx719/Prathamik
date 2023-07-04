@@ -394,7 +394,7 @@ function Platform(props) {
 
         {show === 'stream' && (
           <div className="stream_in_platform_container">
-            <StreamZ socket={socket} roomid={roomid} />
+            <StreamZ socket={socket} />
           </div>
         )}
 
