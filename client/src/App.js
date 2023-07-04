@@ -7,9 +7,10 @@ import About from './About';
 import Service from './Service';
 import Footer from './Footer';
 import Platform from './Platform';
-import Stream from './Stream';
+// import Stream from './Stream';
 import Signup from './Signup';
 import Login from './Login';
+import StreamZ from './StreamZ';
 import 'font-awesome/css/font-awesome.min.css';
 import { useState } from 'react';
 import Container from './Container';
@@ -27,8 +28,9 @@ function App() {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route exact path="/:id" element={<Platform isAdmin={isAdmin} socket={socket} />} />
-          <Route exact path="/stream" element={<Stream />} />
+          {/* <Route exact path="/stream" element={<Stream />} /> */}
           <Route exact path='/whiteboard' element={<Container socket={socket} />} />
+          <Route exact path='/streamz' element={<StreamZ />} />
         </Routes>
       </div>
     </Router>
