@@ -76,7 +76,7 @@ function handleWebSocketConnection(socket) {
   })
 
   socket.on('disconnect', () => {
-    handleParticipantLeave(socket);
+    console.log(`User Disconnected: ${socket.id}`);
   });
 }
 
