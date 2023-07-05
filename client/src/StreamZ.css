@@ -2,7 +2,9 @@
     background: #202124;
     color: white;
     height: 100%;
-    border: 1px solid lightgrey;
+    overflow: auto;
+    width: 100%;
+    /* border: 1px solid lightgrey; */
 }
 
 .videoCam{
@@ -23,6 +25,7 @@
 
 .video_control_buttons
 {
+    margin-top: 50px;
     display: flex;
     justify-content: center;
     background: transparent;
@@ -38,7 +41,6 @@
     border-radius: 50%;
     font-size: 18px;
     color: white;
-    background-color: #3D4043;
 
 }
 
@@ -49,7 +51,7 @@
 
 .video
 {
-    padding: 10px 11px;
+    padding: 10px 11.5px;
 }
 
 .screen_share
@@ -57,7 +59,33 @@
     padding: 10px 11px;
 }
 
+.coding
+{
+    padding: 11px 10.5px;
+
+}
+
+.whiteboard
+{
+    padding: 11px 12px;
+}
+
 .leave
 {
-    padding: 10px 12px;
+    background-color: #D85140;
+    padding: 10px 12.5px;
+}
+
+.black_bg
+{
+    background-color: #3D4043;
+}
+.red_bg
+{
+    background-color: #D85140;
+}
+
+.whiteboard_in_stream
+{
+    height: calc(100% - 93px);
 }

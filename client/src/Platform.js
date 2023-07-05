@@ -380,7 +380,7 @@ function Platform(props) {
       </div>
 
       <div className='platform_components'>
-        {show === 'editor' && (
+        {/* {show === 'editor' && (
           <div className="ide_in_platform_container">
             <IDE socket={socket} setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
           </div>
@@ -390,7 +390,7 @@ function Platform(props) {
           <div className="board_in_platform_container">
             <Container socket={socket} canvasRef={canvasRef} />
           </div>
-        )}
+        )} */}
 
         {show === 'stream' && (
           <div className="stream_in_platform_container">
