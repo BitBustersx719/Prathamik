@@ -3,8 +3,8 @@ from google.cloud import speech
 import pyttsx3
 import os
 app = Flask(__name__)
-#os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "server\\creds\\ocr-vision.json"
-@app.route('/api/caption', methods=['POST'])
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "server\\creds\\speech_to_text.json"
+@app.route('/caption', methods=['POST'])
 def caption():
     if 'audio' not in request.files:
         return jsonify({'error': 'No audio file provided'})
@@ -15,7 +15,7 @@ def caption():
     client = speech.SpeechClient()
     audio_data = speech.RecognitionAudio(content=content)
     config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
         sample_rate_hertz=16000,
         language_code='en-US',
     )
@@ -27,6 +27,7 @@ def caption():
         captions.append(result.alternatives[0].transcript)
 
     return jsonify({'captions': captions})  
+
 @app.route('/api/text', methods=['POST'])
 def text_to_speech():
     if 'text' not in request.form:

@@ -61,5 +61,28 @@ def upload():
     response = requests.post(url, files=payload)
 
     return response.text, response.status_code
+@app.route('/caption', methods=['POST'])
+def caption():
+    if 'audio' not in request.files:
+        return jsonify({'error': 'No audio file provided'})
+
+    audio = request.files['audio']
+    content = audio.read()
+
+    client = speech.SpeechClient()
+    audio_data = speech.RecognitionAudio(content=content)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
+        sample_rate_hertz=16000,
+        language_code='en-US',
+    )
+
+    response = client.recognize(config=config, audio=audio_data)
+
+    captions = []
+    for result in response.results:
+        captions.append(result.alternatives[0].transcript)
+
+    return jsonify({'captions': captions})  
 if __name__ == '__main__':
     app.run(debug=True)

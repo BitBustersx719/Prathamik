@@ -39,9 +39,9 @@ function IDE(props) {
     if (props.isAdmin) {
       setUser('teacher');
     }
-    else {
-      setUser('student');
-    }
+    // else {
+    //   setUser('student');
+    // }
   }, [])
 
   const handleBeforeUnload = (e) => {
