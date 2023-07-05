@@ -40,7 +40,7 @@ function IDE(props) {
       setUser('teacher');
     }
     else {
-      setUser('student');
+      // setUser('student');
     }
   }, [])
 

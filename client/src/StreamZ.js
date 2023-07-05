@@ -128,8 +128,6 @@ function ParticipantView(props) {
                     muted={true}
                     playing={true}
                     url={videoStream}
-                    height={"300px"}
-                    width={"300px"}
                     onError={(err) => {
                         console.log(err, "participant video error");
                     }}
@@ -143,13 +141,21 @@ function ParticipantView(props) {
 function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
     return (
-        <div>
-            <button onClick={() => leave()}>Leave</button>
-            <button onClick={() => toggleMic()}>toggleMic</button>
-            <button onClick={() => toggleWebcam()}>toggleWebcam</button>
-            <button onClick={() => props.handleEnableScreenShare()}>Enable Screen Share</button>
-            <button onClick={() => props.handleDisableScreenShare()}>Disable Screen Share</button>
-            <button onClick={() => props.handleToggleScreenShare()}>Toggle Screen Share</button>
+        <div className="video_control_buttons">
+            <button onClick={() => toggleMic()} className="mic">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button onClick={() => toggleWebcam()} className="video">
+                <i class="fa-solid fa-video"></i>
+            </button>
+            {/* <button onClick={() => props.handleEnableScreenShare()}>Enable Screen Share</button> */}
+            {/* <button onClick={() => props.handleDisableScreenShare()}>Disable Screen Share</button> */}
+            <button onClick={() => props.handleToggleScreenShare()} className="screen_share">
+                <i class="fa-solid fa-display"></i>
+            </button>
+            <button onClick={() => leave()} className="leave">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
         </div>
     );
 }
@@ -203,16 +209,20 @@ function MeetingView(props) {
 
     return (
         <div className="stream-container">
-            <h3>Meeting Id: {props.meetingId}</h3>
+            {/* <h3>Meeting Id: {props.meetingId}</h3> */}
             {joined && joined == "JOINED" ? (
                 <div>
-                    <Controls handleEnableScreenShare={handleEnableScreenShare} handleDisableScreenShare={handleDisableScreenShare} handleToggleScreenShare={handleToggleScreenShare} />
                     {[...participants.keys()].map((participantId) => (
                         <ParticipantView
                             participantId={participantId}
                             key={participantId}
                         />
                     ))}
+                    <Controls 
+                        handleEnableScreenShare={handleEnableScreenShare} 
+                        handleDisableScreenShare={handleDisableScreenShare} 
+                        handleToggleScreenShare={handleToggleScreenShare} 
+                    />
                 </div>
             ) : joined && joined == "JOINING" ? (
                 <p>Joining the meeting...</p>
@@ -230,13 +240,16 @@ function StreamZ(props) {
         props.setMeetingId(null);
     };
 
+    const user=JSON.parse(localStorage.getItem('user'));
+    const name=user.data.name;
+
     return authToken && props.meetingId && (
         <MeetingProvider
             config={{
                 meetingId: props.meetingId,
                 micEnabled: true,
                 webcamEnabled: true,
-                name: "Niladri",
+                name: name,
             }}
             token={authToken}
         >
