@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from google.cloud import vision_v1
-from google.cloud import speech
+from google.cloud import speech_v1p1beta1 as speech
 from PIL import Image
 import base64
 import requests
