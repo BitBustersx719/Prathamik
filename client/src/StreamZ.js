@@ -8,11 +8,13 @@ import {
 } from "@videosdk.live/react-sdk";
 import { authToken } from "./API";
 import ReactPlayer from "react-player";
+import Container from "./Container";
+import IDE from "./IDE";
 
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
-    useParticipant(presenterId);
-    
+        useParticipant(presenterId);
+
     const mediaStream = useMemo(() => {
         if (screenShareOn && screenShareStream) {
             const mediaStream = new MediaStream();
@@ -25,27 +27,27 @@ const PresenterView = ({ presenterId }) => {
 
     useEffect(() => {
         if (
-          !isLocal &&
-          audioPlayer.current &&
-          screenShareOn &&
-          screenShareAudioStream
+            !isLocal &&
+            audioPlayer.current &&
+            screenShareOn &&
+            screenShareAudioStream
         ) {
-          const mediaStream = new MediaStream();
-          mediaStream.addTrack(screenShareAudioStream.track);
-    
-          audioPlayer.current.srcObject = mediaStream;
-          audioPlayer.current.play().catch((err) => {
-            if (
-              err.message ===
-              "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
-            ) {
-              console.error("audio" + err.message);
-            }
-          });
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(screenShareAudioStream.track);
+
+            audioPlayer.current.srcObject = mediaStream;
+            audioPlayer.current.play().catch((err) => {
+                if (
+                    err.message ===
+                    "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+                ) {
+                    console.error("audio" + err.message);
+                }
+            });
         } else {
-          audioPlayer.current.srcObject = null;
+            audioPlayer.current.srcObject = null;
         }
-      }, [screenShareAudioStream, screenShareOn, isLocal]);
+    }, [screenShareAudioStream, screenShareOn, isLocal]);
 
     return (
         <>
@@ -113,7 +115,7 @@ function ParticipantView(props) {
     }, [micStream, micOn]);
 
     return (
-        <div>
+        <div className="pview">
             <p>
                 Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
                 {micOn ? "ON" : "OFF"}
@@ -128,11 +130,10 @@ function ParticipantView(props) {
                     muted={true}
                     playing={true}
                     url={videoStream}
-                    height={"300px"}
-                    width={"300px"}
                     onError={(err) => {
                         console.log(err, "participant video error");
                     }}
+                    className="videoCam"
                 />
             )}
         </div>
@@ -142,13 +143,21 @@ function ParticipantView(props) {
 function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
     return (
-        <div>
-            <button onClick={() => leave()}>Leave</button>
-            <button onClick={() => toggleMic()}>toggleMic</button>
-            <button onClick={() => toggleWebcam()}>toggleWebcam</button>
-            <button onClick={() => props.handleEnableScreenShare()}>Enable Screen Share</button>
-            <button onClick={() => props.handleDisableScreenShare()}>Disable Screen Share</button>
-            <button onClick={() => props.handleToggleScreenShare()}>Toggle Screen Share</button>
+        <div className="video_control_buttons">
+            <button onClick={() => toggleMic()} className="mic">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button onClick={() => toggleWebcam()} className="video">
+                <i class="fa-solid fa-video"></i>
+            </button>
+            {/* <button onClick={() => props.handleEnableScreenShare()}>Enable Screen Share</button> */}
+            {/* <button onClick={() => props.handleDisableScreenShare()}>Disable Screen Share</button> */}
+            <button onClick={() => props.handleToggleScreenShare()} className="screen_share">
+                <i class="fa-solid fa-display"></i>
+            </button>
+            <button onClick={() => leave()} className="leave">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
         </div>
     );
 }
@@ -186,25 +195,36 @@ function MeetingView(props) {
             props.onMeetingLeave();
         },
     });
+
     const joinMeeting = () => {
         setJoined("JOINING");
         join();
     };
 
+    useEffect(() => {
+        setTimeout(() => {
+            joinMeeting();
+        }, 1000);
+    }, []);
+
     const { presenterId } = useMeeting();
 
     return (
-        <div className="container">
-            <h3>Meeting Id: {props.meetingId}</h3>
+        <div className="stream-container">
+            {/* <h3>Meeting Id: {props.meetingId}</h3> */}
             {joined && joined == "JOINED" ? (
                 <div>
-                    <Controls handleEnableScreenShare={handleEnableScreenShare} handleDisableScreenShare={handleDisableScreenShare} handleToggleScreenShare={handleToggleScreenShare} />
                     {[...participants.keys()].map((participantId) => (
                         <ParticipantView
                             participantId={participantId}
                             key={participantId}
                         />
                     ))}
+                    <Controls 
+                        handleEnableScreenShare={handleEnableScreenShare} 
+                        handleDisableScreenShare={handleDisableScreenShare} 
+                        handleToggleScreenShare={handleToggleScreenShare} 
+                    />
                 </div>
             ) : joined && joined == "JOINING" ? (
                 <p>Joining the meeting...</p>
@@ -212,6 +232,12 @@ function MeetingView(props) {
                 <button onClick={joinMeeting}>Join</button>
             )}
             {presenterId && <PresenterView presenterId={presenterId} />}
+            <div className="board_in_platform_container">
+                <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
+            </div>
+            <div className="ide_in_platform_container">
+                <IDE socket={props.socket} setCurrentLanguage={props.setCurrentLanguage} input={props.inputX} setInput={props.setInputX} output={props.output} code={props.code} isAdmin={props.isAdmin} setCode={props.setCode} setShow={props.setShow} meetingId={props.meetingId} />
+            </div>
         </div>
     );
 }
@@ -222,17 +248,20 @@ function StreamZ(props) {
         props.setMeetingId(null);
     };
 
+    const user=JSON.parse(localStorage.getItem('user'));
+    const name=user.data.name;
+
     return authToken && props.meetingId && (
         <MeetingProvider
             config={{
                 meetingId: props.meetingId,
                 micEnabled: true,
                 webcamEnabled: true,
-                name: "Niladri",
+                name: name,
             }}
             token={authToken}
         >
-            <MeetingView meetingId={props.meetingId} onMeetingLeave={onMeetingLeave} />
+            <MeetingView socket={props.socket} meetingId={props.meetingId} onMeetingLeave={onMeetingLeave} canvasRef={props.canvasRef} setCurrentLanguage={props.setCurrentLanguage} inputX={props.inputX} setInputX={props.setInputX} output={props.output} code={props.code} isAdmin={props.isAdmin} setCode={props.setCode} setShow={props.setShow} />
         </MeetingProvider>
     )
 }
