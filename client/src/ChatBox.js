@@ -89,6 +89,9 @@ function ChatBox(props) {
         {props.show === 'board' && <button onClick={props.handleInputBoard}>
           <i class="fa-solid fa-paper-plane"></i>
         </button>}
+        {props.show === 'stream' && <button onClick={props.handleInput}>
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>}
       </form>
     </div>
   );
