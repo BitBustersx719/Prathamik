@@ -27,8 +27,9 @@ function Landing(props) {
     return () => clearInterval(interval);
   }, [img]);
 
-  const handleNewMeeting = async () => {
+  const handleNewMeeting = async (val) => {
     await props.getMeetingAndToken(props.meetingId).then((meetingData) => {
+      localStorage.setItem('details', JSON.stringify({meetingId : meetingData , isAdmin: val}));
       navigate(`/${meetingData}`);
     })
     .catch((error) => {
@@ -50,7 +51,7 @@ function Landing(props) {
               Prathamik is an online learning platform designed to empower teachers and provide a seamless experience for students. With the assistance of an AI bot, teachers can efficiently solve students' doubts and enhance the learning process.
             </p>
             <div className='buttons'>
-              <button onClick={handleNewMeeting}><FontAwesomeIcon icon={faVideo} style={{ color: "#ffffff", }} />New Meeting</button>
+              <button onClick={() => handleNewMeeting(true)}><FontAwesomeIcon icon={faVideo} style={{ color: "#ffffff", }} />New Meeting</button>
               <div className='inputBox'>
                 <FontAwesomeIcon icon={faKeyboard} style={{ color: "grey", }} />
                 <input className='input' type='text' placeholder='Enter a Code' value={props.meetingId}
@@ -58,7 +59,7 @@ function Landing(props) {
                 />
               </div>
               {!props.meetingId && <span className='joinBtn'> Join </span>}
-              {props.meetingId && <div to={`${room}`} onClick={() => {props.setIsAdmin(false); handleNewMeeting()}} className='joinBtn' style={{ color: '#3086e3' }}> Join </div>}
+              {props.meetingId && <div to={`${room}`} onClick={() => {props.setIsAdmin(false); handleNewMeeting(false)}} className='joinBtn' style={{ color: '#3086e3' }}> Join </div>}
             </div>
             <div className='circles'>
               <span style={{ backgroundColor: '#18405A' }}></span>

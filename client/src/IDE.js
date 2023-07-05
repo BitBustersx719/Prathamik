@@ -26,6 +26,7 @@ function IDE(props) {
   const [showWarning, setShowWarning] = useState(true);
   const [user, setUser] = useState("teacher");
   const [fileValues, setFileValues] = useState({});
+  const details = JSON.parse(localStorage.getItem('details'));
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -354,7 +355,7 @@ function IDE(props) {
 
 
         </div>
-        {user === 'teacher' && (
+        {details.isAdmin &&
           <div className='ide_in_ide_container'>
             <Editor
               theme="vs-dark"
@@ -369,7 +370,6 @@ function IDE(props) {
                 <h4>Input</h4>
                 <textarea
                   value={props.input}
-                  // onChange={(e) => props.setInput(e.target.value)}
                   onChange={(e) => {handleInputValue(e)}}
                 />
               </div>
@@ -382,8 +382,8 @@ function IDE(props) {
               </div>
             </div>
           </div>
-        )}
-        {user === 'student' && (<div className='ide_in_ide_container'>
+        }
+        {!details.isAdmin && <div className='ide_in_ide_container'>
           <Editor theme="vs-light" onMount={handleEditorDidMount} path={files[fileIndex].name}
             defaultLanguage={files[fileIndex].language} defaultValue={files[fileIndex].value} value={ideValue} options={{
               readOnly: true
@@ -402,7 +402,7 @@ function IDE(props) {
               />
             </div>
           </div>
-        </div>)}
+        </div>}
         {user === 'browser' && <iframe
           title='output'
           sandbox='allow-scripts'
