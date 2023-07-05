@@ -34,6 +34,10 @@ function Platform(props) {
   });
 
   useEffect(() => {
+    socket.emit('join', props.meetingId);
+  }, [socket , props.meetingId]);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       setChange(prevChange => !prevChange);
     }, 60000);
@@ -125,7 +129,8 @@ function Platform(props) {
           type: 'mcq',
           question,
           options,
-          correctAnswer
+          correctAnswer,
+          meetingId: props.meetingId
         });
       } catch (error) {
         console.error('Error:', error);
@@ -205,7 +210,7 @@ function Platform(props) {
       const data = await response.json();
       setMessage(data.output);
       setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });
+      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' , roomid: props.meetingId });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -223,7 +228,7 @@ function Platform(props) {
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
-    socket.emit("chat_message", { input, user });
+    socket.emit("chat_message", { input, user , roomid: props.meetingId });
   }
 
   function voice() {
@@ -275,7 +280,7 @@ function Platform(props) {
         }
       });
       setOutput(response.data.output);
-      socket.emit("output", response.data.output);
+      socket.emit("output", {value: response.data.output , roomid: props.meetingId});
     } catch (error) {
       console.error(error);
     }
@@ -331,7 +336,7 @@ function Platform(props) {
               const data = await response.json();
               setMessage(data.output);
               setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-              socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' });// <-- This should reflect the updated state
+              socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' , roomid: props.meetingId });
             });
           } else {
             console.error('Error sending screenshot:', response.statusText);

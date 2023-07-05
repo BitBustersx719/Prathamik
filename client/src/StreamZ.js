@@ -233,10 +233,10 @@ function MeetingView(props) {
             )}
             {presenterId && <PresenterView presenterId={presenterId} />}
             <div className="board_in_platform_container">
-                <Container socket={props.socket} canvasRef={props.canvasRef} />
+                <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
             </div>
             <div className="ide_in_platform_container">
-                <IDE socket={props.socket} setCurrentLanguage={props.setCurrentLanguage} input={props.inputX} setInput={props.setInputX} output={props.output} code={props.code} isAdmin={props.isAdmin} setCode={props.setCode} setShow={props.setShow} />
+                <IDE socket={props.socket} setCurrentLanguage={props.setCurrentLanguage} input={props.inputX} setInput={props.setInputX} output={props.output} code={props.code} isAdmin={props.isAdmin} setCode={props.setCode} setShow={props.setShow} meetingId={props.meetingId} />
             </div>
         </div>
     );

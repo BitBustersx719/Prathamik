@@ -108,13 +108,13 @@ function IDE(props) {
     updatedFiles[fileIndex].value = value;
 
     setFiles(updatedFiles);
-    props.socket.emit("send_value", value);
+    props.socket.emit("send_value", {value: value , roomid: props.meetingId});
   }
 
   function handleFileClick(index) {
     setfileIndex((prevIndex) => {
       const updatedIndex = index;
-      props.socket.emit("send_index", updatedIndex);
+      props.socket.emit("send_index", {value: updatedIndex, roomid: props.meetingId});
       return updatedIndex;
     });
 
@@ -181,7 +181,7 @@ function IDE(props) {
 
     setFiles((prevFiles) => {
       const updatedFiles = [...prevFiles, newFile];
-      props.socket.emit("send_file", updatedFiles);
+      props.socket.emit("send_file", {value: updatedFiles, roomid: props.meetingId});
       return updatedFiles;
     });
 
@@ -242,13 +242,13 @@ function IDE(props) {
 
   function handleFileDelete(id) {
     const updatedFiles = files.filter((file) => file.id !== id);
-    props.socket.emit("delete_file", updatedFiles);
+    props.socket.emit("delete_file", {value: updatedFiles, roomid: props.meetingId});
     setFiles(updatedFiles);
   }
 
   function handleInputValue (e) {
     props.setInput(e.target.value);
-    props.socket.emit("input", e.target.value);
+    props.socket.emit("input", {value: e.target.value , roomid: props.meetingId});
   }
 
   return (
