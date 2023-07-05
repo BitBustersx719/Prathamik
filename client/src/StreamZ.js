@@ -8,11 +8,13 @@ import {
 } from "@videosdk.live/react-sdk";
 import { authToken } from "./API";
 import ReactPlayer from "react-player";
+import Container from "./Container";
+import IDE from "./IDE";
 
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
-    useParticipant(presenterId);
-    
+        useParticipant(presenterId);
+
     const mediaStream = useMemo(() => {
         if (screenShareOn && screenShareStream) {
             const mediaStream = new MediaStream();
@@ -25,27 +27,27 @@ const PresenterView = ({ presenterId }) => {
 
     useEffect(() => {
         if (
-          !isLocal &&
-          audioPlayer.current &&
-          screenShareOn &&
-          screenShareAudioStream
+            !isLocal &&
+            audioPlayer.current &&
+            screenShareOn &&
+            screenShareAudioStream
         ) {
-          const mediaStream = new MediaStream();
-          mediaStream.addTrack(screenShareAudioStream.track);
-    
-          audioPlayer.current.srcObject = mediaStream;
-          audioPlayer.current.play().catch((err) => {
-            if (
-              err.message ===
-              "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
-            ) {
-              console.error("audio" + err.message);
-            }
-          });
+            const mediaStream = new MediaStream();
+            mediaStream.addTrack(screenShareAudioStream.track);
+
+            audioPlayer.current.srcObject = mediaStream;
+            audioPlayer.current.play().catch((err) => {
+                if (
+                    err.message ===
+                    "play() failed because the user didn't interact with the document first. https://goo.gl/xX8pDD"
+                ) {
+                    console.error("audio" + err.message);
+                }
+            });
         } else {
-          audioPlayer.current.srcObject = null;
+            audioPlayer.current.srcObject = null;
         }
-      }, [screenShareAudioStream, screenShareOn, isLocal]);
+    }, [screenShareAudioStream, screenShareOn, isLocal]);
 
     return (
         <>
@@ -220,6 +222,12 @@ function MeetingView(props) {
                 <button onClick={joinMeeting}>Join</button>
             )}
             {presenterId && <PresenterView presenterId={presenterId} />}
+            <div className="board_in_platform_container">
+                <Container socket={props.socket} canvasRef={props.canvasRef} />
+            </div>
+            <div className="ide_in_platform_container">
+                <IDE socket={props.socket} setCurrentLanguage={props.setCurrentLanguage} input={props.inputX} setInput={props.setInputX} output={props.output} code={props.code} isAdmin={props.isAdmin} setCode={props.setCode} setShow={props.setShow} />
+            </div>
         </div>
     );
 }
@@ -240,7 +248,7 @@ function StreamZ(props) {
             }}
             token={authToken}
         >
-            <MeetingView meetingId={props.meetingId} onMeetingLeave={onMeetingLeave} />
+            <MeetingView socket={props.socket} meetingId={props.meetingId} onMeetingLeave={onMeetingLeave} canvasRef={props.canvasRef} setCurrentLanguage={props.setCurrentLanguage} inputX={props.inputX} setInputX={props.setInputX} output={props.output} code={props.code} isAdmin={props.isAdmin} setCode={props.setCode} setShow={props.setShow} />
         </MeetingProvider>
     )
 }
