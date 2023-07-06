@@ -145,24 +145,24 @@ function Controls(props) {
     const [mic, setMic] = useState(true);
     const [video, setVideo] = useState(true);
     const [screenShare, setScreenShare] = useState(false);
-    const handleMicClick = () => 
+    const handleMicClick = () =>
     {
-        if (mic) 
+        if (mic)
             setMic(false);
-        else 
+        else
             setMic(true);
     };
 
-    const handleVideoClick = () => 
+    const handleVideoClick = () =>
     {
         if (video)
             setVideo(false);
-        else 
+        else
             setVideo(true);
     };
 
     const handleScreenShareClick = () =>
-    {  
+    {
         if (screenShare)
             setScreenShare(false);
         else
@@ -171,7 +171,7 @@ function Controls(props) {
         props.setWhiteboard(false);
     }
 
-    const handleIdeClick = () => 
+    const handleIdeClick = () =>
     {
         if (props.coding)
             props.setCoding(false);
@@ -298,28 +298,29 @@ function MeetingView(props) {
                 <button onClick={joinMeeting}>Join</button>
             )}
             {presenterId && <PresenterView presenterId={presenterId} />}
-            
+
             {coding && <div className="ide_in_stream">
-                <IDE 
-                    socket={props.socket} 
-                    setCurrentLanguage={props.setCurrentLanguage} 
-                    input={props.inputX} 
-                    setInput={props.setInputX} 
-                    output={props.output} 
-                    code={props.code} 
-                    isAdmin={props.isAdmin} 
-                    setCode={props.setCode} 
-                    setShow={props.setShow} 
+                <IDE
+                    socket={props.socket}
+                    setCurrentLanguage={props.setCurrentLanguage}
+                    input={props.inputX}
+                    setInput={props.setInputX}
+                    output={props.output}
+                    code={props.code}
+                    isAdmin={props.isAdmin}
+                    setCode={props.setCode}
+                    setShow={props.setShow}
+                    meetingId={props.meetingId}
                 />
             </div>}
             {whiteboard && <div className="whiteboard_in_stream">
-                <Container socket={props.socket} canvasRef={props.canvasRef} />
+                <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
             </div>}
             <div>
-                <Controls 
-                    handleEnableScreenShare={handleEnableScreenShare} 
-                    handleDisableScreenShare={handleDisableScreenShare} 
-                    handleToggleScreenShare={handleToggleScreenShare} 
+                <Controls
+                    handleEnableScreenShare={handleEnableScreenShare}
+                    handleDisableScreenShare={handleDisableScreenShare}
+                    handleToggleScreenShare={handleToggleScreenShare}
                     coding={coding}
                     setCoding={setCoding}
                     whiteboard={whiteboard}
@@ -349,19 +350,19 @@ function StreamZ(props) {
             }}
             token={authToken}
         >
-            <MeetingView 
-                socket={props.socket} 
-                meetingId={props.meetingId} 
-                onMeetingLeave={onMeetingLeave} 
-                canvasRef={props.canvasRef} 
-                setCurrentLanguage={props.setCurrentLanguage} 
-                inputX={props.inputX} 
-                setInputX={props.setInputX} 
-                output={props.output} 
-                code={props.code} 
-                isAdmin={props.isAdmin} 
-                setCode={props.setCode} 
-                setShow={props.setShow} 
+            <MeetingView
+                socket={props.socket}
+                meetingId={props.meetingId}
+                onMeetingLeave={onMeetingLeave}
+                canvasRef={props.canvasRef}
+                setCurrentLanguage={props.setCurrentLanguage}
+                inputX={props.inputX}
+                setInputX={props.setInputX}
+                output={props.output}
+                code={props.code}
+                isAdmin={props.isAdmin}
+                setCode={props.setCode}
+                setShow={props.setShow}
             />
         </MeetingProvider>
     )
