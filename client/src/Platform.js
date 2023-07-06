@@ -383,21 +383,10 @@ function Platform(props) {
       </div>
 
       <div className='platform_components'>
-        {/* {show === 'editor' && (
-          <div className="ide_in_platform_container">
-            <IDE socket={socket} setCurrentLanguage={setCurrentLanguage} input={inputX} setInput={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
-          </div>
-        )}
-
-        {show === 'board' && (
-          <div className="board_in_platform_container">
-            <Container socket={socket} canvasRef={canvasRef} />
-          </div>
-        )} */}
 
         {show === 'stream' && (
           <div className="stream_in_platform_container">
-            <StreamZ socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} isAdmin={props.isAdmin} setCode={setCode} setShow={setShow} />
+            <StreamZ socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} setCode={setCode} setShow={setShow} />
           </div>
         )}
 

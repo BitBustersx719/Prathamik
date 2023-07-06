@@ -307,7 +307,6 @@ function MeetingView(props) {
                     setInput={props.setInputX}
                     output={props.output}
                     code={props.code}
-                    isAdmin={props.isAdmin}
                     setCode={props.setCode}
                     setShow={props.setShow}
                     meetingId={props.meetingId}
@@ -360,7 +359,6 @@ function StreamZ(props) {
                 setInputX={props.setInputX}
                 output={props.output}
                 code={props.code}
-                isAdmin={props.isAdmin}
                 setCode={props.setCode}
                 setShow={props.setShow}
             />

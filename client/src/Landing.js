@@ -59,7 +59,7 @@ function Landing(props) {
                 />
               </div>
               {!props.meetingId && <span className='joinBtn'> Join </span>}
-              {props.meetingId && <div to={`${room}`} onClick={() => {props.setIsAdmin(false); handleNewMeeting(false)}} className='joinBtn' style={{ color: '#3086e3' }}> Join </div>}
+              {props.meetingId && <div to={`${room}`} onClick={() => handleNewMeeting(false)} className='joinBtn' style={{ color: '#3086e3' }}> Join </div>}
             </div>
             <div className='circles'>
               <span style={{ backgroundColor: '#18405A' }}></span>
