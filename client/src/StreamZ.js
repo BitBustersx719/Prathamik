@@ -122,12 +122,10 @@ function ParticipantView(props) {
     const [name, setName] = useState('');
 
     useEffect(() => {
-
-        if (user && user.data.profilePic !== null) {
-        setDp(user.data.profilePic);
+        if (props.adminDetails && props.adminDetails.profilePic !== null) {
+            setDp(props.adminDetails.profilePic);
+            setName(props.adminDetails.name);
         }
-        setName(user.data.name);
-        console.log(name);
         setInitial(user ? user.data.name.charAt(0) : '');
     }, [user]);
 
@@ -158,7 +156,7 @@ function ParticipantView(props) {
                 (
                     <div className="noVideoCam">
                         <h4>{name}</h4>
-                        {dp?
+                        {dp ?
                             (
                                 <img
                                     src={`http://localhost:3000/uploads/${dp}`}
@@ -185,24 +183,21 @@ function Controls(props) {
     const [mic, setMic] = useState(true);
     const [video, setVideo] = useState(false);
     const [screenShare, setScreenShare] = useState(false);
-    const handleMicClick = () =>
-    {
+    const handleMicClick = () => {
         if (mic)
             setMic(false);
         else
             setMic(true);
     };
 
-    const handleVideoClick = () =>
-    {
+    const handleVideoClick = () => {
         if (video)
             setVideo(false);
         else
             setVideo(true);
     };
 
-    const handleScreenShareClick = () =>
-    {
+    const handleScreenShareClick = () => {
         if (screenShare)
             setScreenShare(false);
         else
@@ -211,8 +206,7 @@ function Controls(props) {
         props.setWhiteboard(false);
     }
 
-    const handleIdeClick = () =>
-    {
+    const handleIdeClick = () => {
         if (props.coding)
             props.setCoding(false);
         else
@@ -221,8 +215,7 @@ function Controls(props) {
         setScreenShare(false);
     };
 
-    const handleWhitebardClick = () =>
-    {
+    const handleWhitebardClick = () => {
         if (props.whiteboard)
             props.setWhiteboard(false);
         else
@@ -234,34 +227,34 @@ function Controls(props) {
 
     return (
         <div className="video_control_buttons">
-            {mic?
-                <button onClick={() =>{ toggleMic(); handleMicClick();}} className="mic red_bg">
+            {mic ?
+                <button onClick={() => { toggleMic(); handleMicClick(); }} className="mic red_bg">
                     <i class="fa-solid fa-microphone"></i>
                 </button>
                 :
-                <button onClick={() =>{ toggleMic(); handleMicClick();}} className="mic black_bg">
+                <button onClick={() => { toggleMic(); handleMicClick(); }} className="mic black_bg">
                     <i class="fa-solid fa-microphone-slash"></i>
                 </button>
             }
 
-            {video?
-                <button onClick={() =>{ toggleWebcam(); handleVideoClick();}} className="video red_bg">
+            {video ?
+                <button onClick={() => { toggleWebcam(); handleVideoClick(); }} className="video red_bg">
                     <i class="fa-solid fa-video"></i>
                 </button>
                 :
-                <button onClick={() =>{ toggleWebcam(); handleVideoClick();}} className="video black_bg">
+                <button onClick={() => { toggleWebcam(); handleVideoClick(); }} className="video black_bg">
                     <i class="fa-solid fa-video-slash"></i>
                 </button>
             }
             {/* <button onClick={() => props.handleEnableScreenShare()}>Enable Screen Share</button> */}
             {/* <button onClick={() => props.handleDisableScreenShare()}>Disable Screen Share</button> */}
-            <button onClick={() => {props.handleToggleScreenShare(); handleScreenShareClick();}} className={screenShare?"screen_share red_bg":"screen_share black_bg"}>
+            <button onClick={() => { props.handleToggleScreenShare(); handleScreenShareClick(); }} className={screenShare ? "screen_share red_bg" : "screen_share black_bg"}>
                 <i class="fa-solid fa-display"></i>
             </button>
-            <button onClick={handleIdeClick} className={props.coding?"coding red_bg":"coding black_bg"}>
+            <button onClick={handleIdeClick} className={props.coding ? "coding red_bg" : "coding black_bg"}>
                 <i class="fa-solid fa-code"></i>
             </button>
-            <button onClick={handleWhitebardClick} className={props.whiteboard?"coding red_bg":"coding black_bg"}>
+            <button onClick={handleWhitebardClick} className={props.whiteboard ? "coding red_bg" : "coding black_bg"}>
                 <i class="fa-solid fa-chalkboard"></i>
             </button>
             <button onClick={() => leave()} className="leave">
@@ -325,12 +318,19 @@ function MeetingView(props) {
             {/* <h3>Meeting Id: {props.meetingId}</h3> */}
             {joined && joined == "JOINED" ? (
                 <div>
-                    {[...participants.keys()].map((participantId) => (
-                        <ParticipantView
-                            participantId={participantId}
-                            key={participantId}
-                        />
-                    ))}
+                    {[...participants.keys()].map((participantId, index) => {
+                        if (index === 0) {
+                            return (
+                                <ParticipantView
+                                    participantId={participantId}
+                                    key={participantId}
+                                    adminDetails={props.adminDetails}
+                                />
+                            );
+                        }
+                        return null;
+                    })}
+
                 </div>
             ) : joined && joined == "JOINING" ? (
                 <p>Joining the meeting...</p>
@@ -376,14 +376,14 @@ function StreamZ(props) {
         props.setMeetingId(null);
     };
 
-    const user=JSON.parse(localStorage.getItem('user'));
-    const name=user.data.name;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const name = user.data.name;
 
     return authToken && props.meetingId && (
         <MeetingProvider
             config={{
                 meetingId: props.meetingId,
-                micEnabled: true,
+                micEnabled: false,
                 webcamEnabled: false,
                 name: name,
             }}
@@ -401,6 +401,7 @@ function StreamZ(props) {
                 code={props.code}
                 setCode={props.setCode}
                 setShow={props.setShow}
+                adminDetails={props.adminDetails}
             />
         </MeetingProvider>
     )

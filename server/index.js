@@ -4,7 +4,7 @@ const signupController = require('./controllers/signup');
 const loginController = require('./controllers/login');
 const cors = require('cors');
 const express = require('express');
-const { createRoomId , verifyOwner } = require('./controllers/roomid');
+const { createRoomId , verifyOwner , getAdminDetails } = require('./controllers/roomid');
 
 const app = express();
 
@@ -42,6 +42,7 @@ app.use('/login', loginController);
 
 app.post('/create/roomid', createRoomId);
 app.post('/verify/owner', verifyOwner);
+app.post('/get/admin/details', getAdminDetails);
 
 app.use('/api', routes);
 

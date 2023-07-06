@@ -3,10 +3,12 @@ const roomidModel = require('../models/roomid');
 async function createRoomId (req, res) {
     const roomid = req.body.roomid;
     const owner = req.body.owner;
+    const details = req.body.details;
 
     const newRoomId = new roomidModel({
         roomid: roomid,
         owner: owner,
+        details: details
     });
 
     try {
@@ -32,7 +34,17 @@ async function verifyOwner (req,res) {
     }
 }
 
+async function getAdminDetails (req,res) {
+    const roomid = req.body.roomid;
+
+    const admin = await roomidModel.findOne({roomid: roomid});
+    const details = admin.details;
+
+    res.status(200).json({details: details});
+}
+
 module.exports = {
     createRoomId,
-    verifyOwner
+    verifyOwner,
+    getAdminDetails
 }

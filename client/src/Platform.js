@@ -26,11 +26,16 @@ function Platform(props) {
   const [currentLanguage, setCurrentLanguage] = useState('cpp');
   const [change, setChange] = useState(false);
   const [correctAnswer, setCorrectAnswer] = useState('');
+  const [adminDetails, setAdminDetails] = useState({});
   const [color, setColor] = useState({
     A: 'lightgrey',
     B: 'lightgrey'
   });
   const details = JSON.parse(localStorage.getItem('details'));
+
+  useEffect(() => {
+    socket.emit('join', props.meetingId);
+  }, [socket, props.meetingId]);
 
   useEffect(() => {
     fetch('http://localhost:3000/verify/owner', {
@@ -49,10 +54,22 @@ function Platform(props) {
       });
   }, [props.meetingId]);
 
-
   useEffect(() => {
-    socket.emit('join', props.meetingId);
-  }, [socket, props.meetingId]);
+    fetch('http://localhost:3000/get/admin/details', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ roomid: props.meetingId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setAdminDetails(data.details);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [props.meetingId, details.isAdmin]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -397,7 +414,7 @@ function Platform(props) {
       <div className='platform_components'>
 
         <div className="stream_in_platform_container">
-          <StreamZ socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} setCode={setCode} setShow={setShow} />
+          <StreamZ adminDetails={adminDetails} socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} setCode={setCode} setShow={setShow} />
         </div>
 
         <div className='chat_in_platform_container'>

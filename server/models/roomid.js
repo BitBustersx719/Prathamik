@@ -8,6 +8,10 @@ const roomidSchema = new mongoose.Schema({
     owner: {
         type: String,
         required: true,
+    },
+    details: {
+        type: Object,
+        required: true,
     }
 });
 
