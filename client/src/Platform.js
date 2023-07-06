@@ -32,6 +32,24 @@ function Platform(props) {
   });
 
   useEffect(() => {
+    fetch('http://localhost:3000/verify/owner', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ roomid: props.meetingId, owner: JSON.parse(localStorage.getItem('user')).data.email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem('details', JSON.stringify({ meetingId: data.meetingId, isAdmin: data.isAdmin }));
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [props.meetingId]);
+  
+
+  useEffect(() => {
     socket.emit('join', props.meetingId);
   }, [socket , props.meetingId]);
 

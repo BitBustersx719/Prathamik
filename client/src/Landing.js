@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 function Landing(props) {
   const [shouldRender, setShouldRender] = useState(false);
   const [img, setImg] = useState(true);
-  const [room, setRoom] = React.useState('')
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,9 +26,21 @@ function Landing(props) {
     return () => clearInterval(interval);
   }, [img]);
 
+  const createRoomId = async (val) => {
+    await fetch('http://localhost:3000/create/roomid', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ roomid: val, owner: JSON.parse(localStorage.getItem('user')).data.email }),
+    });
+  }
+
   const handleNewMeeting = async (val) => {
     await props.getMeetingAndToken(props.meetingId).then((meetingData) => {
-      localStorage.setItem('details', JSON.stringify({meetingId : meetingData , isAdmin: val}));
+      createRoomId(meetingData);
+      return meetingData;
+    }).then((meetingData) => {
       navigate(`/${meetingData}`);
     })
     .catch((error) => {
@@ -59,7 +70,7 @@ function Landing(props) {
                 />
               </div>
               {!props.meetingId && <span className='joinBtn'> Join </span>}
-              {props.meetingId && <div to={`${room}`} onClick={() => handleNewMeeting(false)} className='joinBtn' style={{ color: '#3086e3' }}> Join </div>}
+              {props.meetingId && <div onClick={() => handleNewMeeting(false)} className='joinBtn' style={{ color: '#3086e3' }}> Join </div>}
             </div>
             <div className='circles'>
               <span style={{ backgroundColor: '#18405A' }}></span>
