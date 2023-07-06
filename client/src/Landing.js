@@ -38,6 +38,7 @@ function Landing(props) {
 
   const handleNewMeeting = async (val) => {
     await props.getMeetingAndToken(props.meetingId).then((meetingData) => {
+      if(val)
       createRoomId(meetingData);
       return meetingData;
     }).then((meetingData) => {
