@@ -30,6 +30,7 @@ function Platform(props) {
     A: 'lightgrey',
     B: 'lightgrey'
   });
+  const details = JSON.parse(localStorage.getItem('details'));
 
   useEffect(() => {
     fetch('http://localhost:3000/verify/owner', {
@@ -47,11 +48,11 @@ function Platform(props) {
         console.error('Error:', error);
       });
   }, [props.meetingId]);
-  
+
 
   useEffect(() => {
     socket.emit('join', props.meetingId);
-  }, [socket , props.meetingId]);
+  }, [socket, props.meetingId]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -226,7 +227,7 @@ function Platform(props) {
       const data = await response.json();
       setMessage(data.output);
       setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' , roomid: props.meetingId });
+      socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', roomid: props.meetingId });
     } catch (error) {
       console.error('Error:', error);
     }
@@ -244,7 +245,7 @@ function Platform(props) {
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
-    socket.emit("chat_message", { input: input, user: user , roomid: props.meetingId });
+    socket.emit("chat_message", { input: input, user: user, roomid: props.meetingId });
   }
 
   function voice() {
@@ -296,7 +297,7 @@ function Platform(props) {
         }
       });
       setOutput(response.data.output);
-      socket.emit("output", {value: response.data.output , roomid: props.meetingId});
+      socket.emit("output", { value: response.data.output, roomid: props.meetingId });
     } catch (error) {
       console.error(error);
     }
@@ -352,7 +353,7 @@ function Platform(props) {
               const data = await response.json();
               setMessage(data.output);
               setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
-              socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' , roomid: props.meetingId });
+              socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', roomid: props.meetingId });
             });
           } else {
             console.error('Error sending screenshot:', response.statusText);
@@ -374,16 +375,9 @@ function Platform(props) {
             <h1>Prathamik</h1>
             <p>Online IDE</p>
           </div>
-          <div>
-            <select onChange={(e) => setShow(e.target.value)}>
-              <option value="stream">Stream</option>
-              <option value="editor">IDE</option>
-              <option value="board">Board</option>
-            </select>
-          </div>
-          <form>
+          {details.isAdmin && <form>
             <button type='button' onClick={handleRun}>Run <i class="fa-solid fa-play"></i></button>
-          </form>
+          </form>}
         </div>
 
         <div className='navbar_2'>
@@ -402,11 +396,9 @@ function Platform(props) {
 
       <div className='platform_components'>
 
-        {show === 'stream' && (
-          <div className="stream_in_platform_container">
-            <StreamZ socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} setCode={setCode} setShow={setShow} />
-          </div>
-        )}
+        <div className="stream_in_platform_container">
+          <StreamZ socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} setCode={setCode} setShow={setShow} />
+        </div>
 
         <div className='chat_in_platform_container'>
           <ChatBox

@@ -11,6 +11,7 @@ import { authToken } from "./API";
 import ReactPlayer from "react-player";
 import Container from "./Container";
 import IDE from "./IDE";
+const details = JSON.parse(localStorage.getItem('details'));
 
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
@@ -354,7 +355,7 @@ function MeetingView(props) {
             {whiteboard && <div className="whiteboard_in_stream">
                 <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
             </div>}
-            {<div>
+            {details.isAdmin && <div>
                 <Controls
                     handleEnableScreenShare={handleEnableScreenShare}
                     handleDisableScreenShare={handleDisableScreenShare}
