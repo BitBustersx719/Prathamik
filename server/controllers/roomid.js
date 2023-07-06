@@ -32,4 +32,7 @@ async function verifyOwner (req,res) {
     }
 }
 
-module.exports = createRoomId;
+module.exports = {
+    createRoomId,
+    verifyOwner
+}
