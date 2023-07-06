@@ -2,12 +2,10 @@ import './Platform.css';
 import './index.css';
 import React from 'react';
 import ChatBox from './ChatBox';
-import IDE from './IDE';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
-import Container from './Container';
 import StreamZ from './StreamZ';
 import io from "socket.io-client";
 
@@ -113,7 +111,7 @@ function Platform(props) {
           return;
         }
         setCorrectAnswer(correctAnswer);
-        setChats((chats) => chats.filter((chat) => chat.type !== 'mcq'));
+        setChats((chats) => chats.filter((chat) => !(chat.type === 'mcq')));
         setColor({
           A: 'lightgrey',
           B: 'lightgrey'
@@ -228,7 +226,7 @@ function Platform(props) {
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;
-    socket.emit("chat_message", { input, user , roomid: props.meetingId });
+    socket.emit("chat_message", { input: input, user: user , roomid: props.meetingId });
   }
 
   function voice() {
