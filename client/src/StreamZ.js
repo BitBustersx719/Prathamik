@@ -1,4 +1,5 @@
 import "./StreamZ.css";
+import "./index.css";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
     MeetingProvider,
@@ -115,6 +116,21 @@ function ParticipantView(props) {
         }
     }, [micStream, micOn]);
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const [dp, setDp] = useState('');
+    const [initial, setInitial] = useState('');
+    const [name, setName] = useState('');
+
+    useEffect(() => {
+
+        if (user && user.data.profilePic !== null) {
+        setDp(user.data.profilePic);
+        }
+        setName(user.data.name);
+        console.log(name);
+        setInitial(user ? user.data.name.charAt(0) : '');
+    }, [user]);
+
     return (
         <div className="pview">
             {/* <p>
@@ -122,21 +138,44 @@ function ParticipantView(props) {
                 {micOn ? "ON" : "OFF"}
             </p> */}
             <audio ref={micRef} autoPlay playsInline muted={isLocal} />
-            {webcamOn && (
-                <ReactPlayer
-                    playsinline
-                    pip={false}
-                    light={false}
-                    controls={false}
-                    muted={true}
-                    playing={true}
-                    url={videoStream}
-                    onError={(err) => {
-                        console.log(err, "participant video error");
-                    }}
-                    className="videoCam"
-                />
-            )}
+            {webcamOn ?
+                (
+                    <ReactPlayer
+                        playsinline
+                        pip={false}
+                        light={false}
+                        controls={false}
+                        muted={true}
+                        playing={true}
+                        url={videoStream}
+                        onError={(err) => {
+                            console.log(err, "participant video error");
+                        }}
+                        className="videoCam"
+                    />
+                )
+                :
+                (
+                    <div className="noVideoCam">
+                        <h4>{name}</h4>
+                        {dp?
+                            (
+                                <img
+                                    src={`http://localhost:3000/uploads/${dp}`}
+                                    alt=''
+                                />
+                            )
+                            :
+                            (
+                                <p>
+                                    {initial}
+                                </p>
+                            )
+                        }
+                    </div>
+                )
+
+            }
         </div>
     );
 }
@@ -144,7 +183,7 @@ function ParticipantView(props) {
 function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
     const [mic, setMic] = useState(true);
-    const [video, setVideo] = useState(true);
+    const [video, setVideo] = useState(false);
     const [screenShare, setScreenShare] = useState(false);
     const handleMicClick = () =>
     {
@@ -344,7 +383,7 @@ function StreamZ(props) {
         <MeetingProvider
             config={{
                 meetingId: props.meetingId,
-                micEnabled: false,
+                micEnabled: true,
                 webcamEnabled: false,
                 name: name,
             }}
