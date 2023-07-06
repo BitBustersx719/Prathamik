@@ -10,6 +10,7 @@ import { authToken } from "./API";
 import ReactPlayer from "react-player";
 import Container from "./Container";
 import IDE from "./IDE";
+const details = JSON.parse(localStorage.getItem('details'));
 
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
@@ -315,7 +316,7 @@ function MeetingView(props) {
             {whiteboard && <div className="whiteboard_in_stream">
                 <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
             </div>}
-            <div>
+            {details.isAdmin && <div>
                 <Controls
                     handleEnableScreenShare={handleEnableScreenShare}
                     handleDisableScreenShare={handleDisableScreenShare}
@@ -325,7 +326,7 @@ function MeetingView(props) {
                     whiteboard={whiteboard}
                     setWhiteboard={setWhiteboard}
                 />
-            </div>
+            </div>}
         </div>
     );
 }
@@ -343,8 +344,8 @@ function StreamZ(props) {
         <MeetingProvider
             config={{
                 meetingId: props.meetingId,
-                micEnabled: true,
-                webcamEnabled: true,
+                micEnabled: false,
+                webcamEnabled: false,
                 name: name,
             }}
             token={authToken}
