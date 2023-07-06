@@ -21,7 +21,7 @@ async function verifyOwner (req,res) {
     const roomid = req.body.roomid;
     const owner = req.body.owner;
 
-    const id = roomidModel.findOne({roomid: roomid});
+    const id = await roomidModel.findOne({roomid: roomid});
 
     if (id.owner === owner) {
         res.status(200).json({meetingId: roomid , isAdmin: true});
