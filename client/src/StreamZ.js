@@ -354,7 +354,7 @@ function MeetingView(props) {
             {whiteboard && <div className="whiteboard_in_stream">
                 <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
             </div>}
-            <div>
+            {<div>
                 <Controls
                     handleEnableScreenShare={handleEnableScreenShare}
                     handleDisableScreenShare={handleDisableScreenShare}
@@ -364,7 +364,7 @@ function MeetingView(props) {
                     whiteboard={whiteboard}
                     setWhiteboard={setWhiteboard}
                 />
-            </div>
+            </div>}
         </div>
     );
 }
