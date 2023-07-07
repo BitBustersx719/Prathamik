@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import StreamZ from './StreamZ';
 import io from "socket.io-client";
+import { useParams } from 'react-router-dom';
 
 const socket = io.connect("http://localhost:3000");
 
@@ -28,6 +29,7 @@ function Platform(props) {
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [adminDetails, setAdminDetails] = useState({});
   const [details, setDetails] = useState({});
+  const paramsId = useParams().roomid;
   const [color, setColor] = useState({
     A: 'lightgrey',
     B: 'lightgrey'
@@ -52,6 +54,14 @@ function Platform(props) {
       .catch((error) => {
         console.error('Error:', error);
       });
+  }, [props.meetingId]);
+
+  useEffect(() => {
+    const handleNewMeeting = async (val) => {
+      await props.getMeetingAndToken(paramsId);
+    }
+
+    handleNewMeeting(details.isAdmin);
   }, [props.meetingId]);
 
   useEffect(() => {
@@ -258,7 +268,6 @@ function Platform(props) {
       console.error('Error:', error);
     }
   };
-
 
   function sendInput(input) {
     const user = JSON.parse(localStorage.getItem('user')).data._id;

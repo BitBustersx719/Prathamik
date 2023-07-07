@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import {db} from './firebase_config';
+import { collection , getDocs } from 'firebase/firestore';
 
 const initialFiles = [
   {

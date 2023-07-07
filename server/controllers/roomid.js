@@ -25,6 +25,9 @@ async function verifyOwner (req,res) {
 
     const id = await roomidModel.findOne({roomid: roomid});
 
+    if(!id || id === null)
+    return res.status(400).json({message: 'Room ID not found!'});
+
     if (id.owner === owner) {
         res.status(200).json({meetingId: roomid , isAdmin: true});
     }
@@ -38,6 +41,8 @@ async function getAdminDetails (req,res) {
     const roomid = req.body.roomid;
 
     const admin = await roomidModel.findOne({roomid: roomid});
+    if(!admin) 
+    return res.status(400).json({message: 'Room ID not found!'});
     const details = admin.details;
 
     res.status(200).json({details: details});
