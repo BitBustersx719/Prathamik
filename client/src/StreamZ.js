@@ -415,6 +415,31 @@ function MeetingView(props) {
 
     const { presenterId } = useMeeting();
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const email=user.data.email;
+    const [showMeetingCard, setShowMeetingCard] = useState(true);
+    const handleMeetingCardClick = () => 
+    {
+        setShowMeetingCard(false);
+    }
+
+    const [isCopied, setIsCopied] = useState(false);
+    const copyMeetingId = () => 
+    {
+        const meetingId = props.meetingId;
+        navigator.clipboard.writeText(meetingId)
+        .then(() => {
+            console.log('Meeting ID copied!');
+        })
+        .catch((error) => {
+            console.error('Failed to copy meeting ID:', error);
+        });
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 1500);
+    };
+
     return (
         <div className="stream-container">
             {/* <h3>Meeting Id: {props.meetingId}</h3> */}
@@ -434,6 +459,20 @@ function MeetingView(props) {
                             />
                         );
                     })}
+
+                    {showMeetingCard && <div className="meetingCard">
+                        <p className="meetingCardHeading">
+                            Your meeting's ready
+                            <span onClick={handleMeetingCardClick}><i class="fa-solid fa-xmark"></i></span>
+                        </p>
+                        <p className="meetingCardSubHeading">Share this meeting link with others that you want in the meeting</p>
+                        <p className="meetingId">
+                            {props.meetingId}
+                            <span onClick={copyMeetingId}><i class="fa-regular fa-clipboard"></i></span>
+                            {isCopied && <div>Copied</div>}
+                        </p>
+                        <p className="meetingParticipantEmail">Joined as {email}</p>
+                    </div>}
 
                     {whiteboard && <div className="whiteboard_in_stream">
                         <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
