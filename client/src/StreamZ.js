@@ -135,57 +135,6 @@ function ParticipantView(props) {
     if (props.ide||props.screenShare||props.whiteboard) 
     {
         return (
-            <div className="pview">
-                {/* <p>
-                    Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
-                    {micOn ? "ON" : "OFF"}
-                </p> */}
-                <audio ref={micRef} autoPlay playsInline muted={isLocal} />
-                {webcamOn ?
-                    (
-                        <ReactPlayer
-                            playsinline
-                            pip={false}
-                            light={false}
-                            controls={false}
-                            muted={true}
-                            playing={true}
-                            url={videoStream}
-                            onError={(err) => {
-                                console.log(err, "participant video error");
-                            }}
-                            className="videoCam"
-                        />
-                    )
-                    :
-                    (
-                        <div className="noVideoCam">
-                            <h4 className="bigName">{name}</h4>
-                            {dp ?
-                                (
-                                    <img
-                                        src={`http://localhost:3000/uploads/${dp}`}
-                                        alt=''
-                                        className="bigDp"
-                                    />
-                                )
-                                :
-                                (
-                                    <p className="bigInitial">
-                                        {initial}
-                                    </p>
-                                )
-                            }
-                        </div>
-                    )
-
-                }
-            </div>
-        );
-    }
-    else
-    {
-        return (
             <div className="smallPview">
                 {/* <p>
                     Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
@@ -223,6 +172,57 @@ function ParticipantView(props) {
                                 :
                                 (
                                     <p className="smallInitial">
+                                        {initial}
+                                    </p>
+                                )
+                            }
+                        </div>
+                    )
+
+                }
+            </div>
+        );
+    }
+    else
+    {
+        return (
+            <div className="pview">
+                {/* <p>
+                    Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
+                    {micOn ? "ON" : "OFF"}
+                </p> */}
+                <audio ref={micRef} autoPlay playsInline muted={isLocal} />
+                {webcamOn ?
+                    (
+                        <ReactPlayer
+                            playsinline
+                            pip={false}
+                            light={false}
+                            controls={false}
+                            muted={true}
+                            playing={true}
+                            url={videoStream}
+                            onError={(err) => {
+                                console.log(err, "participant video error");
+                            }}
+                            className="videoCam"
+                        />
+                    )
+                    :
+                    (
+                        <div className="noVideoCam">
+                            <h4 className="bigName">{name}</h4>
+                            {dp ?
+                                (
+                                    <img
+                                        src={`http://localhost:3000/uploads/${dp}`}
+                                        alt=''
+                                        className="bigDp"
+                                    />
+                                )
+                                :
+                                (
+                                    <p className="bigInitial">
                                         {initial}
                                     </p>
                                 )
@@ -288,19 +288,6 @@ function Controls(props) {
         props.setIde(false);
         
     };
-
-    // useEffect(()=>
-    // {
-    //     if (props.ide||props.screenShare||props.whiteboard)
-    //     {
-    //         props.setMinimizeFaceCam(true);
-    //     }
-    //     if (!props.ide&&!props.screenShare&&!props.whiteboard)
-    //     {
-    //         props.setMinimizeFaceCam(false);
-    //     }
-
-    // },[props.setMinimizeFaceCam, props.minimizeFaceCam]);
 
     return (
         <div className="video_control_buttons">
@@ -412,6 +399,27 @@ function MeetingView(props) {
                         }
                         return null;
                     })}
+
+                    {whiteboard && <div className="whiteboard_in_stream">
+                        <Container socket={props.socket} canvasRef={props.canvasRef} meetingId={props.meetingId} />
+                    </div>}
+                    {screenShare && <div className="screen_share_in_stream">
+                        {presenterId && <PresenterView presenterId={presenterId} />}
+                    </div>}
+                    {ide && <div className="ide_in_stream">
+                        <IDE
+                            socket={props.socket}
+                            setCurrentLanguage={props.setCurrentLanguage}
+                            input={props.inputX}
+                            setInput={props.setInputX}
+                            output={props.output}
+                            code={props.code}
+                            setCode={props.setCode}
+                            setShow={props.setShow}
+                            meetingId={props.meetingId}
+                            details={props.details}
+                        />
+                    </div>}
 
                 </div>
             ) : joined && joined == "JOINING" ? (
