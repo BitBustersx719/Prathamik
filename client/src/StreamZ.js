@@ -179,7 +179,7 @@ function ParticipantView(props) {
 
 function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
-    const [mic, setMic] = useState(true);
+    const [mic, setMic] = useState(false);
     const [video, setVideo] = useState(false);
     const [screenShare, setScreenShare] = useState(false);
     const handleMicClick = () => {
@@ -318,16 +318,14 @@ function MeetingView(props) {
             {joined && joined == "JOINED" ? (
                 <div>
                     {[...participants.keys()].map((participantId, index) => {
-                        if (index === 0) {
-                            return (
-                                <ParticipantView
-                                    participantId={participantId}
-                                    key={participantId}
-                                    adminDetails={props.adminDetails}
-                                />
-                            );
-                        }
-                        return null;
+                        return (
+                            <ParticipantView
+                                participantId={participantId}
+                                key={participantId}
+                                adminDetails={props.adminDetails}
+                                details={props.details}
+                            />
+                        );
                     })}
 
                 </div>
