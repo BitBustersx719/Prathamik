@@ -4,7 +4,7 @@ import './Stream.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faVideo, faSquarePlus, faMicrophoneSlash, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
-
+import axios from 'axios';
 const agoraAppId = "3ec3dc68e69e4b539553415e34ce7b03";
 const signalingServerUrl = 'http://localhost:3000';
 
@@ -109,10 +109,66 @@ const Stream = () => {
 
       const microphoneTrack = await AgoraRTC.createMicrophoneAudioTrack();
       await client.publish(microphoneTrack);
+
       localStream.current.microphoneTrack = microphoneTrack;
+      const audioStream = microphoneTrack.getMediaStreamTrack();
+
+      // Convert the audio stream to a Blob
+      const audioBlob = await streamToBlob(audioStream);
+  
+      // Send the audio data to the Speech to Text API
+      sendAudioToAPI(audioBlob);
+    }
+  }
+  const streamToBlob = async (stream) => {
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+  
+    recorder.addEventListener('dataavailable', (event) => {
+      chunks.push(event.data);
+    });
+  
+    recorder.addEventListener('stop', () => {
+      const blob = new Blob(chunks, { type: 'audio/wav' });
+      processAudio(blob); // Process the audio blob (e.g., send it to the API)
+    });
+  
+    recorder.start();
+  
+    setTimeout(() => {
+      recorder.stop();
+    }, 5000); // Stop recording after 5 seconds (adjust as needed)
+  };
+  const sendAudioToAPI = async (audioBlob) => {
+    // Create a FormData object to send the audio blob as a file
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recording.wav');
+  
+    try {
+      // Send the audio data to your Speech to Text API endpoint
+      const response = await axios.post(' http://127.0.0.1:5000/caption', formData);
+      console.log('API response:', response.data);
+      // Process the API response as needed
+    } catch (error) {
+      console.error('Error sending audio to API:', error);
     }
   };
-
+  const processAudio = (audioBlob) => {
+    // Perform processing tasks on the audio blob
+    // For example, you can send it to the Speech to Text API for transcription
+  
+    // Replace the following code with your actual processing logic
+  
+    // Convert the audio blob to a URL for playback
+    const audioURL = URL.createObjectURL(audioBlob);
+  
+    // Log the audio URL for testing
+    console.log('Audio URL:', audioURL);
+  
+    // Play the recorded audio
+    const audioElement = new Audio(audioURL);
+    audioElement.play();
+  };  
   const stopVideo = () => {
     if (videoStarted) {
       localStream.current.cameraTrack.close();

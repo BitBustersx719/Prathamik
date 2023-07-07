@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import{db} from "./firebase"
+import { collection, getDocs, addDoc, updateDoc, deleteDoc } from '@firebase/firestore';
 
 const initialFiles = [
   {
@@ -26,6 +28,7 @@ function IDE(props) {
   const [showWarning, setShowWarning] = useState(true);
   const [user, setUser] = useState("teacher");
   const [fileValues, setFileValues] = useState({});
+  const userCollectionRef= collection(db,"FileSystemX")
   const details = JSON.parse(localStorage.getItem('details'));
 
   useEffect(() => {
@@ -96,7 +99,9 @@ function IDE(props) {
       props.socket.off("new_file");
     }
   }, [props.socket]);
-
+useEffect(()=>{
+  addDoc(userCollectionRef,{files:files, room_id:props.meetingId})
+},[])
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
   }
@@ -106,7 +111,6 @@ function IDE(props) {
 
     const updatedFiles = [...files];
     updatedFiles[fileIndex].value = value;
-
     setFiles(updatedFiles);
     props.socket.emit("send_value", {value: value , roomid: props.meetingId});
   }
@@ -124,7 +128,6 @@ function IDE(props) {
   const handleAddFile = (e) => {
     const dotIndex = newFileName.indexOf('.');
     const fileType = newFileName.substring(dotIndex);
-
     if (dotIndex === -1 || fileType.length === 0) {
       setIsInvalid(true);
       return;
@@ -178,16 +181,17 @@ function IDE(props) {
       newFile.language = 'text';
       newFile.other = 'text';
     }
-
+let updatedFiles
     setFiles((prevFiles) => {
-      const updatedFiles = [...prevFiles, newFile];
+       updatedFiles = [...prevFiles, newFile];
       props.socket.emit("send_file", {value: updatedFiles, roomid: props.meetingId});
       return updatedFiles;
     });
-
     setIsInvalid(false);
     setShowAddBox(false);
     setNewFileName('');
+   
+     updateDoc(userCollectionRef,{files:updatedFiles, room_id:props.meetingId})
   };
 
   const inputRef = useRef(null);

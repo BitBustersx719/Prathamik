@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from google.cloud import vision_v1
 from google.cloud import speech_v1p1beta1 as speech
+import pyttsx3
+import tempfile
 from PIL import Image
 import base64
 import requests
@@ -72,8 +74,8 @@ def caption():
     client = speech.SpeechClient()
     audio_data = speech.RecognitionAudio(content=content)
     config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
-        sample_rate_hertz=16000,
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=44100,
         language_code='en-US',
     )
 
@@ -81,8 +83,32 @@ def caption():
 
     captions = []
     for result in response.results:
-        captions.append(result.alternatives[0].transcript)
+        captions.append({
+            'start_time': result.alternatives[0].words[0].start_time.total_seconds(),
+            'end_time': result.alternatives[0].words[-1].end_time.total_seconds(),
+            'subtitle': result.alternatives[0].transcript
+        })
+    return jsonify({'captions': captions})
+@app.route('/api/text', methods=['POST'])
+def text_to_speech():
+    if 'text' not in request.form:
+        return jsonify({'error': 'No text provided'})
 
-    return jsonify({'captions': captions})  
+    text = request.form['text']
+
+    engine = pyttsx3.init()
+    temp_file = tempfile.NamedTemporaryFile(suffix='.mp3', delete=False)
+    temp_filename = temp_file.name
+    temp_file.close()
+
+    engine.save_to_file(text, temp_filename)
+    engine.runAndWait()
+
+    with open(temp_filename, 'rb') as file:
+        audio = file.read()
+
+    os.remove(temp_filename)
+
+    return jsonify({'audio': audio})  
 if __name__ == '__main__':
     app.run(debug=True)

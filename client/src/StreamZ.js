@@ -279,7 +279,6 @@ function MeetingView(props) {
     }, []);
 
     const { presenterId } = useMeeting();
-
     return (
         <div className="stream-container">
             {/* <h3>Meeting Id: {props.meetingId}</h3> */}

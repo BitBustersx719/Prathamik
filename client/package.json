@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/firestore": "^3.13.0",
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
@@ -20,6 +21,7 @@
     "agora-rtm-sdk": "^1.4.5-229",
     "assert": "^2.0.0",
     "axios": "^1.4.0",
+    "firebase": "^9.23.0",
     "font-awesome": "^4.7.0",
     "jspdf": "^2.5.1",
     "react": "^18.2.0",
