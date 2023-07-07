@@ -60,9 +60,10 @@ function Platform(props) {
     const handleNewMeeting = async (val) => {
       await props.getMeetingAndToken(paramsId);
     }
-
+    
+    if(props.meetingId === null)
     handleNewMeeting(details.isAdmin);
-  }, [props.meetingId]);
+  }, [paramsId, details.isAdmin]);
 
   useEffect(() => {
     fetch('http://localhost:3000/get/admin/details', {
