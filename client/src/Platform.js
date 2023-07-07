@@ -63,7 +63,7 @@ function Platform(props) {
     
     if(props.meetingId === null)
     handleNewMeeting(details.isAdmin);
-  }, [paramsId, details.isAdmin]);
+  }, []);
 
   useEffect(() => {
     fetch('http://localhost:3000/get/admin/details', {
