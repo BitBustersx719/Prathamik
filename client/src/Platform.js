@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 const socket = io.connect("http://localhost:3000");
 
 function Platform(props) {
+  const [runButtonShow, setRunButtonShow] = useState('');
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
   const [code, setCode] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -402,7 +403,7 @@ function Platform(props) {
             <h1>Prathamik</h1>
             <p>Online IDE</p>
           </div>
-          {details.isAdmin && <form>
+          {details.isAdmin && runButtonShow && <form>
             <button type='button' onClick={handleRun}>Run <i class="fa-solid fa-play"></i></button>
           </form>}
         </div>
@@ -424,7 +425,24 @@ function Platform(props) {
       <div className='platform_components'>
 
         <div className="stream_in_platform_container">
-          <StreamZ details={details} adminDetails={adminDetails} socket={socket} canvasRef={canvasRef} meetingId={props.meetingId} setMeetingId={props.setMeetingId} getMeetingAndToken={props.getMeetingAndToken} setCurrentLanguage={setCurrentLanguage} inputX={inputX} setInputX={setInputX} output={output} code={code} setCode={setCode} setShow={setShow} />
+          <StreamZ
+            details={details}
+            adminDetails={adminDetails}
+            socket={socket}
+            canvasRef={canvasRef}
+            meetingId={props.meetingId}
+            setMeetingId={props.setMeetingId}
+            getMeetingAndToken={props.getMeetingAndToken}
+            setCurrentLanguage={setCurrentLanguage}
+            inputX={inputX}
+            setInputX={setInputX}
+            output={output}
+            code={code}
+            setCode={setCode}
+            setShow={setShow}
+            runButtonShow={runButtonShow}
+            setRunButtonShow={setRunButtonShow}
+          />
         </div>
 
         <div className='chat_in_platform_container'>
