@@ -128,11 +128,7 @@ function ParticipantView(props) {
         setInitial(user ? user.data.name.charAt(0) : '');
     }, [user]);
 
-    console.log(props.ide);
-    console.log(props.screenShare);
-    console.log(props.whiteboard);
-
-    if (props.ide||props.screenShare||props.whiteboard) 
+    if (props.ide||props.screenShare||props.whiteboard)
     {
         return (
             <div className="smallPview">
@@ -240,7 +236,7 @@ function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
     const [mic, setMic] = useState(false);
     const [video, setVideo] = useState(false);
-    const handleMicClick = () => 
+    const handleMicClick = () =>
     {
         if (mic)
             setMic(false);
@@ -248,45 +244,67 @@ function Controls(props) {
             setMic(true);
     };
 
-    const handleVideoClick = () => 
+    const handleVideoClick = () =>
     {
-        if (video)
+        if (video){
             setVideo(false);
-        else
+            // props.socket.emit('video-show', {value: false, roomid: props.meetingId});
+        }
+        else{
             setVideo(true);
+            // props.socket.emit('video-show', {value: true, roomid: props.meetingId});
+        }
     };
 
-    const handleIdeClick = () => 
+    const handleIdeClick = () =>
     {
-        if (props.ide)
+        if (props.ide){
             props.setIde(false);
-        else
+            props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
+        }
+        else{
             props.setIde(true);
+            props.socket.emit('ide-show', {value: true, roomid: props.meetingId});
+        }
         props.setWhiteboard(false);
+        props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
         props.setScreenShare(false);
+        props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
 
     };
 
-    const handleScreenShareClick = () => 
+    const handleScreenShareClick = () =>
     {
-        if (props.screenShare)
+        if (props.screenShare){
             props.setScreenShare(false);
-        else
+            props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
+        }
+        else{
             props.setScreenShare(true);
+            props.socket.emit('screen-show', {value: true, roomid: props.meetingId});
+        }
         props.setIde(false);
+        props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
         props.setWhiteboard(false);
+        props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
 
     }
 
-    const handleWhiteboardClick = () => 
+    const handleWhiteboardClick = () =>
     {
-        if (props.whiteboard)
+        if (props.whiteboard){
             props.setWhiteboard(false);
-        else
+            props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
+        }
+        else{
             props.setWhiteboard(true);
+            props.socket.emit('wb-show', {value: true, roomid: props.meetingId});
+        }
         props.setScreenShare(false);
+        props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
         props.setIde(false);
-        
+        props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
+
     };
 
     return (
@@ -335,6 +353,24 @@ function MeetingView(props) {
     const [minimizeFaceCam, setMinimizeFaceCam]=useState(false);
     const [joined, setJoined] = useState(null);
     const { enableScreenShare, disableScreenShare, toggleScreenShare } = useMeeting();
+
+    useEffect(() => {
+        props.socket.on('ide-show', (data) => {
+            setIde(data);
+        });
+    }, [props.socket]);
+
+    useEffect(() => {
+        props.socket.on('screen-show', (data) => {
+            setScreenShare(data);
+        });
+    }, [props.socket]);
+
+    useEffect(() => {
+        props.socket.on('wb-show', (data) => {
+            setWhiteboard(data);
+        });
+    }, [props.socket]);
 
     const handleEnableScreenShare = () => {
         enableScreenShare();
@@ -458,7 +494,8 @@ function MeetingView(props) {
                     setWhiteboard={setWhiteboard}
                     minimizeFaceCam={minimizeFaceCam}
                     setMinimizeFaceCam={setMinimizeFaceCam}
-
+                    socket={props.socket}
+                    meetingId={props.meetingId}
                 />
             </div>}
         </div>
