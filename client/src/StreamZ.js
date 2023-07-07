@@ -398,19 +398,18 @@ function MeetingView(props) {
             {joined && joined == "JOINED" ? (
                 <div className="allContainer">
                     {[...participants.keys()].map((participantId, index) => {
-                        if (index === 0) {
-                            return (
-                                <ParticipantView
-                                    participantId={participantId}
-                                    key={participantId}
-                                    adminDetails={props.adminDetails}
-                                    ide={ide}
-                                    screenShare={screenShare}
-                                    whiteboard={whiteboard}
-                                />
-                            );
-                        }
-                        return null;
+
+                        return (
+                            <ParticipantView
+                                participantId={participantId}
+                                key={participantId}
+                                adminDetails={props.adminDetails}
+                                details={props.details}
+                                ide={ide}
+                                screenShare={screenShare}
+                                whiteboard={whiteboard}
+                            />
+                        );
                     })}
 
                 </div>
