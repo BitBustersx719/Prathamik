@@ -131,7 +131,7 @@ function ParticipantView(props) {
     if (props.ide||props.screenShare||props.whiteboard)
     {
         return (
-            <div className="smallPview">
+            <div className={webcamOn?"smallPview z-index":"smallPview"}>
                 {/* <p>
                     Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
                     {micOn ? "ON" : "OFF"}
@@ -182,7 +182,7 @@ function ParticipantView(props) {
     else
     {
         return (
-            <div className="pview">
+            <div className={webcamOn?"pview z-index":"pview"}>
                 {/* <p>
                     Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
                     {micOn ? "ON" : "OFF"}

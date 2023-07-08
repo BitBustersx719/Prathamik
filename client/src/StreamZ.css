@@ -9,9 +9,15 @@
     /* border: 1px solid lightgrey; */
 }
 
-.videoCam{
+.videoCam
+{
     height: 100% !important;
     width: 100% !important;
+}
+
+.z-index
+{
+    z-index: 5 !important;
 }
 
 .noVideoCam
