@@ -1,6 +1,7 @@
 import "./StreamZ.css";
 import "./index.css";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     MeetingProvider,
     MeetingConsumer,
@@ -128,10 +129,9 @@ function ParticipantView(props) {
         setInitial(user ? user.data.name.charAt(0) : '');
     }, [user]);
 
-    if (props.ide||props.screenShare||props.whiteboard)
-    {
+    if (props.ide || props.screenShare || props.whiteboard) {
         return (
-            <div className={webcamOn?"smallPview z-index":"smallPview"}>
+            <div className={webcamOn ? "smallPview z-index" : "smallPview"}>
                 {/* <p>
                     Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
                     {micOn ? "ON" : "OFF"}
@@ -179,10 +179,9 @@ function ParticipantView(props) {
             </div>
         );
     }
-    else
-    {
+    else {
         return (
-            <div className={webcamOn?"pview z-index":"pview"}>
+            <div className={webcamOn ? "pview z-index" : "pview"}>
                 {/* <p>
                     Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
                     {micOn ? "ON" : "OFF"}
@@ -236,82 +235,78 @@ function Controls(props) {
     const { leave, toggleMic, toggleWebcam } = useMeeting();
     const [mic, setMic] = useState(false);
     const [video, setVideo] = useState(false);
-    const handleMicClick = () =>
-    {
+    const navigate = useNavigate();
+    const handleMicClick = () => {
         if (mic)
             setMic(false);
         else
             setMic(true);
     };
 
-    const handleVideoClick = () =>
-    {
-        if (video){
+    const handleVideoClick = () => {
+        if (video) {
             setVideo(false);
             // props.socket.emit('video-show', {value: false, roomid: props.meetingId});
         }
-        else{
+        else {
             setVideo(true);
             // props.socket.emit('video-show', {value: true, roomid: props.meetingId});
         }
     };
 
-    const handleIdeClick = () =>
-    {
-        if (props.ide){
+    const handleIdeClick = () => {
+        if (props.ide) {
             props.setIde(false);
             props.setRunButtonShow(false);
-            props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
+            props.socket.emit('ide-show', { value: false, roomid: props.meetingId });
         }
-        else{
+        else {
             props.setIde(true);
             props.setRunButtonShow(true);
-            props.socket.emit('ide-show', {value: true, roomid: props.meetingId});
+            props.socket.emit('ide-show', { value: true, roomid: props.meetingId });
         }
         props.setWhiteboard(false);
         props.setShow('stream');
-        props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
+        props.socket.emit('wb-show', { value: false, roomid: props.meetingId });
         props.setScreenShare(false);
-        props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
+        props.socket.emit('screen-show', { value: false, roomid: props.meetingId });
 
     };
 
-    const handleScreenShareClick = () =>
-    {
-        if (props.screenShare){
+    const handleScreenShareClick = () => {
+        if (props.screenShare) {
             props.setScreenShare(false);
-            props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
+            props.socket.emit('screen-show', { value: false, roomid: props.meetingId });
         }
-        else{
+        else {
             props.setScreenShare(true);
-            props.socket.emit('screen-show', {value: true, roomid: props.meetingId});
+            props.socket.emit('screen-show', { value: true, roomid: props.meetingId });
         }
         props.setRunButtonShow(false);
         props.setIde(false);
-        props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
+        props.socket.emit('ide-show', { value: false, roomid: props.meetingId });
         props.setWhiteboard(false);
         props.setShow('stream');
-        props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
+        props.socket.emit('wb-show', { value: false, roomid: props.meetingId });
 
     }
 
-    const handleWhiteboardClick = () =>
-    {
-        if (props.whiteboard){
+    const handleWhiteboardClick = () => {
+        if (props.whiteboard) {
             props.setWhiteboard(false);
-            props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
+            props.socket.emit('wb-show', { value: false, roomid: props.meetingId });
             props.setShow('stream')
         }
-        else{
+        else {
             props.setWhiteboard(true);
-            props.socket.emit('wb-show', {value: true, roomid: props.meetingId});
+            props.socket.emit('wb-show', { value: true, roomid: props.meetingId });
             props.setShow('board')
         }
         props.setRunButtonShow(false);
         props.setScreenShare(false);
-        props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
+        props.socket.emit('screen-show', { value: false, roomid: props.meetingId });
         props.setIde(false);
-        props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
+        props.socket.emit('ide-show', { value: false, roomid: props.meetingId });
 
     };
 
@@ -347,8 +342,8 @@ function Controls(props) {
             <button onClick={handleWhiteboardClick} className={props.whiteboard ? "coding red_bg" : "coding black_bg"}>
                 <i class="fa-solid fa-chalkboard"></i>
             </button>
-            <button onClick={() => leave()} className="leave">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <button onClick={() => { leave(); navigate('/'); }} className="leave">
+                <i className="fa-solid fa-arrow-right-from-bracket"></i>
             </button>
         </div>
     );
@@ -356,9 +351,9 @@ function Controls(props) {
 
 function MeetingView(props) {
     const [ide, setIde] = useState(false);
-    const [screenShare, setScreenShare]=useState(false);
+    const [screenShare, setScreenShare] = useState(false);
     const [whiteboard, setWhiteboard] = useState(false);
-    const [minimizeFaceCam, setMinimizeFaceCam]=useState(false);
+    const [minimizeFaceCam, setMinimizeFaceCam] = useState(false);
     const [joined, setJoined] = useState(null);
     const { enableScreenShare, disableScreenShare, toggleScreenShare } = useMeeting();
 
@@ -436,24 +431,22 @@ function MeetingView(props) {
     const { presenterId } = useMeeting();
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const email=user.data.email;
+    const email = user.data.email;
     const [showMeetingCard, setShowMeetingCard] = useState(true);
-    const handleMeetingCardClick = () =>
-    {
+    const handleMeetingCardClick = () => {
         setShowMeetingCard(false);
     }
 
     const [isCopied, setIsCopied] = useState(false);
-    const copyMeetingId = () =>
-    {
+    const copyMeetingId = () => {
         const meetingId = props.meetingId;
         navigator.clipboard.writeText(meetingId)
-        .then(() => {
-            console.log('Meeting ID copied!');
-        })
-        .catch((error) => {
-            console.error('Failed to copy meeting ID:', error);
-        });
+            .then(() => {
+                console.log('Meeting ID copied!');
+            })
+            .catch((error) => {
+                console.error('Failed to copy meeting ID:', error);
+            });
         setIsCopied(true);
         setTimeout(() => {
             setIsCopied(false);
@@ -512,6 +505,8 @@ function MeetingView(props) {
                             setShow={props.setShow}
                             meetingId={props.meetingId}
                             details={props.details}
+                            showBrowser={props.showBrowser}
+                            setShowBrowser={props.setShowBrowser}
                         />
                     </div>}
 
@@ -600,6 +595,8 @@ function StreamZ(props) {
                 details={props.details}
                 runButtonShow={props.runButtonShow}
                 setRunButtonShow={props.setRunButtonShow}
+                showBrowser={props.showBrowser}
+                setShowBrowser={props.setShowBrowser}
             />
         </MeetingProvider>
     )

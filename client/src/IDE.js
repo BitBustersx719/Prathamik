@@ -26,7 +26,6 @@ function IDE(props) {
   const [ideValue, setIdeValue] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
   const [showWarning, setShowWarning] = useState(true);
-  const [showBrowser, setShowBrowser] = useState(false);
   const [fileValues, setFileValues] = useState({});
   const collectionRef = collection(db, "FileSystemX");
 
@@ -70,7 +69,7 @@ function IDE(props) {
 
   useEffect(() => {
     props.socket.on("show-browser", (data) => {
-      setShowBrowser(data);
+      props.setShowBrowser(data);
     });
 
     return () => {
@@ -289,11 +288,6 @@ function IDE(props) {
     props.socket.emit("input", { value: e.target.value, roomid: props.meetingId });
   }
 
-  function handleShowBrowser(value) {
-    setShowBrowser(value);
-    props.socket.emit("show-browser", {value: value , roomid: props.meetingId});
-  }
-
   return (
       <div className='ide_parent'>
 
@@ -375,16 +369,12 @@ function IDE(props) {
               </div>
             </div>
           </div>
-
-          {!showBrowser && props.details.isAdmin && <button onClick={() => handleShowBrowser(true)}>Switch to Browser</button>}
-          {showBrowser && props.details.isAdmin && <button onClick={() => handleShowBrowser(false)}>Switch to IDE</button>}
-
         </div>
 
-        {props.details.isAdmin && !showBrowser &&
+        {props.details.isAdmin && !props.showBrowser &&
           <div className='ide_in_ide_container'>
             <Editor
-              theme="vs-dark"
+              theme="vs-light"
               onMount={handleEditorDidMount}
               onChange={handleEditorChange}
               path={files[fileIndex].name}
@@ -410,7 +400,7 @@ function IDE(props) {
             </div>
           </div>
         }
-        {!props.details.isAdmin && !showBrowser && <div className='ide_in_ide_container'>
+        {!props.details.isAdmin && !props.showBrowser && <div className='ide_in_ide_container'>
           <Editor theme="vs-light" onMount={handleEditorDidMount} path={files[fileIndex].name}
             defaultLanguage={files[fileIndex].language} defaultValue={files[fileIndex].value} value={ideValue} options={{
               readOnly: true
@@ -430,7 +420,7 @@ function IDE(props) {
             </div>
           </div>
         </div>}
-        {showBrowser && <iframe
+        {props.showBrowser && <iframe
           title='output'
           sandbox='allow-scripts'
           width='100%'

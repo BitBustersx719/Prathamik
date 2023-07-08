@@ -33,6 +33,7 @@ function Platform(props) {
   const [adminDetails, setAdminDetails] = useState({});
   const [details, setDetails] = useState({});
   const paramsId = useParams().roomid;
+  const [showBrowser, setShowBrowser] = useState(false);
   const [color, setColor] = useState({
     A: 'lightgrey',
     B: 'lightgrey'
@@ -340,6 +341,12 @@ function Platform(props) {
     }
   };
 
+  function handleShowBrowser() {
+    const value = !showBrowser;
+    setShowBrowser(!showBrowser);
+    socket.emit("show-browser", {value: value , roomid: props.meetingId});
+  }
+
   const captureScreenshot = async () => {
     const canvas = canvasRef.current;
     canvas.toBlob((blob) => {
@@ -440,9 +447,14 @@ function Platform(props) {
             <h1>Prathamik</h1>
             <p>Online IDE</p>
           </div>
+          <div className='nav-btnss'>
+          {details.isAdmin && runButtonShow && <form>
+            <button type='button' onClick={handleShowBrowser}>Browser</button>
+          </form>}
           {details.isAdmin && runButtonShow && <form>
             <button type='button' onClick={handleRun}>Run <i class="fa-solid fa-play"></i></button>
           </form>}
+          </div>
         </div>
 
         <div className='navbar_2'>
@@ -487,6 +499,8 @@ function Platform(props) {
             setShow={setShow}
             runButtonShow={runButtonShow}
             setRunButtonShow={setRunButtonShow}
+            showBrowser={showBrowser}
+            setShowBrowser={setShowBrowser}
           />
         </div>
 
