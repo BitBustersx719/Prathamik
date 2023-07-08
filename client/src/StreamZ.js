@@ -260,10 +260,12 @@ function Controls(props) {
     {
         if (props.ide){
             props.setIde(false);
+            props.setRunButtonShow(false);
             props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
         }
         else{
             props.setIde(true);
+            props.setRunButtonShow(true);
             props.socket.emit('ide-show', {value: true, roomid: props.meetingId});
         }
         props.setWhiteboard(false);
@@ -283,6 +285,7 @@ function Controls(props) {
             props.setScreenShare(true);
             props.socket.emit('screen-show', {value: true, roomid: props.meetingId});
         }
+        props.setRunButtonShow(false);
         props.setIde(false);
         props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
         props.setWhiteboard(false);
@@ -300,6 +303,7 @@ function Controls(props) {
             props.setWhiteboard(true);
             props.socket.emit('wb-show', {value: true, roomid: props.meetingId});
         }
+        props.setRunButtonShow(false);
         props.setScreenShare(false);
         props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
         props.setIde(false);
@@ -535,6 +539,8 @@ function MeetingView(props) {
                     setMinimizeFaceCam={setMinimizeFaceCam}
                     socket={props.socket}
                     meetingId={props.meetingId}
+                    runButtonShow={props.runButtonShow}
+                    setRunButtonShow={props.setRunButtonShow}
                 />
             </div>}
         </div>
@@ -574,6 +580,8 @@ function StreamZ(props) {
                 setShow={props.setShow}
                 adminDetails={props.adminDetails}
                 details={props.details}
+                runButtonShow={props.runButtonShow}
+                setRunButtonShow={props.setRunButtonShow}
             />
         </MeetingProvider>
     )
