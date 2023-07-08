@@ -10,7 +10,7 @@ import io
 app = Flask(__name__)
 CORS(app)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-CORS(app, resources={r"/*": {"origins": "http://localhost:3001/whiteboard"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3001"}})
 # Set the environment variable for the service account key file
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision.json"
 @app.route('/ocr', methods=['POST'])
