@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import SpeechRecognition,{ useSpeechRecognition } from 'react-speech-recognition';
+import './CaptioningSystem.css';
 const CaptioningSystem = () => {
   const {
     transcript,
@@ -8,16 +9,23 @@ const CaptioningSystem = () => {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
+  useEffect(() => {
+    SpeechRecognition.startListening({ continuous: true });
+  }, []);
+
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+
+  const max = 75;
+
+  if(transcript.length > max){
+    resetTranscript();
+  }
+
   return (
     <div>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button>
-      <p>{transcript}</p>
+       <p style={{color: 'black'}} class='captions-text'>{transcript}</p>
     </div>
   );
 };
