@@ -53,6 +53,16 @@ function IDE(props) {
   }, [files]);
 
   useEffect(() => {
+    props.socket.on("show-browser", (data) => {
+      setShowBrowser(data);
+    });
+
+    return () => {
+      props.socket.off("show-browser");
+    }
+  }, [props.socket]);
+
+  useEffect(() => {
     props.socket.on("ide_value", (data) => {
       props.setCode(data);
       setIdeValue(data);
@@ -128,7 +138,7 @@ function IDE(props) {
       id: fileId,
       name: newFileName,
     };
-    
+
     if (fileType === '.js') {
       newFile.value = '// Enter your js code here';
       newFile.icon = 'fab fa-js-square';
@@ -243,6 +253,11 @@ function IDE(props) {
     props.socket.emit("input", {value: e.target.value , roomid: props.meetingId});
   }
 
+  function handleShowBrowser(value) {
+    setShowBrowser(value);
+    props.socket.emit("show-browser", {value: value , roomid: props.meetingId});
+  }
+
   return (
       <div className='ide_parent'>
 
@@ -325,8 +340,8 @@ function IDE(props) {
             </div>
           </div>
 
-          {!showBrowser && props.details.isAdmin && <button onClick={() => setShowBrowser(true)}>Switch to Browser</button>}
-          {showBrowser && props.details.isAdmin && <button onClick={() => setShowBrowser(false)}>Switch to IDE</button>}
+          {!showBrowser && props.details.isAdmin && <button onClick={() => handleShowBrowser(true)}>Switch to Browser</button>}
+          {showBrowser && props.details.isAdmin && <button onClick={() => handleShowBrowser(false)}>Switch to IDE</button>}
 
         </div>
 

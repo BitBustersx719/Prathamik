@@ -269,6 +269,7 @@ function Controls(props) {
             props.socket.emit('ide-show', {value: true, roomid: props.meetingId});
         }
         props.setWhiteboard(false);
+        props.setShow('stream');
         props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
         props.setScreenShare(false);
         props.socket.emit('screen-show', {value: false, roomid: props.meetingId});
@@ -289,6 +290,7 @@ function Controls(props) {
         props.setIde(false);
         props.socket.emit('ide-show', {value: false, roomid: props.meetingId});
         props.setWhiteboard(false);
+        props.setShow('stream');
         props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
 
     }
@@ -298,10 +300,12 @@ function Controls(props) {
         if (props.whiteboard){
             props.setWhiteboard(false);
             props.socket.emit('wb-show', {value: false, roomid: props.meetingId});
+            props.setShow('stream')
         }
         else{
             props.setWhiteboard(true);
             props.socket.emit('wb-show', {value: true, roomid: props.meetingId});
+            props.setShow('board')
         }
         props.setRunButtonShow(false);
         props.setScreenShare(false);
@@ -362,18 +366,30 @@ function MeetingView(props) {
         props.socket.on('ide-show', (data) => {
             setIde(data);
         });
+
+        return () => {
+            props.socket.off('ide-show');
+        }
     }, [props.socket]);
 
     useEffect(() => {
         props.socket.on('screen-show', (data) => {
             setScreenShare(data);
         });
+
+        return () => {
+            props.socket.off('screen-show');
+        }
     }, [props.socket]);
 
     useEffect(() => {
         props.socket.on('wb-show', (data) => {
             setWhiteboard(data);
         });
+
+        return () => {
+            props.socket.off('wb-show');
+        }
     }, [props.socket]);
 
     const handleEnableScreenShare = () => {
@@ -422,13 +438,13 @@ function MeetingView(props) {
     const user = JSON.parse(localStorage.getItem('user'));
     const email=user.data.email;
     const [showMeetingCard, setShowMeetingCard] = useState(true);
-    const handleMeetingCardClick = () => 
+    const handleMeetingCardClick = () =>
     {
         setShowMeetingCard(false);
     }
 
     const [isCopied, setIsCopied] = useState(false);
-    const copyMeetingId = () => 
+    const copyMeetingId = () =>
     {
         const meetingId = props.meetingId;
         navigator.clipboard.writeText(meetingId)
@@ -541,6 +557,7 @@ function MeetingView(props) {
                     meetingId={props.meetingId}
                     runButtonShow={props.runButtonShow}
                     setRunButtonShow={props.setRunButtonShow}
+                    setShow={props.setShow}
                 />
             </div>}
         </div>
