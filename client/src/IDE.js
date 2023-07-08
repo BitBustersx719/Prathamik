@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import './IDE.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import {db} from './firebase_config';
-import { collection , getDocs } from 'firebase/firestore';
+import { db } from './firebase_config';
+import { collection, getDoc, getDocs, doc, where, query, updateDoc, addDoc } from 'firebase/firestore';
 
 const initialFiles = [
   {
@@ -28,6 +28,22 @@ function IDE(props) {
   const [showWarning, setShowWarning] = useState(true);
   const [showBrowser, setShowBrowser] = useState(false);
   const [fileValues, setFileValues] = useState({});
+  const collectionRef = collection(db, "FileSystemX");
+
+  useEffect(() => {
+    const addDocument = async () => {
+      const q = query(collectionRef, where("room_id", "==", props.meetingId));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        return;
+      }
+
+      await addDoc(collectionRef, { files: files, room_id: props.meetingId });
+    };
+  
+    addDocument();
+  }, []);
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -100,13 +116,13 @@ function IDE(props) {
     updatedFiles[fileIndex].value = value;
 
     setFiles(updatedFiles);
-    props.socket.emit("send_value", {value: value , roomid: props.meetingId});
+    props.socket.emit("send_value", { value: value, roomid: props.meetingId });
   }
 
   function handleFileClick(index) {
     setfileIndex((prevIndex) => {
       const updatedIndex = index;
-      props.socket.emit("send_index", {value: updatedIndex, roomid: props.meetingId});
+      props.socket.emit("send_index", { value: updatedIndex, roomid: props.meetingId });
       return updatedIndex;
     });
 
@@ -128,7 +144,7 @@ function IDE(props) {
       id: fileId,
       name: newFileName,
     };
-    
+
     if (fileType === '.js') {
       newFile.value = '// Enter your js code here';
       newFile.icon = 'fab fa-js-square';
@@ -171,11 +187,31 @@ function IDE(props) {
       newFile.other = 'text';
     }
 
+    let updatedFiles;
+
     setFiles((prevFiles) => {
-      const updatedFiles = [...prevFiles, newFile];
-      props.socket.emit("send_file", {value: updatedFiles, roomid: props.meetingId});
+      updatedFiles = [...prevFiles, newFile];
+      props.socket.emit("send_file", { value: updatedFiles, roomid: props.meetingId });
       return updatedFiles;
     });
+
+    // const addNewFile = async () => {
+    //   const fileData = {
+    //     name: newFile.name,
+    //     value: newFile.value,
+    //     id: newFile.id,
+    //     language: newFile.language,
+    //     other: newFile.other,
+    //     icon: newFile.icon,
+    //   };
+    
+    //   const roomId = props.meetingId;
+    //   const docRef = doc(roomId[index]);
+    
+    //   await updateDoc(collection(roomDocRef, 'files'), fileData);
+    // };
+
+    // addNewFile();
 
     setIsInvalid(false);
     setShowAddBox(false);
@@ -234,13 +270,13 @@ function IDE(props) {
 
   function handleFileDelete(id) {
     const updatedFiles = files.filter((file) => file.id !== id);
-    props.socket.emit("delete_file", {value: updatedFiles, roomid: props.meetingId});
+    props.socket.emit("delete_file", { value: updatedFiles, roomid: props.meetingId });
     setFiles(updatedFiles);
   }
 
-  function handleInputValue (e) {
+  function handleInputValue(e) {
     props.setInput(e.target.value);
-    props.socket.emit("input", {value: e.target.value , roomid: props.meetingId});
+    props.socket.emit("input", { value: e.target.value, roomid: props.meetingId });
   }
 
   return (
@@ -345,7 +381,7 @@ function IDE(props) {
                 <h4>Input</h4>
                 <textarea
                   value={props.input}
-                  onChange={(e) => {handleInputValue(e)}}
+                  onChange={(e) => { handleInputValue(e) }}
                 />
               </div>
               <div className="outputF">
