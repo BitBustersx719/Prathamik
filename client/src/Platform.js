@@ -37,6 +37,7 @@ function Platform(props) {
     A: 'lightgrey',
     B: 'lightgrey'
   });
+  
 
   useEffect(() => {
     socket.emit('join', props.meetingId);
@@ -92,7 +93,20 @@ function Platform(props) {
 
     return () => clearInterval(intervalId);
   }, []);
+  function speak(text,voiceName) {
+    // Create a new SpeechSynthesisUtterance instance
+    const message = new SpeechSynthesisUtterance();
+    const voices = window.speechSynthesis.getVoices();
 
+    // Find the desired voice by name
+    const voice = voices.find((v) => v.name === voiceName);
+  
+    // Set the text to be spoken
+    message.text = text;
+    message.voice= voice
+    // Use the speech synthesis API to speak the text
+    window.speechSynthesis.speak(message);
+  }
   useEffect(() => {
     const fetchData = async () => {
       const input = `You are a teacher preparing a quiz for your students. Please help me create a multiple-choice question with two options (A and B) based on the given context.
@@ -146,6 +160,7 @@ function Platform(props) {
 
         const data = await response.json();
         setMessage(data.output);
+        speak(data.output,"Microsoft Zira Desktop")
         const questionRegex = /Question: (.+)/;
         const questionMatch = data.output.match(questionRegex);
         const question = questionMatch ? questionMatch[1].trim() : "";
@@ -257,6 +272,7 @@ function Platform(props) {
 
       const data = await response.json();
       setMessage(data.output);
+      speak(data.output,"Microsoft Zira Desktop")
       setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
       socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', roomid: props.meetingId });
     } catch (error) {
