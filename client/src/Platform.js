@@ -9,10 +9,12 @@ import axios from 'axios';
 import StreamZ from './StreamZ';
 import io from "socket.io-client";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const socket = io.connect("http://localhost:3000");
 
 function Platform(props) {
+  const user = JSON.parse(localStorage.getItem('user'));
   const [runButtonShow, setRunButtonShow] = useState('');
   const [profileDetailsShow, setProfiledetailsShow] = useState(false);
   const [code, setCode] = useState('');
@@ -298,15 +300,6 @@ function Platform(props) {
     recognition.start();
   }
 
-  function handleProfileClick() {
-    if (profileDetailsShow) {
-      setProfiledetailsShow(false);
-    }
-    else {
-      setProfiledetailsShow(true);
-    }
-  }
-
   const handleRun = async (e) => {
     try {
       const response = await axios.request({
@@ -393,6 +386,34 @@ function Platform(props) {
     });
   };
 
+
+  function handleProfileClick() {
+    if (profileDetailsShow) {
+      setProfiledetailsShow(false);
+    }
+    else {
+      setProfiledetailsShow(true);
+    }
+  }
+
+  const [dp, setDp] = useState('');
+  const [initial, setInitial] = useState('');
+
+  useEffect(() => {
+    if (user && user.data.profilePic !== null) {
+      setDp(user.data.profilePic);
+    }
+    setInitial(user ? user.data.name.charAt(0) : '');
+  }, [user]);
+
+  const navigate=useNavigate();
+
+  const handleLogOut = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
+
   return (
     <div className='platform_parent'>
 
@@ -410,12 +431,20 @@ function Platform(props) {
 
         <div className='navbar_2'>
           <div className='profile' onClick={handleProfileClick}>
-            {/* <img src={User}/> */}
-            <div className='profile-pic'></div>
+            <div className='user'>
+                {dp ? (
+                  <img
+                    src={`http://localhost:3000/uploads/${dp}`}
+                    alt=''
+                  />
+                ) : (
+                  <span>{initial}</span>
+                )}
+            </div>
             <span><i class="fa-solid fa-angle-down"></i></span>
             {profileDetailsShow && <ul>
               <li>Profile</li>
-              <li>Log out</li>
+              <li onClick={handleLogOut}>Log out</li>
             </ul>}
           </div>
         </div>
