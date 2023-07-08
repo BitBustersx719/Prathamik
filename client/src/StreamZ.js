@@ -11,7 +11,7 @@ import { authToken } from "./API";
 import ReactPlayer from "react-player";
 import Container from "./Container";
 import IDE from "./IDE";
-
+import CaptioningSystem from "./CaptioningSystem"
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
         useParticipant(presenterId);
@@ -559,6 +559,7 @@ function MeetingView(props) {
                     setRunButtonShow={props.setRunButtonShow}
                     setShow={props.setShow}
                 />
+                <CaptioningSystem/>
             </div>}
         </div>
     );
