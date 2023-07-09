@@ -83,7 +83,7 @@ function ChatBox(props) {
           ref={props.inputRef}
         />
         <button type='button' onClick={props.voice}>
-          <FontAwesomeIcon icon={faMicrophone} fontSize={20} style={{ color: "#56BCD8" }} />
+          <FontAwesomeIcon icon={faMicrophone} fontSize={20} style={{ color: "#4b4f5d" }} />
         </button>
         {props.show === 'editor' && <button onClick={props.handleInput}>
           <i class="fa-solid fa-paper-plane"></i>

@@ -444,10 +444,11 @@ function Platform(props) {
       <div className='platform_navbar'>
         <div className='navbar_1'>
 
-          <div className='platform_logo'>
+          <a href='http://localhost:3000/' className='logo-container-platform'>
+            <div className='logo'></div>
             <h1>Prathamik</h1>
-            <p>Online IDE</p>
-          </div>
+          </a>
+
           <div className='nav-btnss'>
           {details.isAdmin && runButtonShow && <form>
             <button type='button' onClick={handleShowBrowser}>Browser</button>
