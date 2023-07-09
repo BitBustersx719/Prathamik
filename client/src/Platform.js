@@ -33,10 +33,12 @@ function Platform(props) {
   const [adminDetails, setAdminDetails] = useState({});
   const [details, setDetails] = useState({});
   const paramsId = useParams().roomid;
+  const [showBrowser, setShowBrowser] = useState(false);
   const [color, setColor] = useState({
     A: 'lightgrey',
     B: 'lightgrey'
   });
+  
 
   useEffect(() => {
     socket.emit('join', props.meetingId);
@@ -92,7 +94,20 @@ function Platform(props) {
 
     return () => clearInterval(intervalId);
   }, []);
+  function speak(text,voiceName) {
+    // Create a new SpeechSynthesisUtterance instance
+    const message = new SpeechSynthesisUtterance();
+    const voices = window.speechSynthesis.getVoices();
 
+    // Find the desired voice by name
+    const voice = voices.find((v) => v.name === voiceName);
+  
+    // Set the text to be spoken
+    message.text = text;
+    message.voice= voice
+    // Use the speech synthesis API to speak the text
+    window.speechSynthesis.speak(message);
+  }
   useEffect(() => {
     const fetchData = async () => {
       const input = `You are a teacher preparing a quiz for your students. Please help me create a multiple-choice question with two options (A and B) based on the given context.
@@ -146,6 +161,7 @@ function Platform(props) {
 
         const data = await response.json();
         setMessage(data.output);
+        speak(data.output,"Microsoft Zira Desktop")
         const questionRegex = /Question: (.+)/;
         const questionMatch = data.output.match(questionRegex);
         const question = questionMatch ? questionMatch[1].trim() : "";
@@ -257,6 +273,7 @@ function Platform(props) {
 
       const data = await response.json();
       setMessage(data.output);
+      speak(data.output,"Microsoft Zira Desktop")
       setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
       socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', roomid: props.meetingId });
     } catch (error) {
@@ -323,6 +340,12 @@ function Platform(props) {
       console.error(error);
     }
   };
+
+  function handleShowBrowser() {
+    const value = !showBrowser;
+    setShowBrowser(!showBrowser);
+    socket.emit("show-browser", {value: value , roomid: props.meetingId});
+  }
 
   const captureScreenshot = async () => {
     const canvas = canvasRef.current;
@@ -424,9 +447,14 @@ function Platform(props) {
             <h1>Prathamik</h1>
             <p>Online IDE</p>
           </div>
+          <div className='nav-btnss'>
+          {details.isAdmin && runButtonShow && <form>
+            <button type='button' onClick={handleShowBrowser}>Browser</button>
+          </form>}
           {details.isAdmin && runButtonShow && <form>
             <button type='button' onClick={handleRun}>Run <i class="fa-solid fa-play"></i></button>
           </form>}
+          </div>
         </div>
 
         <div className='navbar_2'>
@@ -471,6 +499,8 @@ function Platform(props) {
             setShow={setShow}
             runButtonShow={runButtonShow}
             setRunButtonShow={setRunButtonShow}
+            showBrowser={showBrowser}
+            setShowBrowser={setShowBrowser}
           />
         </div>
 

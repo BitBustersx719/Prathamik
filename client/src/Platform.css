@@ -9,9 +9,9 @@
 .platform_parent
 {
   background-color: #ffffff;
-  height: 100vh;
-  width: 100vw;
-  min-width: 1440px;
+  /* height: 100vh; */
+  /* width: 100vw; */
+  /* min-width: 1440px; */
   min-height: 789px;
   box-sizing: border-box;
 }
@@ -192,4 +192,9 @@
   border: 1px solid #bcbcbc;
   border-top-left-radius: 10px;
   overflow: hidden;
+}
+
+.nav-btnss{
+  display: flex;
+  gap: 1rem;
 }
