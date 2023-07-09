@@ -11,7 +11,7 @@ const initialFiles = [
     id: 0,
     name: "sample.txt",
     language: "text",
-    value: "This is a sample file...",
+    value: "This is a sample file.",
     icon: "fab fa-js-square",
     other: "text"
   }
