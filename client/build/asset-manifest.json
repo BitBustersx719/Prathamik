@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/static/css/main.990b2d82.css",
+    "main.js": "/static/js/main.520f3420.js",
+    "static/media/expert-nobg.png": "/static/media/expert-nobg.112ae9fb2a9f8362474b.png",
+    "static/media/community-nobg.png": "/static/media/community-nobg.5ceecc9945344aa168e4.png",
+    "static/media/technology-nobg.png": "/static/media/technology-nobg.9702e034d0a55f8f0eb2.png",
+    "static/media/fontawesome-webfont.svg?v=4.7.0": "/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
+    "static/media/fa-solid-900.ttf": "/static/media/fa-solid-900.4a2cd718d7031b732e76.ttf",
+    "static/media/bluelogin-whitebg.svg": "/static/media/bluelogin-whitebg.994fb8e473a0f3edb622.svg",
+    "static/media/fa-brands-400.ttf": "/static/media/fa-brands-400.150de8eaa454d669c405.ttf",
+    "static/media/fontawesome-webfont.eot": "/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
+    "static/media/fontawesome-webfont.ttf?v=4.7.0": "/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
+    "static/media/fa-solid-900.woff2": "/static/media/fa-solid-900.bb975c966c37455a1bc3.woff2",
+    "static/media/fa-brands-400.woff2": "/static/media/fa-brands-400.e033a13ee751afc1860c.woff2",
+    "static/media/fontawesome-webfont.woff?v=4.7.0": "/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
+    "static/media/fontawesome-webfont.woff2?v=4.7.0": "/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
+    "static/media/experience-nobg.png": "/static/media/experience-nobg.157c2499105de36441bd.png",
+    "static/media/ideX.png": "/static/media/ideX.62b9cc2db7301d41b116.png",
+    "static/media/fa-regular-400.ttf": "/static/media/fa-regular-400.d87474231f4192884802.ttf",
+    "static/media/p.png": "/static/media/p.55626c98c105199918eb.png",
+    "static/media/pLogo.png": "/static/media/pLogo.55626c98c105199918eb.png",
+    "static/media/fa-regular-400.woff2": "/static/media/fa-regular-400.3223dc79c1adee56370b.woff2",
+    "static/media/logo.png": "/static/media/logo.d72f1bd48322a5a33338.png",
+    "static/media/fa-v4compatibility.ttf": "/static/media/fa-v4compatibility.0e3a648be390bd8cb094.ttf",
+    "static/media/fa-v4compatibility.woff2": "/static/media/fa-v4compatibility.68577e40f3e70067b5da.woff2",
+    "index.html": "/index.html",
+    "main.990b2d82.css.map": "/static/css/main.990b2d82.css.map",
+    "main.520f3420.js.map": "/static/js/main.520f3420.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.990b2d82.css",
+    "static/js/main.520f3420.js"
+  ]
+}
