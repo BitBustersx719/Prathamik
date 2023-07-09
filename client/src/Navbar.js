@@ -39,7 +39,7 @@ function Navbar() {
   const [image, setImage] = useState('');
 
   const handleImageSubmit = () => {
-    const url = 'http://localhost:4000/';
+    const url = `${process.env.REACT_APP_SERVER_URL}/`;
 
     const formData = new FormData();
     formData.append('image', image);
@@ -62,7 +62,7 @@ function Navbar() {
     return (
       <div>
         <nav className={navbarShadow ? 'transparency' : 'navbar'}>
-          <a href='http://localhost:4000/' className='logo-container'>
+          <a href={`${process.env.REACT_APP_SERVER_URL}/`} className='logo-container'>
             <div className='logo'></div>
             <h1>Prathamik</h1>
           </a>
@@ -81,7 +81,7 @@ function Navbar() {
               <div className='user' onClick={handleProfileClick}>
                 {dp ? (
                   <img
-                    src={`http://localhost:4000/uploads/${dp}`}
+                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/${dp}`}
                     alt=''
                   />
                 ) : (
@@ -114,7 +114,7 @@ function Navbar() {
     return (
       <div>
         <nav className={navbarShadow ? 'transparency' : 'navbar'}>
-          <a href='http://localhost:4000/' className='logo-container'>
+          <a href={`${process.env.REACT_APP_SERVER_URL}/`} className='logo-container'>
             <div className='logo'></div>
             <h1>Prathamik</h1>
           </a>

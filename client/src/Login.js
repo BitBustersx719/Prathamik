@@ -22,7 +22,7 @@ function Login()
     const handleSubmit= async  (e)=>{
         e.preventDefault();
         try{
-            const url='http://localhost:4000/login';
+            const url=`${process.env.REACT_APP_SERVER_URL}/login`;
             const response=await axios.post(url,data);
             const res=response.data;
             localStorage.setItem('user', JSON.stringify(res));

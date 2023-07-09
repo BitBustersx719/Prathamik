@@ -58,7 +58,7 @@ function ChatBox(props) {
         {props.chats.map((chat) => (
           chat.type === 'mcq' ?
             (<div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
-              {!chat.ownedByCurrentUser && <img src={`http://localhost:4000/uploads/${chat.profilePic}`} />}
+              {!chat.ownedByCurrentUser && <img src={`${process.env.REACT_APP_SERVER_URL}/uploads/${chat.profilePic}`} />}
               <div className='col'>
                 <p>{chat.question}</p>
                 <div className='mcq_options'>
@@ -68,7 +68,7 @@ function ChatBox(props) {
               </div>
             </div>) :
             (<div className={`${chat.ownedByCurrentUser ? "user_chat" : "bot_chat"}`}>
-              {!chat.ownedByCurrentUser && <img src={`http://localhost:4000/uploads/${chat.profilePic}`} />}
+              {!chat.ownedByCurrentUser && <img src={`${process.env.REACT_APP_SERVER_URL}/uploads/${chat.profilePic}`} />}
               <p>{chat.input}</p>
             </div>)
         ))}

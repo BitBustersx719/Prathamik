@@ -30,7 +30,7 @@ function Signup()
             return;
         }
         try {
-            const url = 'http://localhost:4000/signup';
+            const url = `${process.env.REACT_APP_SERVER_URL}/signup`;
             const response = await axios.post(url, data);
             //   const res=response.data;
             navigate('/login');
