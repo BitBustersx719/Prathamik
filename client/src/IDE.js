@@ -551,8 +551,11 @@ function IDE(props) {
 
         {props.details.isAdmin && !props.showBrowser &&
           <div className='ide_in_ide_container'>
-            {fileIndex}
-            {files[fileIndex].value}
+            <div className='ide_border_top'>
+              <div className='red'></div>
+              <div className='yellow'></div>
+              <div className='green'></div>
+            </div>
             <Editor
               theme="vs-light"
               onMount={handleEditorDidMount}
