@@ -33,7 +33,7 @@ const routes = require('./Routes/routes');
 const { handleInput } = require('./gpt-3.5/gptController/inputController.js');
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3001'
+  origin: 'http://localhost:3000'
 }));
 
 //routes
@@ -75,7 +75,7 @@ app.post('/', upload.single('image'), async (req, res) =>
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST']
   }
 });
@@ -85,7 +85,7 @@ server.on('upgrade', handleUpgrade);
 
 app.post('/input', handleInput);
 
-const port = 3000;
+const port = 4000;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

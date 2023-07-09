@@ -11,7 +11,7 @@ import io from "socket.io-client";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("http://localhost:4000");
 
 function Platform(props) {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -45,7 +45,7 @@ function Platform(props) {
   }, [socket, props.meetingId]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/verify/owner', {
+    fetch('http://localhost:4000/verify/owner', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function Platform(props) {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:3000/get/admin/details', {
+    fetch('http://localhost:4000/get/admin/details', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ function Platform(props) {
       `;
       console.log(input);
       try {
-        const response = await fetch('http://localhost:3000/input', {
+        const response = await fetch('http://localhost:4000/input', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -259,7 +259,7 @@ function Platform(props) {
     const input = `${code}\n${userInput}`;
 
     try {
-      const response = await fetch('http://localhost:3000/input', {
+      const response = await fetch('http://localhost:4000/input', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -382,7 +382,7 @@ function Platform(props) {
               Question by student: \n${userInput}
               AI Assistant: (Your generated response goes here);`;
 
-              const response = await fetch('http://localhost:3000/input', {
+              const response = await fetch('http://localhost:4000/input', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -462,7 +462,7 @@ function Platform(props) {
             <div className='user'>
                 {dp ? (
                   <img
-                    src={`http://localhost:3000/uploads/${dp}`}
+                    src={`http://localhost:4000/uploads/${dp}`}
                     alt=''
                   />
                 ) : (

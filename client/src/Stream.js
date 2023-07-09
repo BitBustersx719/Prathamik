@@ -6,7 +6,7 @@ import { faMicrophone, faVideo, faSquarePlus, faMicrophoneSlash, faVideoSlash } 
 import io from 'socket.io-client';
 
 const agoraAppId = "3ec3dc68e69e4b539553415e34ce7b03";
-const signalingServerUrl = 'http://localhost:3000';
+const signalingServerUrl = 'http://localhost:4000';
 
 const Stream = () => {
   const remoteVideoRef = useRef(null);

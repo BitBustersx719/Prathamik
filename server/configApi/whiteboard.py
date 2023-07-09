@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from google.cloud import vision_v1
-from google.cloud import speech_v1p1beta1 as speech
+
 from PIL import Image
 import base64
 import requests
@@ -9,8 +9,8 @@ import os
 import io
 app = Flask(__name__)
 CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:4000"}})
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-CORS(app, resources={r"/*": {"origins": "http://localhost:3001/whiteboard"}})
 # Set the environment variable for the service account key file
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision.json"
 @app.route('/ocr', methods=['POST'])
@@ -37,8 +37,8 @@ def ocr():
     else:
         extracted_text = ""
     return jsonify({'text': extracted_text})
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4000')
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3001')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 @app.route('/test', methods=['POST'])
 def test():
@@ -61,28 +61,6 @@ def upload():
     response = requests.post(url, files=payload)
 
     return response.text, response.status_code
-@app.route('/caption', methods=['POST'])
-def caption():
-    if 'audio' not in request.files:
-        return jsonify({'error': 'No audio file provided'})
-
-    audio = request.files['audio']
-    content = audio.read()
-
-    client = speech.SpeechClient()
-    audio_data = speech.RecognitionAudio(content=content)
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.MP3,
-        sample_rate_hertz=16000,
-        language_code='en-US',
-    )
-
-    response = client.recognize(config=config, audio=audio_data)
-
-    captions = []
-    for result in response.results:
-        captions.append(result.alternatives[0].transcript)
-
-    return jsonify({'captions': captions})  
+ 
 if __name__ == '__main__':
     app.run(debug=True)
