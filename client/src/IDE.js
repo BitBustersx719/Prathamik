@@ -408,10 +408,10 @@ function IDE(props) {
     props.socket.emit("input", { value: e.target.value, roomid: props.meetingId });
   }
 
-  function handleShowBrowser(value) {
-    setShowBrowser(value);
-    props.socket.emit("show-browser", {value: value , roomid: props.meetingId});
-  }
+  // function handleShowBrowser(value) {
+  //   setShowBrowser(value);
+  //   props.socket.emit("show-browser", {value: value , roomid: props.meetingId});
+  // }
 
 
   // const roomId = props.meetingId;
