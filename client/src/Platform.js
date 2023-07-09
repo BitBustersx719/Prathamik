@@ -396,6 +396,7 @@ function Platform(props) {
 
               const data = await response.json();
               setMessage(data.output);
+              speak(data.output,"Microsoft Zira Desktop")
               setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
               socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', roomid: props.meetingId });
             });
