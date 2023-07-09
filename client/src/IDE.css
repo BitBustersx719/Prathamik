@@ -21,6 +21,7 @@
 }
 
 .files_container {
+    overflow: auto;
     width: 100%;
     border-bottom: 1px solid #bcbcbc;
 }
