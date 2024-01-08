@@ -11,7 +11,7 @@ import io from "socket.io-client";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const socket = io.connect(`${process.env.REACT_APP_SERVER_URL}`);
+const socket = io.connect(`https://prathamik-server.onrender.com`);
 
 function Platform(props) {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -38,14 +38,14 @@ function Platform(props) {
     A: 'lightgrey',
     B: 'lightgrey'
   });
-  
+
 
   useEffect(() => {
     socket.emit('join', props.meetingId);
   }, [socket, props.meetingId]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/verify/owner`, {
+    fetch(`https://prathamik-server.onrender.com/verify/owner`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function Platform(props) {
   }, []);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/get/admin/details`, {
+    fetch(`https://prathamik-server.onrender.com/get/admin/details`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ function Platform(props) {
 
     // Find the desired voice by name
     const voice = voices.find((v) => v.name === voiceName);
-  
+
     // Set the text to be spoken
     message.text = text;
     message.voice= voice
@@ -147,7 +147,7 @@ function Platform(props) {
       `;
       console.log(input);
       try {
-        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/input`, {
+        const response = await fetch(`https://prathamik-server.onrender.com/input`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -201,8 +201,8 @@ function Platform(props) {
       }
     };
 
-    // if (code !== '')
-    //   fetchData();
+    if (code !== '')
+      fetchData();
   }, [change]);
 
 
@@ -259,7 +259,7 @@ function Platform(props) {
     const input = `${code}\n${userInput}`;
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/input`, {
+      const response = await fetch(`https://prathamik-server.onrender.com/input`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -353,7 +353,7 @@ function Platform(props) {
       const formData = new FormData();
       formData.append('image', blob, 'screenshot.png');
 
-      fetch('http://localhost:5000/ocr', {
+      fetch('https://ocr-mxmn.onrender.com/ocr', {
         method: 'POST',
         body: formData,
       })
@@ -382,7 +382,7 @@ function Platform(props) {
               Question by student: \n${userInput}
               AI Assistant: (Your generated response goes here);`;
 
-              const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/input`, {
+              const response = await fetch(`https://prathamik-server.onrender.com/input`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -395,7 +395,8 @@ function Platform(props) {
               }
 
               const data = await response.json();
-              setMessage(data.output);
+              const trimData = data.output.substring(13);
+              setMessage(trimData);
               speak(data.output,"Microsoft Zira Desktop")
               setChats((chats) => [...chats, { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png' }]);
               socket.emit("bot_message", { input: data.output, ownedByCurrentUser: false, profilePic: 'x.png', roomid: props.meetingId });
@@ -444,7 +445,7 @@ function Platform(props) {
       <div className='platform_navbar'>
         <div className='navbar_1'>
 
-          <a href='http://localhost:3000/' className='logo-container-platform'>
+          <a href='https://prathamik-server.onrender.com/' className='logo-container-platform'>
             <div className='logo'></div>
             <h1>Prathamik</h1>
           </a>
@@ -464,7 +465,7 @@ function Platform(props) {
             <div className='user'>
                 {dp ? (
                   <img
-                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/${dp}`}
+                    src={`https://prathamik-server.onrender.com/uploads/${dp}`}
                     alt=''
                   />
                 ) : (

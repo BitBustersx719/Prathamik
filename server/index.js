@@ -6,6 +6,7 @@ const cors = require('cors');
 const express = require('express');
 const { createRoomId , verifyOwner , getAdminDetails } = require('./controllers/roomid');
 
+
 const app = express();
 
 connectDb();
@@ -33,7 +34,7 @@ const routes = require('./Routes/routes');
 const { handleInput } = require('./gpt-3.5/gptController/inputController.js');
 app.use(express.json());
 app.use(cors({
-  origin: `${process.env.REACT_APP_CLIENT_URL}`
+  origin: 'https://prathamik.vercel.app'
 }));
 
 //routes
@@ -43,8 +44,6 @@ app.use('/login', loginController);
 app.post('/create/roomid', createRoomId);
 app.post('/verify/owner', verifyOwner);
 app.post('/get/admin/details', getAdminDetails);
-
-app.use('/api', routes);
 
 // Handle the image upload
 app.post('/', upload.single('image'), async (req, res) =>
@@ -75,7 +74,7 @@ app.post('/', upload.single('image'), async (req, res) =>
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: `${process.env.REACT_APP_CLIENT_URL}`,
+    origin: 'https://prathamik.vercel.app',
     methods: ['GET', 'POST']
   }
 });
@@ -85,7 +84,7 @@ server.on('upgrade', handleUpgrade);
 
 app.post('/input', handleInput);
 
-const port = 4000;
+const port = 3000;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

@@ -19,7 +19,7 @@ function Signup()
     const navigate=useNavigate();
 
     const handleChange=({currentTarget:input})=>{
-        setData({...data,[input.name]:input.value}); 
+        setData({...data,[input.name]:input.value});
     }
 
     const handleSubmit = async (e) => {
@@ -30,7 +30,7 @@ function Signup()
             return;
         }
         try {
-            const url = `${process.env.REACT_APP_SERVER_URL}/signup`;
+            const url = 'https://prathamik-server.onrender.com/signup';
             const response = await axios.post(url, data);
             //   const res=response.data;
             navigate('/login');
@@ -49,10 +49,10 @@ function Signup()
         const timeout = setTimeout(() => {
           setShouldRender(true);
         }, 100);
-    
+
         return () => clearTimeout(timeout);
     }, []);
-      
+
     return(
         <div>
             {shouldRender && <div className='signup-container'>
@@ -67,7 +67,7 @@ function Signup()
                         <form onSubmit={handleSubmit} className='signup_form'>
 
                             <h1>Join Us</h1>
-                            
+
                             {/* <div className='api_buttons'>
                                 <button type='submit'><i class="fa-brands fa-google"></i></button>
                                 <button type='submit'><i class="fa-brands fa-facebook-f"></i></button>
@@ -83,7 +83,7 @@ function Signup()
                                 onChange={handleChange}
                                 required
                             />
-                            
+
 
                             {/* <label htmlFor='email'>Email</label> */}
                             <input
@@ -95,7 +95,7 @@ function Signup()
                                 onChange={handleChange}
                                 required
                             />
-                            
+
 
                             {/* <label htmlFor='password'>Password</label> */}
                             <input
@@ -107,7 +107,7 @@ function Signup()
                                 onChange={handleChange}
                                 required
                             />
-                            
+
 
                             {/* <label htmlFor='confirm_password'>Confirm Password</label> */}
                             <input
@@ -119,16 +119,16 @@ function Signup()
                                 onChange={handleChange}
                                 required
                             />
-                            
 
-                            
+
+
                             {error && <p className='signup_error'>
                                 {error}
                             </p>}
 
                             <p className='already_have_acc'>Already have an account? <a href='/login'>Log in</a></p>
 
-                            
+
                             <button type="submit" className='signup_button'>Register</button>
 
 
@@ -142,5 +142,3 @@ function Signup()
 }
 
 export default Signup;
-
-

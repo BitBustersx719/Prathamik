@@ -1,23 +1,18 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from google.cloud import vision_v1
+
 from PIL import Image
 import base64
 import requests
 import os
 import io
-from dotenv import load_dotenv
-
-load_dotenv()  # Load environment variables from .env file
-
 app = Flask(__name__)
 CORS(app)
-CORS(app, resources={r"/*": {"origins": os.getenv("REACT_APP_CLIENT_URL")}})
-CORS(app, resources={r"/*": {"origins": os.getenv("REACT_APP_SERVER_URL")}})
-
+CORS(app, resources={r"/*": {"origins": "https://prathamik-server.onrender.com"}})
+CORS(app, resources={r"/*": {"origins": "https://prathamik.vercel.app/whiteboard"}})
 # Set the environment variable for the service account key file
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "server\\creds\\ocr-vision.json"
-
 @app.route('/ocr', methods=['POST'])
 def ocr():
     if 'image' not in request.files:
@@ -42,7 +37,9 @@ def ocr():
     else:
         extracted_text = ""
     return jsonify({'text': extracted_text})
-
+    response.headers.add('Access-Control-Allow-Origin', 'https://prathamik-server.onrender.com')
+    response.headers.add('Access-Control-Allow-Origin', 'https://prathamik.vercel.app')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 @app.route('/test', methods=['POST'])
 def test():
     image_data = request.files['image']
@@ -55,7 +52,7 @@ def test():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    url = os.getenv("PYTHON_SERVER") + "/test"
+    url = "http://127.0.0.1:5000/test"
 
     payload = {
         "file": request.files['image']
@@ -64,6 +61,7 @@ def upload():
     response = requests.post(url, files=payload)
 
     return response.text, response.status_code
- 
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0' , debug=True)
+    app.run(debug=True)

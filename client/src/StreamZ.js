@@ -11,8 +11,8 @@ import {
 import { authToken } from "./API";
 import ReactPlayer from "react-player";
 import Container from "./Container";
+import CaptioningSystem from "./CaptioningSystem";
 import IDE from "./IDE";
-import CaptioningSystem from "./CaptioningSystem"
 const PresenterView = ({ presenterId }) => {
     const { screenShareAudioStream, isLocal, screenShareStream, screenShareOn } =
         useParticipant(presenterId);
@@ -160,7 +160,7 @@ function ParticipantView(props) {
                             {dp ?
                                 (
                                     <img
-                                        src={`${process.env.REACT_APP_SERVER_URL}/uploads/${dp}`}
+                                        src={`https://prathamik-server.onrender.com/uploads/${dp}`}
                                         alt=''
                                         className="smallDp"
                                     />
@@ -210,7 +210,7 @@ function ParticipantView(props) {
                             {dp ?
                                 (
                                     <img
-                                        src={`${process.env.REACT_APP_SERVER_URL}/uploads/${dp}`}
+                                        src={`https://prathamik-server.onrender.com/uploads/${dp}`}
                                         alt=''
                                         className="bigDp"
                                     />
@@ -351,8 +351,8 @@ function MeetingView(props) {
     const [screenShare, setScreenShare] = useState(false);
     const [whiteboard, setWhiteboard] = useState(false);
     const [minimizeFaceCam, setMinimizeFaceCam] = useState(false);
-    const [joined, setJoined] = useState(null);
     const [mic, setMic] = useState(false);
+    const [joined, setJoined] = useState(null);
     const { enableScreenShare, disableScreenShare, toggleScreenShare } = useMeeting();
 
     useEffect(() => {
@@ -510,7 +510,7 @@ function MeetingView(props) {
 
                 </div>
             ) : joined && joined == "JOINING" ? (
-                <p>Joining the meeting...</p>
+                <p className="joiningTag">Joining the meeting...</p>
             ) : (
                 <button onClick={joinMeeting}>Join</button>
             )}

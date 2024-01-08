@@ -15,6 +15,43 @@ function Navbar() {
   };
   window.addEventListener('scroll', showShadow);
 
+  const scrollToHome = () => 
+    {
+      const aboutSection = document.querySelector('.landing_body');
+      const offsetTop = aboutSection.offsetTop;
+      const offsetHeight = aboutSection.offsetHeight;
+      const scrollToPosition = offsetTop - 0;
+      window.scrollTo({
+        top: scrollToPosition,
+        behavior: 'smooth'
+      });
+    }
+
+    const scrollToAbout = () => 
+    {
+      const aboutSection = document.querySelector('.about_container');
+      const offsetTop = aboutSection.offsetTop;
+      const offsetHeight = aboutSection.offsetHeight;
+      const scrollToPosition = offsetTop - 40;
+      window.scrollTo({
+        top: scrollToPosition,
+        behavior: 'smooth'
+      });
+    }
+
+    const scrollToServices = () => 
+    {
+      const aboutSection = document.querySelector('.service_parent');
+      const offsetTop = aboutSection.offsetTop;
+      const offsetHeight = aboutSection.offsetHeight;
+      const scrollToPosition = offsetTop - 40;
+      window.scrollTo({
+        top: scrollToPosition,
+        behavior: 'smooth'
+      });
+    }
+    
+
   const [profileDetailsShow, setProfileDetailsShow] = useState(false);
 
   function handleProfileClick() {
@@ -39,7 +76,7 @@ function Navbar() {
   const [image, setImage] = useState('');
 
   const handleImageSubmit = () => {
-    const url = `${process.env.REACT_APP_SERVER_URL}/`;
+    const url = 'https://prathamik-server.onrender.com/';
 
     const formData = new FormData();
     formData.append('image', image);
@@ -62,26 +99,21 @@ function Navbar() {
     return (
       <div>
         <nav className={navbarShadow ? 'transparency' : 'navbar'}>
-          <a href={`${process.env.REACT_APP_SERVER_URL}/`} className='logo-container'>
+          <a href='https://prathamik-server.onrender.com/' className='logo-container'>
             <div className='logo'></div>
             <h1>Prathamik</h1>
           </a>
 
           <ul className='navigations-tabs'>
-            <li>
-              <a href='/'>HOME</a>
-            </li>
-            <Link className='li' to='/platform'>
-              PLATFORM
-            </Link>
-            <Link className='li' to='/stream'>
-              STREAM
-            </Link>
+            <li onClick={scrollToHome}><button>HOME</button></li>
+            <li onClick={scrollToAbout}><button>ABOUT US</button></li>
+            <li onClick={scrollToServices}><button>SERVICES</button></li>
+
             <li className='navbar_profile'>
               <div className='user' onClick={handleProfileClick}>
                 {dp ? (
                   <img
-                    src={`${process.env.REACT_APP_SERVER_URL}/uploads/${dp}`}
+                    src={`https://prathamik-server.onrender.com/uploads/${dp}`}
                     alt=''
                   />
                 ) : (
@@ -114,21 +146,15 @@ function Navbar() {
     return (
       <div>
         <nav className={navbarShadow ? 'transparency' : 'navbar'}>
-          <a href={`${process.env.REACT_APP_SERVER_URL}/`} className='logo-container'>
+          <a href='https://prathamik-server.onrender.com/' className='logo-container'>
             <div className='logo'></div>
             <h1>Prathamik</h1>
           </a>
 
           <ul className='navigations-tabs'>
-            <li>
-              <a href='/'>HOME</a>
-            </li>
-            <Link className='li' to='/platform'>
-              PLATFORM
-            </Link>
-            <Link className='li' to='/stream'>
-              STREAM
-            </Link>
+            <li onClick={scrollToHome}><button>HOME</button></li>
+            <li onClick={scrollToAbout}><button>ABOUT US</button></li>
+            <li onClick={scrollToServices}><button>SERVICES</button></li>
             <li className='login-signup-container'>
               <Link to='/login' className='login'>
                 LOG IN

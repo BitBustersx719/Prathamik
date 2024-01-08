@@ -41,7 +41,7 @@ async function getAdminDetails (req,res) {
     const roomid = req.body.roomid;
 
     const admin = await roomidModel.findOne({roomid: roomid});
-    if(!admin) 
+    if(!admin)
     return res.status(400).json({message: 'Room ID not found!'});
     const details = admin.details;
 
